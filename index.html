@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Zhi Lu - Security researcher specializing in cryptography, privacy computing, AI security, data governance, zero-knowledge proofs, anonymous accountability, standards, patents, and research collaboration." />
+  <meta name="description" content="Zhi Lu - Research in cryptography, privacy computing, zero-knowledge proofs, secure aggregation, anonymous accountability, AI security, and trustworthy distributed systems." />
   <meta name="theme-color" content="#f7fbff" />
-  <title>Zhi Lu | Security & Cryptography Researcher</title>
+  <title>Zhi Lu | Cryptography, Privacy Computing, and AI Security</title>
   <style>
     :root {
       --bg: #f7fbff;
@@ -93,7 +93,7 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       min-width: max-content;
     }
 
@@ -175,6 +175,57 @@
       box-shadow: 0 8px 18px rgba(6, 17, 31, 0.18);
     }
 
+
+    .view-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      padding: 4px;
+      box-shadow: 0 10px 28px rgba(6, 17, 31, 0.055);
+    }
+
+    .view-toggle button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 8px 10px;
+      color: #5d6f83;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .view-toggle button.active {
+      color: var(--white);
+      background: var(--cyan);
+      box-shadow: 0 8px 18px rgba(8, 145, 178, 0.20);
+    }
+
+    .view-toggle-mobile,
+    .mobile-menu-controls {
+      display: none;
+    }
+
+    .mobile-menu-controls {
+      gap: 8px;
+      padding: 8px 8px 10px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 4px;
+    }
+
+    .mobile-control-label {
+      color: var(--subtle);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
     .nav-action {
       display: inline-flex;
       align-items: center;
@@ -243,18 +294,18 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(48px, 6vw, 82px);
-      line-height: 0.96;
-      letter-spacing: -0.067em;
+      font-size: clamp(40px, 4.8vw, 64px);
+      line-height: 1.04;
+      letter-spacing: -0.052em;
       color: var(--ink);
-      max-width: 920px;
+      max-width: 880px;
     }
 
     .hero-lead {
-      margin: 26px 0 0;
-      max-width: 720px;
+      margin: 22px 0 0;
+      max-width: 740px;
       color: var(--muted);
-      font-size: clamp(18px, 2vw, 21px);
+      font-size: clamp(16px, 1.55vw, 18.5px);
       line-height: 1.78;
     }
 
@@ -318,11 +369,12 @@
 
     .identity-top {
       position: relative;
-      min-height: 390px;
-      padding: 24px;
+      min-height: auto;
+      padding: 26px;
       color: var(--white);
       background:
-        radial-gradient(circle at 88% 0%, rgba(165, 243, 252, 0.22), transparent 16rem),
+        radial-gradient(circle at 88% 0%, rgba(165, 243, 252, 0.20), transparent 15rem),
+        radial-gradient(circle at 0% 100%, rgba(29, 78, 216, 0.20), transparent 18rem),
         linear-gradient(135deg, #07111f, #102033 58%, #164e63);
       overflow: hidden;
     }
@@ -330,28 +382,38 @@
     .identity-top::after {
       content: "ZK  AC  DP  HE  MPC  RLWE  SIG  HASH";
       position: absolute;
-      left: -24px;
-      right: -24px;
-      bottom: 34px;
-      color: rgba(255,255,255,0.055);
+      left: -30px;
+      right: -30px;
+      bottom: 20px;
+      color: rgba(255,255,255,0.048);
       font-family: var(--mono);
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: 0.22em;
       white-space: nowrap;
-      transform: rotate(-8deg);
+      transform: rotate(-7deg);
+    }
+
+    .profile-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 22px;
     }
 
     .photo-frame {
       position: relative;
-      z-index: 1;
-      height: 238px;
-      border-radius: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      flex: none;
+      width: 132px;
+      aspect-ratio: 3 / 4;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.20);
       background:
-        linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02)),
-        radial-gradient(circle at 50% 0%, rgba(165, 243, 252, 0.20), transparent 12rem),
-        rgba(255, 255, 255, 0.05);
+        linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03)),
+        radial-gradient(circle at 50% 0%, rgba(165, 243, 252, 0.20), transparent 9rem),
+        rgba(255, 255, 255, 0.06);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
       display: grid;
       place-items: center;
       overflow: hidden;
@@ -361,6 +423,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center top;
       display: block;
     }
 
@@ -370,38 +433,34 @@
       display: grid;
       place-items: center;
       text-align: center;
-      padding: 24px;
+      padding: 12px;
     }
 
     .photo-placeholder strong {
       display: grid;
       place-items: center;
-      width: 92px;
-      height: 92px;
-      border-radius: 30px;
-      margin: 0 auto 14px;
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      margin: 0 auto 9px;
       color: var(--ice);
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.13);
-      font-size: 36px;
+      font-size: 24px;
       letter-spacing: -0.08em;
     }
 
     .photo-placeholder span {
       display: block;
       color: #b8c6d6;
-      font-size: 13px;
-      line-height: 1.65;
+      font-size: 10.5px;
+      line-height: 1.45;
     }
 
     .identity-info {
       position: relative;
       z-index: 1;
-      margin-top: 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 20px;
+      min-width: 0;
     }
 
     .identity-info h2 {
@@ -419,11 +478,14 @@
     }
 
     .cipher-chip {
-      flex: none;
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin-top: 14px;
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 999px;
       background: rgba(255,255,255,0.06);
-      padding: 10px 12px;
+      padding: 9px 11px;
       color: #a5f3fc;
       font-family: var(--mono);
       font-size: 12px;
@@ -481,17 +543,17 @@
     h2.section-title, .section-head h2, .panel-title {
       margin: 0;
       color: var(--ink);
-      font-size: clamp(31px, 4vw, 48px);
-      line-height: 1.08;
-      letter-spacing: -0.047em;
+      font-size: clamp(28px, 3.2vw, 40px);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
     }
 
     .section-text {
       margin: 18px auto 0;
-      max-width: 740px;
+      max-width: 760px;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.8;
+      font-size: 16.5px;
+      line-height: 1.82;
     }
 
     .two-col {
@@ -511,7 +573,7 @@
     }
 
     .panel { padding: 30px; }
-    .panel p { color: var(--muted); font-size: 15px; line-height: 1.8; }
+    .panel p { color: var(--muted); font-size: 16px; line-height: 1.82; }
 
     .info-list {
       display: grid;
@@ -526,8 +588,8 @@
       border-top: 1px solid var(--line);
       padding-top: 12px;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.65;
+      font-size: 15px;
+      line-height: 1.68;
     }
 
     .info-row b { color: var(--ink); }
@@ -559,15 +621,15 @@
     .timeline-item h3 {
       margin: 0;
       color: var(--ink);
-      font-size: 17px;
+      font-size: 18px;
       letter-spacing: -0.02em;
     }
 
     .timeline-item p {
       margin: 7px 0 0;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.65;
+      font-size: 15px;
+      line-height: 1.68;
     }
 
     .research-grid {
@@ -607,7 +669,7 @@
     .research-card h3, .mini-card h3, .detail-card h3 {
       margin: 18px 0 0;
       color: var(--ink);
-      font-size: 18px;
+      font-size: 19px;
       line-height: 1.32;
       letter-spacing: -0.025em;
     }
@@ -615,8 +677,8 @@
     .research-card p, .mini-card p, .detail-card p {
       margin: 10px 0 0;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
+      font-size: 15.5px;
+      line-height: 1.72;
     }
 
     .showcase-grid {
@@ -830,7 +892,7 @@
     .modal-backdrop.open { display: grid; }
 
     .modal {
-      width: min(980px, 100%);
+      width: min(1080px, 100%);
       max-height: min(760px, calc(100vh - 44px));
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.8);
@@ -853,14 +915,15 @@
     .modal-header h3 {
       margin: 0;
       color: var(--ink);
-      font-size: 28px;
+      font-size: 30px;
       letter-spacing: -0.04em;
     }
 
     .modal-header p {
       margin: 8px 0 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15.5px;
+      line-height: 1.65;
     }
 
     .modal-close {
@@ -878,7 +941,7 @@
 
     .modal-body {
       overflow: auto;
-      padding: 24px 26px 28px;
+      padding: 28px 32px 34px;
     }
 
     .modal-list {
@@ -890,31 +953,97 @@
       border: 1px solid var(--line);
       border-radius: 20px;
       background: #ffffff;
-      padding: 17px;
+      padding: 20px 22px;
     }
 
     .modal-item .meta {
       color: var(--cyan);
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 900;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.075em;
       text-transform: uppercase;
     }
 
     .modal-item h4 {
       margin: 8px 0 0;
-      font-size: 17px;
-      line-height: 1.4;
+      font-size: 20px;
+      line-height: 1.42;
       letter-spacing: -0.02em;
     }
 
     .modal-item p {
       margin: 9px 0 0;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
+      font-size: 16px;
+      line-height: 1.74;
     }
+
+
+
+    .modal-item h4 { word-break: normal; overflow-wrap: anywhere; }
+    .modal-item .meta { line-height: 1.55; }
+    .modal-item p { overflow-wrap: anywhere; }
+
+    .modal-item.highlight {
+      border-color: rgba(8, 145, 178, 0.30);
+      background: linear-gradient(135deg, rgba(240, 253, 255, 0.96), #ffffff 58%);
+      box-shadow: 0 14px 34px rgba(8, 145, 178, 0.10);
+    }
+
+    .modal-item.highlight .meta {
+      color: #075985;
+    }
+
+    .service-panel {
+      padding: 34px;
+    }
+
+    .service-summary {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .service-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .service-badge {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      padding: 9px 12px;
+      color: #40536a;
+      font-size: 13px;
+      font-weight: 780;
+      box-shadow: 0 8px 22px rgba(6, 17, 31, 0.045);
+    }
+
+    .identifier-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .identifier-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      padding: 9px 13px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 820;
+    }
+
 
     .reveal {
       opacity: 0;
@@ -936,7 +1065,12 @@
       .container { width: min(100% - 28px, var(--max)); }
       .nav { min-height: 70px; }
       .nav-action { display: none; }
+      .view-toggle-desktop { display: none; }
       .menu-button { display: grid; place-items: center; }
+      .mobile-menu-controls { display: grid; }
+      .view-toggle-mobile { display: inline-flex; width: 100%; justify-content: space-between; }
+      .view-toggle-mobile button { flex: 1; }
+      .brand-domain { display: none; }
       .mobile-menu { padding: 0 14px 14px; }
       .mobile-menu.open { display: block; }
       .mobile-menu-inner {
@@ -956,18 +1090,666 @@
       }
       .mobile-menu a:hover { background: #eef3f8; color: var(--ink); }
       .hero { padding: 44px 0 28px; }
-      h1 { font-size: clamp(43px, 13vw, 62px); }
+      h1 { font-size: clamp(34px, 9vw, 48px); }
       .hero-actions { flex-direction: column; }
       .button { width: 100%; }
-      .identity-top { min-height: 360px; padding: 18px; }
-      .photo-frame { height: 220px; }
-      .identity-info { flex-direction: column; align-items: flex-start; }
+      .identity-top { padding: 18px; }
+      .profile-row { gap: 14px; }
+      .photo-frame { width: 96px; }
+      .identity-info { min-width: 0; }
       .research-grid, .showcase-grid, .detail-strip, .metrics { grid-template-columns: 1fr; }
       .section { padding: 48px 0; }
       .panel, .dark-panel, .contact-main, .contact-side { padding: 26px; }
       .info-row, .timeline-item, .contact-method { grid-template-columns: 1fr; gap: 6px; }
       .modal-header, .modal-body { padding-left: 18px; padding-right: 18px; }
+      .service-summary { grid-template-columns: 1fr; }
+      .service-panel { padding: 26px; }
+      .modal-item h4 { font-size: 18px; }
+      .modal-item p { font-size: 15.5px; }
     }
+
+
+    /* Manual display mode overrides. Keep this block after all media queries. */
+    body[data-layout="mobile"] {
+      overflow-x: hidden;
+    }
+
+    body[data-layout="mobile"] .container {
+      width: min(100% - 28px, 640px) !important;
+    }
+
+    body[data-layout="mobile"] .nav {
+      min-height: 70px;
+    }
+
+    body[data-layout="mobile"] .brand-domain,
+    body[data-layout="mobile"] .nav-links,
+    body[data-layout="mobile"] .nav-action,
+    body[data-layout="mobile"] .view-toggle-desktop {
+      display: none !important;
+    }
+
+    body[data-layout="mobile"] .menu-button {
+      display: grid !important;
+      place-items: center;
+    }
+
+    body[data-layout="mobile"] .mobile-menu.open {
+      display: block !important;
+    }
+
+    body[data-layout="mobile"] .mobile-menu-controls {
+      display: grid !important;
+    }
+
+    body[data-layout="mobile"] .view-toggle-mobile {
+      display: inline-flex !important;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    body[data-layout="mobile"] .view-toggle-mobile button {
+      flex: 1;
+    }
+
+    body[data-layout="mobile"] .hero {
+      padding: 42px 0 28px;
+    }
+
+    body[data-layout="mobile"] .hero-grid,
+    body[data-layout="mobile"] .two-col,
+    body[data-layout="mobile"] .dark-panel-inner,
+    body[data-layout="mobile"] .contact-panel {
+      grid-template-columns: 1fr !important;
+      gap: 18px;
+    }
+
+    body[data-layout="mobile"] .research-grid,
+    body[data-layout="mobile"] .showcase-grid,
+    body[data-layout="mobile"] .detail-strip {
+      grid-template-columns: 1fr !important;
+    }
+
+    body[data-layout="mobile"] .metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      padding: 10px;
+    }
+
+    body[data-layout="mobile"] h1 {
+      font-size: clamp(34px, 9vw, 46px);
+      line-height: 1.06;
+      letter-spacing: -0.05em;
+    }
+
+    body[data-layout="mobile"] .hero-lead {
+      margin-top: 18px;
+      font-size: 15.8px;
+      line-height: 1.74;
+    }
+
+    body[data-layout="mobile"] .hero-actions {
+      flex-direction: column;
+      margin-top: 26px;
+    }
+
+    body[data-layout="mobile"] .button {
+      width: 100%;
+    }
+
+    body[data-layout="mobile"] .hero-visual::before {
+      inset: -8px;
+      border-radius: 30px;
+      filter: blur(10px);
+    }
+
+    body[data-layout="mobile"] .identity-card,
+    body[data-layout="mobile"] .contact-panel,
+    body[data-layout="mobile"] .dark-panel {
+      border-radius: 28px;
+    }
+
+    body[data-layout="mobile"] .identity-top {
+      padding: 16px;
+    }
+
+    body[data-layout="mobile"] .profile-row {
+      gap: 14px;
+      align-items: center;
+    }
+
+    body[data-layout="mobile"] .photo-frame {
+      width: 92px;
+      aspect-ratio: 3 / 4;
+      border-radius: 18px;
+    }
+
+    body[data-layout="mobile"] .photo-placeholder span {
+      display: none;
+    }
+
+    body[data-layout="mobile"] .identity-info h2 {
+      font-size: 27px;
+    }
+
+    body[data-layout="mobile"] .identity-info p {
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    body[data-layout="mobile"] .cipher-chip {
+      margin-top: 10px;
+      padding: 7px 9px;
+      font-size: 10.5px;
+    }
+
+    body[data-layout="mobile"] .metric {
+      padding: 14px 12px;
+      border-radius: 18px;
+    }
+
+    body[data-layout="mobile"] .metric strong {
+      font-size: 24px;
+    }
+
+    body[data-layout="mobile"] .section {
+      padding: 42px 0;
+    }
+
+    body[data-layout="mobile"] .section-head {
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    body[data-layout="mobile"] h2.section-title,
+    body[data-layout="mobile"] .section-head h2,
+    body[data-layout="mobile"] .panel-title {
+      font-size: clamp(25px, 6.4vw, 32px);
+      line-height: 1.16;
+    }
+
+    body[data-layout="mobile"] .panel,
+    body[data-layout="mobile"] .dark-panel,
+    body[data-layout="mobile"] .contact-main,
+    body[data-layout="mobile"] .contact-side {
+      padding: 22px;
+    }
+
+    body[data-layout="mobile"] .mini-card {
+      min-height: 0;
+    }
+
+    body[data-layout="mobile"] .info-row,
+    body[data-layout="mobile"] .timeline-item,
+    body[data-layout="mobile"] .contact-method {
+      grid-template-columns: 1fr !important;
+      gap: 6px;
+    }
+
+    body[data-layout="mobile"] .modal {
+      border-radius: 24px;
+    }
+
+    body[data-layout="desktop"] {
+      min-width: 1180px;
+      overflow-x: auto;
+    }
+
+    body[data-layout="desktop"] .container {
+      width: min(var(--max), 1140px) !important;
+    }
+
+    body[data-layout="desktop"] .nav-links {
+      display: flex !important;
+    }
+
+    body[data-layout="desktop"] .nav-action,
+    body[data-layout="desktop"] .view-toggle-desktop {
+      display: inline-flex !important;
+    }
+
+    body[data-layout="desktop"] .menu-button,
+    body[data-layout="desktop"] .mobile-menu {
+      display: none !important;
+    }
+
+    body[data-layout="desktop"] .brand-domain {
+      display: block !important;
+    }
+
+    body[data-layout="desktop"] .hero-grid {
+      grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.96fr) !important;
+    }
+
+    body[data-layout="desktop"] .two-col,
+    body[data-layout="desktop"] .dark-panel-inner,
+    body[data-layout="desktop"] .contact-panel {
+      grid-template-columns: 0.92fr 1.08fr !important;
+    }
+
+    body[data-layout="desktop"] .research-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+
+    body[data-layout="desktop"] .showcase-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    body[data-layout="desktop"] .detail-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    body[data-layout="desktop"] .metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+
+    body[data-layout="desktop"] .hero-actions {
+      flex-direction: row !important;
+    }
+
+    body[data-layout="desktop"] .button {
+      width: auto !important;
+    }
+
+
+
+
+    /* Refined academic visual system */
+    .experience-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.66fr) minmax(0, 1.34fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .experience-panel {
+      position: relative;
+      overflow: hidden;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 85% 12%, rgba(165, 243, 252, 0.22), transparent 12rem),
+        linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.66));
+    }
+
+    .experience-panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -42px -58px auto;
+      width: 180px;
+      height: 180px;
+      border: 1px solid rgba(8, 145, 178, 0.14);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .academic-map {
+      position: relative;
+      margin-top: 28px;
+      border: 1px solid rgba(10, 31, 51, 0.08);
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.92), rgba(237,245,251,0.78)),
+        radial-gradient(circle at 25% 80%, rgba(165, 243, 252, 0.35), transparent 10rem);
+      box-shadow: 0 22px 56px rgba(6, 17, 31, 0.09);
+      overflow: hidden;
+    }
+
+    .academic-map svg {
+      width: 100%;
+      height: auto;
+      padding: 14px;
+    }
+
+    .map-thread {
+      fill: none;
+      stroke: url(#pathGradient);
+      stroke-width: 4;
+      stroke-linecap: round;
+      filter: drop-shadow(0 8px 16px rgba(8, 145, 178, 0.18));
+    }
+
+    .map-orbit {
+      fill: url(#softGlow);
+      stroke: rgba(8, 145, 178, 0.16);
+      stroke-width: 1.2;
+    }
+
+    .map-node {
+      fill: #06111f;
+      stroke: #a5f3fc;
+      stroke-width: 4;
+    }
+
+    .academic-map text {
+      fill: #53667c;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+    }
+
+    .stage-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .stage-list span {
+      border: 1px solid rgba(8, 145, 178, 0.13);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #40536a;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 840;
+      box-shadow: 0 8px 20px rgba(6, 17, 31, 0.045);
+    }
+
+    @media (max-width: 1080px) {
+      .experience-grid { grid-template-columns: 1fr; }
+      .academic-map { max-width: 520px; }
+    }
+
+    body[data-layout="mobile"] .experience-grid { grid-template-columns: 1fr !important; }
+    body[data-layout="desktop"] .experience-grid {
+      grid-template-columns: minmax(260px, 0.66fr) minmax(0, 1.34fr) !important;
+    }
+
+    /* Final academic-page typography refinements */
+    h1 {
+      font-size: clamp(34px, 4.1vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+    }
+
+    .hero-lead {
+      font-size: clamp(16px, 1.35vw, 18px);
+      line-height: 1.72;
+    }
+
+    h2.section-title, .section-head h2, .panel-title {
+      font-size: clamp(26px, 2.75vw, 36px);
+      line-height: 1.16;
+      letter-spacing: -0.035em;
+    }
+
+    .panel p, .timeline-item p, .mini-card p, .detail-card p, .contact-main p, .contact-side p {
+      font-size: 15.5px;
+      line-height: 1.76;
+    }
+
+    .mini-card h3, .research-card h3, .detail-card h3, .timeline-item h3 {
+      font-size: 18.5px;
+      line-height: 1.34;
+    }
+
+    .modal-header h3 { font-size: 28px; }
+    .modal-header p { font-size: 15.5px; }
+    .modal-item h4 { font-size: 19px; line-height: 1.43; }
+    .modal-item p { font-size: 16px; line-height: 1.72; }
+
+    @media (max-width: 760px) {
+      h1 { font-size: clamp(31px, 8.2vw, 43px); }
+      .hero-lead { font-size: 15.8px; }
+      h2.section-title, .section-head h2, .panel-title { font-size: clamp(24px, 6vw, 30px); }
+      .panel p, .timeline-item p, .mini-card p, .detail-card p, .contact-main p, .contact-side p { font-size: 15px; }
+      .modal-header h3 { font-size: 24px; }
+      .modal-item h4 { font-size: 17.5px; }
+      .modal-item p { font-size: 15.2px; }
+    }
+
+  
+
+    /* Quiet premium academic refinements */
+    .hero { position: relative; overflow: hidden; }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: max(22px, calc((100vw - var(--max)) / 2));
+      bottom: 18px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 1px solid rgba(8, 145, 178, 0.10);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.42), transparent 44%),
+        repeating-conic-gradient(from 18deg, rgba(8,145,178,0.08) 0deg 8deg, transparent 8deg 22deg);
+      filter: blur(0.1px);
+      opacity: 0.34;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .research-axiom {
+      position: relative;
+      max-width: 710px;
+      margin-top: 24px;
+      padding: 17px 20px 17px 22px;
+      border: 1px solid rgba(8,145,178,0.14);
+      border-left: 3px solid rgba(8,145,178,0.58);
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.58)),
+        radial-gradient(circle at 92% 15%, rgba(165,243,252,0.22), transparent 11rem);
+      box-shadow: 0 16px 42px rgba(6, 17, 31, 0.07);
+      color: #344a60;
+      font-size: 15.5px;
+      line-height: 1.72;
+      letter-spacing: -0.005em;
+    }
+
+    .research-axiom::before {
+      content: "";
+      position: absolute;
+      inset: 9px 10px auto auto;
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(8,145,178,0.16), rgba(29,78,216,0.08));
+      mask: radial-gradient(circle at 25% 25%, transparent 0 7px, #000 8px);
+      opacity: 0.42;
+    }
+
+    .panel, .mini-card, .detail-card, .timeline-item, .modal-item {
+      box-shadow: 0 18px 54px rgba(6, 17, 31, 0.072);
+    }
+
+    .section-head { margin-bottom: 38px; }
+
+    @media (max-width: 1080px) {
+
+
+    /* Final visual balance overrides */
+    h1 { font-size: clamp(31px, 3.55vw, 48px); line-height: 1.12; letter-spacing: -0.038em; }
+    .hero-lead { font-size: clamp(16.2px, 1.28vw, 18px); line-height: 1.74; max-width: 780px; }
+    h2.section-title, .section-head h2, .panel-title { font-size: clamp(25px, 2.45vw, 34px); line-height: 1.18; }
+    .timeline-item { padding: 20px; }
+    .timeline-item h3 { font-size: 19px; }
+    .timeline-item p { font-size: 15.8px; }
+    .mini-card h3, .research-card h3, .detail-card h3 { font-size: 19px; }
+    .mini-card p, .research-card p, .detail-card p { font-size: 15.2px; }
+    .modal-item h4 { font-size: 19.5px; }
+    .modal-item p { font-size: 16.2px; }
+
+    @media (max-width: 760px) {
+      h1 { font-size: clamp(30px, 7.8vw, 40px); }
+      .hero-lead { font-size: 15.8px; }
+      .academic-map { margin-top: 22px; border-radius: 24px; }
+      .timeline-item h3 { font-size: 18px; }
+      .timeline-item p { font-size: 15.2px; }
+    }
+
+
+
+    /* Symmetric premium polish */
+    :root {
+      --radius-xl: 32px;
+      --radius-lg: 26px;
+      --radius-md: 18px;
+      --shadow: 0 24px 76px rgba(6, 17, 31, 0.105);
+      --shadow-soft: 0 16px 46px rgba(6, 17, 31, 0.066);
+    }
+
+    body {
+      background:
+        linear-gradient(rgba(6, 17, 31, 0.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 17, 31, 0.026) 1px, transparent 1px),
+        radial-gradient(circle at 50% -8%, rgba(8, 145, 178, 0.20), transparent 35rem),
+        radial-gradient(circle at 12% 18%, rgba(165, 243, 252, 0.20), transparent 27rem),
+        radial-gradient(circle at 88% 18%, rgba(29, 78, 216, 0.14), transparent 29rem),
+        radial-gradient(circle at 50% 92%, rgba(165, 243, 252, 0.16), transparent 28rem),
+        var(--bg);
+      background-size: 42px 42px, 42px 42px, auto, auto, auto, auto, auto;
+    }
+
+    body::before {
+      background:
+        radial-gradient(circle at 18% 72%, transparent 0 10rem, rgba(8, 145, 178, 0.028) 10.08rem 10.18rem, transparent 10.3rem),
+        radial-gradient(circle at 82% 72%, transparent 0 10rem, rgba(8, 145, 178, 0.028) 10.08rem 10.18rem, transparent 10.3rem),
+        linear-gradient(135deg, transparent 0 64%, rgba(255, 255, 255, 0.34) 64% 64.16%, transparent 64.36%);
+      opacity: 0.78;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.02fr) minmax(350px, 0.88fr);
+      gap: 46px;
+    }
+
+    .hero-visual {
+      width: 100%;
+      max-width: 480px;
+      justify-self: end;
+    }
+
+    .identity-card,
+    .contact-panel,
+    .dark-panel {
+      border-radius: 32px;
+    }
+
+    .identity-top {
+      border-radius: 0;
+      padding: 26px;
+    }
+
+    .panel,
+    .mini-card,
+    .detail-card,
+    .timeline-item,
+    .modal-item,
+    .metric,
+    .academic-map,
+    .service-panel {
+      border-radius: 26px;
+    }
+
+    .photo-frame {
+      border-radius: 20px;
+    }
+
+    .icon-box,
+    .modal-close,
+    .menu-button {
+      border-radius: 16px;
+    }
+
+    .showcase-grid,
+    .research-grid {
+      gap: 18px;
+    }
+
+    .mini-card {
+      min-height: 236px;
+      padding: 24px;
+    }
+
+    .timeline {
+      gap: 14px;
+    }
+
+    .timeline-item {
+      grid-template-columns: 104px 1fr;
+      padding: 22px;
+    }
+
+    .research-axiom {
+      max-width: 690px;
+      border-left: 1px solid rgba(8,145,178,0.14);
+      border-radius: 26px;
+      padding: 18px 22px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.86), rgba(255,255,255,0.62)),
+        radial-gradient(circle at 50% 0%, rgba(165,243,252,0.18), transparent 12rem);
+    }
+
+    .research-axiom::before {
+      display: none;
+    }
+
+    .experience-grid {
+      grid-template-columns: minmax(250px, 0.62fr) minmax(0, 1.38fr);
+      gap: 22px;
+    }
+
+    .experience-panel::after {
+      left: 50%;
+      right: auto;
+      bottom: -84px;
+      transform: translateX(-50%);
+      width: 210px;
+      height: 210px;
+      border-color: rgba(8,145,178,0.12);
+    }
+
+    .academic-map {
+      box-shadow: 0 18px 48px rgba(6, 17, 31, 0.075);
+    }
+
+    .academic-map svg {
+      padding: 18px;
+    }
+
+    .section-head {
+      max-width: 760px;
+    }
+
+    .modal {
+      border-radius: 28px;
+    }
+
+    .modal-item.highlight {
+      border-color: rgba(8, 145, 178, 0.24);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.98), rgba(240,248,252,0.88));
+    }
+
+    @media (max-width: 1080px) {
+      .hero-visual { max-width: none; justify-self: stretch; }
+      .hero-grid { gap: 30px; }
+      .experience-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .identity-card,
+      .contact-panel,
+      .dark-panel,
+      .panel,
+      .mini-card,
+      .detail-card,
+      .timeline-item,
+      .modal-item,
+      .academic-map,
+      .service-panel {
+        border-radius: 22px;
+      }
+
+      .mini-card { min-height: 0; padding: 22px; }
+      .timeline-item { grid-template-columns: 1fr; padding: 20px; }
+      .research-axiom { border-radius: 22px; }
+      .photo-frame { border-radius: 16px; }
+    }
+
   </style>
 </head>
 <body>
@@ -976,7 +1758,7 @@
       <a class="brand" href="#top" aria-label="Zhi Lu homepage">
         <div class="brand-mark">ZL</div>
         <div>
-          <p class="brand-name" data-en="Zhi Lu" data-zh="卢智">Zhi Lu</p>
+          <p class="brand-name" data-en="Zhi Lu" data-zh="路直">Zhi Lu</p>
           <p class="brand-domain">lu-zhi.com</p>
         </div>
       </a>
@@ -986,16 +1768,22 @@
         <a href="#experience" data-en="Experience" data-zh="经历">Experience</a>
         <a href="#research" data-en="Research" data-zh="方向">Research</a>
         <a href="#works" data-en="Works" data-zh="成果">Works</a>
+        <a href="#service" data-en="Service" data-zh="学术服务">Service</a>
         <a href="#collaboration" data-en="Collaboration" data-zh="合作">Collaboration</a>
         <a href="#contact" data-en="Contact" data-zh="联系">Contact</a>
       </nav>
 
       <div class="nav-right">
+        <div class="view-toggle view-toggle-desktop" aria-label="Display mode">
+          <button class="active" type="button" data-view-button="auto" data-en="Auto" data-zh="自动">Auto</button>
+          <button type="button" data-view-button="mobile" data-en="Mobile" data-zh="手机">Mobile</button>
+          <button type="button" data-view-button="desktop" data-en="Desktop" data-zh="电脑">Desktop</button>
+        </div>
         <div class="lang-toggle" aria-label="Language switcher">
           <button class="active" type="button" data-lang-button="en">EN</button>
           <button type="button" data-lang-button="zh">中</button>
         </div>
-        <a class="nav-action" href="mailto:contact@lu-zhi.com" data-en="Contact" data-zh="联系我">Contact</a>
+        <a class="nav-action" href="mailto:luzhi@ieee.org" data-en="Contact" data-zh="联系我">Contact</a>
         <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
@@ -1006,10 +1794,19 @@
 
     <div class="mobile-menu" id="mobileMenu">
       <div class="mobile-menu-inner">
+        <div class="mobile-menu-controls">
+          <span class="mobile-control-label" data-en="Display" data-zh="显示模式">Display</span>
+          <div class="view-toggle view-toggle-mobile" aria-label="Display mode">
+            <button class="active" type="button" data-view-button="auto" data-en="Auto" data-zh="自动">Auto</button>
+            <button type="button" data-view-button="mobile" data-en="Mobile" data-zh="手机">Mobile</button>
+            <button type="button" data-view-button="desktop" data-en="Desktop" data-zh="电脑">Desktop</button>
+          </div>
+        </div>
         <a href="#about" data-en="About" data-zh="个人简介">About</a>
         <a href="#experience" data-en="Experience" data-zh="工作经历">Experience</a>
         <a href="#research" data-en="Research" data-zh="研究方向">Research</a>
         <a href="#works" data-en="Works" data-zh="代表成果">Works</a>
+        <a href="#service" data-en="Service" data-zh="学术服务">Service</a>
         <a href="#collaboration" data-en="Collaboration" data-zh="合作意向">Collaboration</a>
         <a href="#contact" data-en="Contact" data-zh="联系方式">Contact</a>
       </div>
@@ -1021,49 +1818,52 @@
       <div class="container hero-grid">
         <div class="reveal visible">
           <div class="eyebrow-row">
-            <span class="pill"><span class="dot"></span><span data-en="Cryptography · Security · Privacy" data-zh="密码学 · 安全 · 隐私">Cryptography · Security · Privacy</span></span>
-            <span class="pill" data-en="Security Research Translation" data-zh="安全科研成果转化">Security Research Translation</span>
+            <span class="pill"><span class="dot"></span><span data-en="Research Fellow · NUS School of Computing" data-zh="Research Fellow · 新加坡国立大学计算机学院">Research Fellow · NUS School of Computing</span></span>
+            <span class="pill" data-en="Cryptography · Privacy Computing · AI Security" data-zh="密码学 · 隐私计算 · AI安全">Cryptography · Privacy Computing · AI Security</span>
           </div>
 
-          <h1 data-en="Building rigorous security research into trustworthy real-world systems." data-zh="将严谨的安全研究转化为可信的现实系统。">Building rigorous security research into trustworthy real-world systems.</h1>
+          <h1 data-en="Cryptography for privacy-preserving and accountable systems." data-zh="面向隐私保护与可问责系统的密码学研究。">Cryptography for privacy-preserving and accountable systems.</h1>
 
-          <p class="hero-lead" data-en="I work on privacy computing, zero-knowledge proofs, anonymous accountability, secure aggregation, AI security, and data governance. My long-term focus is translating frontier security research into technical roadmaps, projects, patents, standards, and deployable system designs." data-zh="我的研究方向包括隐私计算、零知识证明、匿名问责、安全聚合、AI安全与数据治理。我的长期关注点是将前沿安全研究转化为技术路线、项目方案、专利布局、标准体系与可落地的系统设计。">
-            I work on privacy computing, zero-knowledge proofs, anonymous accountability, secure aggregation, AI security, and data governance. My long-term focus is translating frontier security research into technical roadmaps, projects, patents, standards, and deployable system designs.
+          <p class="hero-lead" data-en="I am a Research Fellow in the School of Computing at the National University of Singapore, working with Prof. Jiaheng Zhang. My research studies privacy-preserving and accountable systems through zero-knowledge proofs, secure aggregation, anonymous credentials, distributed key generation, and trustworthy AI technologies." data-zh="我是新加坡国立大学计算机学院 Research Fellow，加入张嘉恒教授团队。我的研究面向隐私保护与可问责系统，关注零知识证明、安全聚合、匿名凭证、分布式密钥生成与可信AI技术。">
+            I am a Research Fellow in the School of Computing at the National University of Singapore, working with Prof. Jiaheng Zhang. My research studies privacy-preserving and accountable systems through zero-knowledge proofs, secure aggregation, anonymous credentials, distributed key generation, and trustworthy AI technologies.
           </p>
 
           <div class="hero-actions">
-            <a class="button button-primary" href="mailto:contact@lu-zhi.com" data-en="Discuss a collaboration" data-zh="洽谈合作">Discuss a collaboration</a>
-            <a class="button button-secondary" href="#works" data-en="View representative works" data-zh="查看代表成果">View representative works</a>
+            <a class="button button-primary" href="#works" data-en="View publications" data-zh="查看论文成果">View publications</a>
+            <a class="button button-secondary" href="mailto:luzhi@ieee.org" data-en="Contact me" data-zh="联系我">Contact me</a>
+          </div>
+
+          <div class="research-axiom" data-en="I design security mechanisms that make privacy practical, verification efficient, and accountability compatible with anonymity." data-zh="我的研究关注如何让隐私保护可以落地，让验证更加高效，也让问责机制不以牺牲匿名性为代价。">
+            I design security mechanisms that make privacy practical, verification efficient, and accountability compatible with anonymity.
           </div>
         </div>
 
         <aside class="hero-visual reveal visible" aria-label="Profile summary">
           <div class="identity-card">
             <div class="identity-top">
-              <div class="photo-frame">
-                <!-- Replace profile.jpg with your real photo. Keep the file in the same folder as this index.html. -->
-                <img src="profile.jpg" alt="Portrait of Zhi Lu" onerror="this.style.display='none';" />
-                <div class="photo-placeholder" aria-hidden="true">
-                  <div>
-                    <strong>ZL</strong>
-                    <span data-en="Place your portrait here. Save the image as profile.jpg in the same folder." data-zh="请将个人照片命名为 profile.jpg，并与 index.html 放在同一目录。">Place your portrait here. Save the image as profile.jpg in the same folder.</span>
+              <div class="profile-row">
+                <div class="photo-frame">
+                  <img src="profile.jpg" alt="Portrait of Zhi Lu" onerror="this.style.display='none';" />
+                  <div class="photo-placeholder" aria-hidden="true">
+                    <div>
+                      <strong>ZL</strong>
+                      <span data-en="profile.jpg" data-zh="证件照">profile.jpg</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="identity-info">
-                <div>
-                  <h2 data-en="Zhi Lu" data-zh="卢智">Zhi Lu</h2>
-                  <p data-en="Security Researcher · Privacy Computing · AI Security" data-zh="安全研究者 · 隐私计算 · AI安全">Security Researcher · Privacy Computing · AI Security</p>
+                <div class="identity-info">
+                  <h2 data-en="Zhi Lu" data-zh="路直">Zhi Lu</h2>
+                  <p data-en="Research Fellow · School of Computing, NUS" data-zh="Research Fellow · 新加坡国立大学计算机学院">Research Fellow · School of Computing, NUS</p>
+                  <span class="cipher-chip">ZK · SA · ADKG · AI SEC</span>
                 </div>
-                <span class="cipher-chip">ZK · PRIV · AUTH</span>
               </div>
             </div>
             <div class="metrics">
-              <div class="metric"><strong>5</strong><span data-en="A-class security papers" data-zh="A类安全论文">A-class security papers</span></div>
-              <div class="metric"><strong>10+</strong><span data-en="patents" data-zh="专利">patents</span></div>
-              <div class="metric"><strong>5</strong><span data-en="national standards" data-zh="国家标准">national standards</span></div>
-              <div class="metric"><strong>6</strong><span data-en="industry standards" data-zh="行业标准">industry standards</span></div>
+              <div class="metric"><strong>25</strong><span data-en="published papers" data-zh="已发表论文">published papers</span></div>
+              <div class="metric"><strong>15</strong><span data-en="first or co-first" data-zh="一作或共一">first or co-first</span></div>
+              <div class="metric"><strong>30+</strong><span data-en="manuscripts reviewed" data-zh="审阅稿件">manuscripts reviewed</span></div>
+              <div class="metric"><strong>11</strong><span data-en="patents" data-zh="专利">patents</span></div>
             </div>
           </div>
         </aside>
@@ -1074,50 +1874,81 @@
       <div class="container two-col">
         <div class="panel reveal">
           <p class="section-kicker" data-en="Profile" data-zh="个人介绍">Profile</p>
-          <h2 class="panel-title" data-en="Research identity with a translational edge." data-zh="兼具科研深度与成果转化能力的安全研究者。">Research identity with a translational edge.</h2>
-          <p data-en="I am a Ph.D. candidate in cyberspace security at Huazhong University of Science and Technology and an incoming Research Fellow at the National University of Singapore. My research lies at the intersection of cryptography, privacy-preserving systems, AI security, and data security governance." data-zh="我是华中科技大学网络空间安全方向博士研究生，即将赴新加坡国立大学担任 Research Fellow。我的研究交叉于密码学、隐私保护系统、AI安全与数据安全治理。">
-            I am a Ph.D. candidate in cyberspace security at Huazhong University of Science and Technology and an incoming Research Fellow at the National University of Singapore. My research lies at the intersection of cryptography, privacy-preserving systems, AI security, and data security governance.
+          <h2 class="panel-title" data-en="Security, privacy, and trustworthy AI systems." data-zh="安全、隐私与可信AI系统。">Security, privacy, and trustworthy AI systems.</h2>
+          <p data-en="My research develops cryptographic and privacy-preserving mechanisms for systems where participants, data owners, or computation providers may be untrusted. I work on zero-knowledge proofs, secure aggregation, anonymous accountability, distributed key generation, anonymous credentials, and privacy-preserving machine learning." data-zh="我的研究面向参与方、数据拥有方或计算服务方不完全可信的系统，设计密码学与隐私保护机制。具体方向包括零知识证明、安全聚合、匿名问责、分布式密钥生成、匿名凭证与隐私保护机器学习。">
+            My research develops cryptographic and privacy-preserving mechanisms for systems where participants, data owners, or computation providers may be untrusted. I work on zero-knowledge proofs, secure aggregation, anonymous accountability, distributed key generation, anonymous credentials, and privacy-preserving machine learning.
           </p>
-          <p data-en="This homepage is designed as a long-term expert entry point. It highlights academic publications, standards, patents, projects, awards, and potential collaboration directions." data-zh="该主页将作为长期专家入口，集中展示我的学术论文、标准著作、专利、项目、获奖经历与潜在合作方向。">
-            This homepage is designed as a long-term expert entry point. It highlights academic publications, standards, patents, projects, awards, and potential collaboration directions.
+          <p data-en="My work also extends beyond papers to patents, standards, hosted projects, and deployable security prototypes. Through cross-lab collaboration and mentored student projects, these ideas have been carried into biomedical computing, computer vision, industrial systems, and applied privacy scenarios." data-zh="我的工作也延伸到专利、标准、主持项目与可部署安全原型。通过跨团队合作和学生指导，相关思路被进一步拓展到生物医学计算、计算机视觉、工业系统与应用隐私场景。">
+            My work also extends beyond papers to patents, standards, hosted projects, and deployable security prototypes. Through cross-lab collaboration and mentored student projects, these ideas have been carried into biomedical computing, computer vision, industrial systems, and applied privacy scenarios.
           </p>
         </div>
 
         <div class="panel reveal">
-          <p class="section-kicker" data-en="Affiliation" data-zh="工作单位">Affiliation</p>
+          <p class="section-kicker" data-en="Current Appointment" data-zh="当前任职">Current Appointment</p>
           <div class="info-list">
-            <div class="info-row"><b data-en="Current" data-zh="当前单位">Current</b><span data-en="Huazhong University of Science and Technology, School of Cyber Science and Engineering" data-zh="华中科技大学网络空间安全学院">Huazhong University of Science and Technology, School of Cyber Science and Engineering</span></div>
-            <div class="info-row"><b data-en="Next" data-zh="即将加入">Next</b><span data-en="National University of Singapore, Research Fellow" data-zh="新加坡国立大学 Research Fellow">National University of Singapore, Research Fellow</span></div>
-            <div class="info-row"><b data-en="Focus" data-zh="研究聚焦">Focus</b><span data-en="Cryptography, privacy computing, AI security, secure aggregation, anonymous accountability, data governance" data-zh="密码学、隐私计算、AI安全、安全聚合、匿名问责、数据治理">Cryptography, privacy computing, AI security, secure aggregation, anonymous accountability, data governance</span></div>
-            <div class="info-row"><b data-en="Website" data-zh="个人主页">Website</b><span>lu-zhi.com</span></div>
+            <div class="info-row"><b data-en="Position" data-zh="职位">Position</b><span data-en="Research Fellow, School of Computing, National University of Singapore" data-zh="新加坡国立大学计算机学院 Research Fellow">Research Fellow, School of Computing, National University of Singapore</span></div>
+            <div class="info-row"><b data-en="Team" data-zh="团队">Team</b><span data-en="Prof. Jiaheng Zhang's research group" data-zh="张嘉恒教授团队">Prof. Jiaheng Zhang's research group</span></div>
+            <div class="info-row"><b data-en="Research" data-zh="研究方向">Research</b><span data-en="Cryptographic systems, privacy computing, anonymous accountability, and trustworthy AI" data-zh="密码学系统、隐私计算、匿名问责与可信AI">Cryptographic systems, privacy computing, anonymous accountability, and trustworthy AI</span></div>
+            <div class="info-row"><b data-en="Profiles" data-zh="学术档案">Profiles</b><span><a href="https://orcid.org/0000-0002-5411-9854" target="_blank" rel="noopener">ORCID</a> · <a href="https://www.webofscience.com/wos/author/record/KYO-8734-2024" target="_blank" rel="noopener">Web of Science</a></span></div>
+            <div class="info-row"><b data-en="Email" data-zh="邮箱">Email</b><span><a href="mailto:luzhi@ieee.org">luzhi@ieee.org</a> · <a href="mailto:luzhizz@foxmail.com">luzhizz@foxmail.com</a></span></div>
           </div>
         </div>
       </div>
     </section>
 
     <section class="section" id="experience">
-      <div class="container two-col">
-        <div class="panel reveal">
-          <p class="section-kicker" data-en="Experience" data-zh="工作经历">Experience</p>
-          <h2 class="panel-title" data-en="A concise timeline for research and professional identity." data-zh="用清晰时间线展示研究与职业身份。">A concise timeline for research and professional identity.</h2>
-          <p data-en="Keep the homepage concise. Detailed academic CV, project list, and full achievements can be opened through detail panels or downloaded as a PDF later." data-zh="主界面保持克制与清晰。完整简历、项目清单和全部成果可以通过详情面板展示，也可以后续提供 PDF 下载。">
-            Keep the homepage concise. Detailed academic CV, project list, and full achievements can be opened through detail panels or downloaded as a PDF later.
-          </p>
-          <button class="open-detail" type="button" data-modal="experience" data-en="View full experience" data-zh="查看完整经历">View full experience</button>
+      <div class="container experience-grid">
+        <div class="panel experience-panel reveal">
+          <p class="section-kicker" data-en="Education and Appointment" data-zh="教育与任职经历">Education and Appointment</p>
+          <h2 class="panel-title" data-en="From SUSTech and HUST to NUS." data-zh="从南科大、华科到新国大。">From SUSTech and HUST to NUS.</h2>
+          <div class="academic-map" aria-hidden="true">
+            <svg viewBox="0 0 320 230" role="img">
+              <defs>
+                <linearGradient id="pathGradient" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#a5f3fc" stop-opacity="0.95"/>
+                  <stop offset="52%" stop-color="#0891b2" stop-opacity="0.92"/>
+                  <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.78"/>
+                </linearGradient>
+                <radialGradient id="softGlow" cx="50%" cy="50%" r="60%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                  <stop offset="100%" stop-color="#a5f3fc" stop-opacity="0.16"/>
+                </radialGradient>
+              </defs>
+              <path class="map-thread" d="M52 172 C88 92, 138 78, 166 118 S236 154, 270 58" />
+              <circle class="map-orbit" cx="64" cy="164" r="38" />
+              <circle class="map-orbit" cx="166" cy="118" r="48" />
+              <circle class="map-orbit" cx="262" cy="68" r="42" />
+              <circle class="map-node" cx="64" cy="164" r="9" />
+              <circle class="map-node" cx="166" cy="118" r="9" />
+              <circle class="map-node" cx="262" cy="68" r="9" />
+              <text x="34" y="208">SUSTech</text>
+              <text x="139" y="160">HUST</text>
+              <text x="244" y="39">NUS</text>
+            </svg>
+          </div>
+          <div class="stage-list">
+            <span data-en="NLP" data-zh="NLP">NLP</span>
+            <span data-en="Industrial Internet Security" data-zh="工业互联网安全">Industrial Internet Security</span>
+            <span data-en="Privacy Computing" data-zh="隐私计算">Privacy Computing</span>
+          </div>
         </div>
 
         <div class="timeline reveal">
           <article class="timeline-item">
-            <div class="timeline-date" data-en="2026" data-zh="2026">2026</div>
-            <div><h3 data-en="Incoming Research Fellow, National University of Singapore" data-zh="即将赴新加坡国立大学担任 Research Fellow">Incoming Research Fellow, National University of Singapore</h3><p data-en="Research on security, privacy, cryptography, and trustworthy systems." data-zh="围绕安全、隐私、密码学与可信系统开展研究。">Research on security, privacy, cryptography, and trustworthy systems.</p></div>
+            <div class="timeline-date" data-en="2026–Present" data-zh="2026至今">2026–Present</div>
+            <div><h3 data-en="Research Fellow, National University of Singapore" data-zh="新加坡国立大学 Research Fellow">Research Fellow, National University of Singapore</h3><p data-en="School of Computing. Joined Prof. Jiaheng Zhang's group to work on security, privacy, and trustworthy data systems." data-zh="任职于计算机学院，加入张嘉恒教授团队，围绕安全、隐私与可信数据系统开展研究。">School of Computing. Joined Prof. Jiaheng Zhang's group to work on security, privacy, and trustworthy data systems.</p></div>
           </article>
           <article class="timeline-item">
-            <div class="timeline-date" data-en="Ph.D." data-zh="博士">Ph.D.</div>
-            <div><h3 data-en="Ph.D. Candidate, Huazhong University of Science and Technology" data-zh="华中科技大学网络空间安全博士研究生">Ph.D. Candidate, Huazhong University of Science and Technology</h3><p data-en="Research on privacy computing, secure aggregation, zero-knowledge proofs, and anonymous accountability." data-zh="研究隐私计算、安全聚合、零知识证明与匿名问责机制。">Research on privacy computing, secure aggregation, zero-knowledge proofs, and anonymous accountability.</p></div>
+            <div class="timeline-date" data-en="2022–2026" data-zh="2022–2026">2022–2026</div>
+            <div><h3 data-en="Ph.D., Huazhong University of Science and Technology" data-zh="华中科技大学博士">Ph.D., Huazhong University of Science and Technology</h3><p data-en="Cyberspace Security. Advisor: Prof. Songfeng Lu. Industrial Internet Security Laboratory and Hubei Key Laboratory of Cyberspace Security for Civil-Military Integration. Research on privacy computing, zero-knowledge proofs, anonymous credentials, and secure aggregation." data-zh="网络空间安全专业，博士导师路松峰教授。所在团队为工业互联网安全实验室，也是湖北省军民融合网络空间安全重点实验室。博士阶段主要研究隐私计算、零知识证明、匿名凭证与安全聚合。">Cyberspace Security. Advisor: Prof. Songfeng Lu. Industrial Internet Security Laboratory and Hubei Key Laboratory of Cyberspace Security for Civil-Military Integration. Research on privacy computing, zero-knowledge proofs, anonymous credentials, and secure aggregation.</p></div>
           </article>
           <article class="timeline-item">
-            <div class="timeline-date" data-en="Standards" data-zh="标准">Standards</div>
-            <div><h3 data-en="Standardization and patent experience" data-zh="标准化与专利经验">Standardization and patent experience</h3><p data-en="Participated in national and industry standards, with multiple patents in security-related technologies." data-zh="参与多项国家标准与行业标准，并拥有多项安全相关技术专利。">Participated in national and industry standards, with multiple patents in security-related technologies.</p></div>
+            <div class="timeline-date" data-en="2020–2022" data-zh="2020–2022">2020–2022</div>
+            <div><h3 data-en="M.S., Huazhong University of Science and Technology" data-zh="华中科技大学硕士">M.S., Huazhong University of Science and Technology</h3><p data-en="Cyberspace Security. Advisor: Prof. Jianxin Zhu. Research on industrial Internet security, including NC-Link, industrial control protocols, and security mechanisms for numerical control systems." data-zh="网络空间安全专业，硕士导师朱建新教授。硕士阶段主要研究工业互联网安全，包括 NC-Link、工控协议与数控系统安全机制。">Cyberspace Security. Advisor: Prof. Jianxin Zhu. Research on industrial Internet security, including NC-Link, industrial control protocols, and security mechanisms for numerical control systems.</p></div>
+          </article>
+          <article class="timeline-item">
+            <div class="timeline-date" data-en="2016–2020" data-zh="2016–2020">2016–2020</div>
+            <div><h3 data-en="B.S., Southern University of Science and Technology" data-zh="南方科技大学本科">B.S., Southern University of Science and Technology</h3><p data-en="Computer Science and Technology. Advisor: Prof. Xin Yao. Undergraduate research focused on natural language processing technologies." data-zh="计算机科学与技术专业，导师姚新教授。本科阶段主要研究自然语言处理技术。">Computer Science and Technology. Advisor: Prof. Xin Yao. Undergraduate research focused on natural language processing technologies.</p></div>
           </article>
         </div>
       </div>
@@ -1127,17 +1958,17 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="section-kicker" data-en="Research Directions" data-zh="研究方向">Research Directions</p>
-          <h2 data-en="Cold, rigorous, and systems-oriented security research." data-zh="清冷、严谨、面向系统落地的安全研究。">Cold, rigorous, and systems-oriented security research.</h2>
-          <p class="section-text" data-en="The research section should be visually compact but technically sharp. It should communicate your field immediately to cryptography, privacy, AI security, and data governance audiences." data-zh="研究方向部分应当视觉克制、技术清晰，使密码学、隐私计算、AI安全与数据治理方向的读者可以迅速理解你的专业定位。">
-            The research section should be visually compact but technically sharp. It should communicate your field immediately to cryptography, privacy, AI security, and data governance audiences.
+          <h2 data-en="Cryptographic foundations for privacy-preserving and accountable systems." data-zh="面向隐私保护与可问责系统的密码学基础。">Cryptographic foundations for privacy-preserving and accountable systems.</h2>
+          <p class="section-text" data-en="My research connects formal cryptographic tools with concrete system settings, especially federated learning, distributed key generation, biomedical collaboration, industrial systems, and AI security." data-zh="我的研究将形式化密码工具与具体系统场景结合，重点覆盖联邦学习、分布式密钥生成、生物医学协作、工业系统与AI安全。">
+            My research connects formal cryptographic tools with concrete system settings, especially federated learning, distributed key generation, biomedical collaboration, industrial systems, and AI security.
           </p>
         </div>
 
         <div class="research-grid">
-          <article class="panel research-card reveal"><div class="icon-box">ZK</div><h3 data-en="Zero-Knowledge Proofs" data-zh="零知识证明">Zero-Knowledge Proofs</h3><p data-en="Efficient proof systems for compliance, verification, and privacy-preserving computation." data-zh="面向合规验证、可验证计算与隐私保护计算的高效证明系统。">Efficient proof systems for compliance, verification, and privacy-preserving computation.</p></article>
-          <article class="panel research-card reveal"><div class="icon-box">AC</div><h3 data-en="Anonymous Accountability" data-zh="匿名问责">Anonymous Accountability</h3><p data-en="Anonymous credentials, blocklist governance, and privacy-preserving abuse control." data-zh="匿名凭证、封禁治理与隐私保护下的恶意行为管控。">Anonymous credentials, blocklist governance, and privacy-preserving abuse control.</p></article>
-          <article class="panel research-card reveal"><div class="icon-box">SA</div><h3 data-en="Secure Aggregation" data-zh="安全聚合">Secure Aggregation</h3><p data-en="Input compliance, secure data aggregation, and malicious-client resilience." data-zh="输入合规性、安全数据聚合与恶意客户端鲁棒性。">Input compliance, secure data aggregation, and malicious-client resilience.</p></article>
-          <article class="panel research-card reveal"><div class="icon-box">AI</div><h3 data-en="AI Security Governance" data-zh="AI安全治理">AI Security Governance</h3><p data-en="Security evaluation, data governance, and technical translation for AI systems." data-zh="AI系统的安全评估、数据治理与技术成果转化。">Security evaluation, data governance, and technical translation for AI systems.</p></article>
+          <article class="panel research-card reveal"><div class="icon-box">ZK</div><h3 data-en="Zero-Knowledge Proofs" data-zh="零知识证明">Zero-Knowledge Proofs</h3><p data-en="Specialized proof systems for input verification, compliance checking, and privacy-preserving computation." data-zh="面向输入验证、合规检查与隐私保护计算的专用证明系统。">Specialized proof systems for input verification, compliance checking, and privacy-preserving computation.</p></article>
+          <article class="panel research-card reveal"><div class="icon-box">SA</div><h3 data-en="Secure Aggregation" data-zh="安全聚合">Secure Aggregation</h3><p data-en="Robust, verifiable, and privacy-preserving aggregation under malicious clients and heterogeneous data." data-zh="面向恶意客户端与异构数据的鲁棒、可验证、隐私保护聚合。">Robust, verifiable, and privacy-preserving aggregation under malicious clients and heterogeneous data.</p></article>
+          <article class="panel research-card reveal"><div class="icon-box">AC</div><h3 data-en="Anonymous Accountability" data-zh="匿名问责">Anonymous Accountability</h3><p data-en="Anonymous credentials, blocklist governance, and accountable participation without exposing honest identities." data-zh="匿名凭证、封禁治理，以及不暴露诚实身份的可问责参与机制。">Anonymous credentials, blocklist governance, and accountable participation without exposing honest identities.</p></article>
+          <article class="panel research-card reveal"><div class="icon-box">AI</div><h3 data-en="AI and Data Security" data-zh="AI与数据安全">AI and Data Security</h3><p data-en="Privacy-preserving machine learning, model ownership verification, data governance, and trustworthy AI systems." data-zh="隐私保护机器学习、模型所有权验证、数据治理与可信AI系统。">Privacy-preserving machine learning, model ownership verification, data governance, and trustworthy AI systems.</p></article>
         </div>
       </div>
     </section>
@@ -1145,43 +1976,73 @@
     <section class="section" id="works">
       <div class="container">
         <div class="section-head reveal">
-          <p class="section-kicker" data-en="Works and Achievements" data-zh="成果与荣誉">Works and Achievements</p>
-          <h2 data-en="A compact front page, with detailed records one click away." data-zh="主界面简洁展示，详细成果一键展开。">A compact front page, with detailed records one click away.</h2>
-          <p class="section-text" data-en="The front page should avoid long tables. Each category provides a short summary and opens a detailed panel for complete records." data-zh="主页不建议堆长表格。每个类别先给出简洁概览，点击后再展示完整清单。">
-            The front page should avoid long tables. Each category provides a short summary and opens a detailed panel for complete records.
+          <p class="section-kicker" data-en="Academic Records" data-zh="学术记录">Academic Records</p>
+          <h2 data-en="Publications, patents, standards, honors, and hosted projects." data-zh="论文、专利、标准、荣誉与主持项目。">Publications, patents, standards, honors, and hosted projects.</h2>
+          <p class="section-text" data-en="My academic record combines peer-reviewed publications, security and data technology patents, national and industry standards, honors, and hosted research projects." data-zh="我的学术记录包括同行评议论文、安全与数据技术专利、国家标准与行业标准、荣誉奖项以及主持科研项目。">
+            My academic record combines peer-reviewed publications, security and data technology patents, national and industry standards, honors, and hosted research projects.
           </p>
         </div>
 
         <div class="showcase-grid">
           <article class="mini-card reveal">
-            <div><div class="card-topline"><span class="label" data-en="Publications" data-zh="论文">Publications</span><span class="count">5</span></div><h3 data-en="A-class security papers" data-zh="A类安全论文">A-class security papers</h3><p data-en="Selected papers in security, privacy, cryptography, and trustworthy systems." data-zh="安全、隐私、密码学与可信系统方向的代表性论文。">Selected papers in security, privacy, cryptography, and trustworthy systems.</p></div>
-            <button class="open-detail" type="button" data-modal="publications" data-en="View publications" data-zh="查看论文">View publications</button>
+            <div><div class="card-topline"><span class="label" data-en="Published" data-zh="已发表论文">Published</span><span class="count">25</span></div><h3 data-en="Published academic papers" data-zh="已发表学术论文">Published academic papers</h3><p data-en="Peer-reviewed papers in security, privacy, AI, distributed systems, bioinformatics, and multimedia." data-zh="覆盖安全、隐私、AI、分布式系统、生物信息与多媒体等方向的同行评议论文。">Peer-reviewed papers in security, privacy, AI, distributed systems, bioinformatics, and multimedia.</p></div>
+            <button class="open-detail" type="button" data-modal="publications" data-en="View published papers" data-zh="查看已发表论文">View published papers</button>
           </article>
 
           <article class="mini-card reveal">
-            <div><div class="card-topline"><span class="label" data-en="Projects" data-zh="项目">Projects</span><span class="count">Add</span></div><h3 data-en="Research and transformation projects" data-zh="科研与成果转化项目">Research and transformation projects</h3><p data-en="Research projects, applied security systems, and research-to-product initiatives." data-zh="科研项目、应用安全系统与成果转化类项目。">Research projects, applied security systems, and research-to-product initiatives.</p></div>
-            <button class="open-detail" type="button" data-modal="projects" data-en="View projects" data-zh="查看项目">View projects</button>
+            <div><div class="card-topline"><span class="label" data-en="Under Review" data-zh="在审论文">Under Review</span><span class="count">16</span></div><h3 data-en="Ongoing submissions" data-zh="正在投稿或审核的工作">Ongoing submissions</h3><p data-en="Manuscripts currently under journal or conference review." data-zh="正在期刊或会议审稿流程中的论文。">Manuscripts currently under journal or conference review.</p></div>
+            <button class="open-detail" type="button" data-modal="underReview" data-en="View under-review papers" data-zh="查看在审论文">View under-review papers</button>
           </article>
 
           <article class="mini-card reveal">
-            <div><div class="card-topline"><span class="label" data-en="Standards and Books" data-zh="标准著作">Standards and Books</span><span class="count">11</span></div><h3 data-en="National and industry standards" data-zh="国家标准与行业标准">National and industry standards</h3><p data-en="Standardization experience in security-related technologies and governance systems." data-zh="安全技术与治理体系相关标准化经验。">Standardization experience in security-related technologies and governance systems.</p></div>
-            <button class="open-detail" type="button" data-modal="standards" data-en="View standards" data-zh="查看标准著作">View standards</button>
-          </article>
-
-          <article class="mini-card reveal">
-            <div><div class="card-topline"><span class="label" data-en="Patents" data-zh="专利">Patents</span><span class="count">10+</span></div><h3 data-en="Security technology patents" data-zh="安全技术专利">Security technology patents</h3><p data-en="Patents related to privacy, secure computation, data security, and trusted systems." data-zh="隐私保护、安全计算、数据安全与可信系统相关专利。">Patents related to privacy, secure computation, data security, and trusted systems.</p></div>
+            <div><div class="card-topline"><span class="label" data-en="Patents" data-zh="专利">Patents</span><span class="count">11</span></div><h3 data-en="Security and data technology patents" data-zh="安全与数据技术专利">Security and data technology patents</h3><p data-en="Patent records related to industrial control security, cryptographic infrastructure, data extraction, aggregation verification, and biomedical privacy." data-zh="涉及工控安全、密码基础设施、信息抽取、聚合验证与生物医学隐私等方向。">Patent records related to industrial control security, cryptographic infrastructure, data extraction, aggregation verification, and biomedical privacy.</p></div>
             <button class="open-detail" type="button" data-modal="patents" data-en="View patents" data-zh="查看专利">View patents</button>
           </article>
 
           <article class="mini-card reveal">
-            <div><div class="card-topline"><span class="label" data-en="Awards" data-zh="奖项">Awards</span><span class="count">Add</span></div><h3 data-en="Honors and awards" data-zh="荣誉与奖项">Honors and awards</h3><p data-en="Academic awards, competition awards, scholarships, and recognition." data-zh="学术奖励、竞赛奖项、奖学金与荣誉称号。">Academic awards, competition awards, scholarships, and recognition.</p></div>
-            <button class="open-detail" type="button" data-modal="awards" data-en="View awards" data-zh="查看奖项">View awards</button>
+            <div><div class="card-topline"><span class="label" data-en="Standards" data-zh="标准">Standards</span><span class="count">8</span></div><h3 data-en="National and industry standards" data-zh="国家标准与行业标准">National and industry standards</h3><p data-en="Standardization experience in digital twin, CNC machine tools, and trusted protection for numerical control systems." data-zh="涵盖数字孪生、数控机床互联接口与数控系统安全可信防护等方向。">Standardization experience in digital twin, CNC machine tools, and trusted protection for numerical control systems.</p></div>
+            <button class="open-detail" type="button" data-modal="standards" data-en="View standards" data-zh="查看标准">View standards</button>
           </article>
 
           <article class="mini-card reveal">
-            <div><div class="card-topline"><span class="label" data-en="CV" data-zh="简历">CV</span><span class="count">PDF</span></div><h3 data-en="Detailed academic and advisory profile" data-zh="完整学术与顾问简历">Detailed academic and advisory profile</h3><p data-en="A downloadable CV or service profile can be added after the homepage content is finalized." data-zh="主页内容确定后，可以在这里放置可下载的完整简历或服务介绍 PDF。">A downloadable CV or service profile can be added after the homepage content is finalized.</p></div>
-            <a class="open-detail" href="#contact" data-en="Request CV" data-zh="获取简历">Request CV</a>
+            <div><div class="card-topline"><span class="label" data-en="Honors" data-zh="荣誉">Honors</span><span class="count">23</span></div><h3 data-en="Awards and honors" data-zh="荣誉与奖项">Awards and honors</h3><p data-en="Highlighted honors include the CAST Young Talent Support Program, National Scholarship for Ph.D. students, and cybersecurity innovation awards." data-zh="重点荣誉包括中国科协青年人才托举工程博士生专项、博士研究生国家奖学金与网安创新资助计划优秀学生。">Highlighted honors include the CAST Young Talent Support Program, National Scholarship for Ph.D. students, and cybersecurity innovation awards.</p></div>
+            <button class="open-detail" type="button" data-modal="awards" data-en="View honors" data-zh="查看荣誉">View honors</button>
           </article>
+
+          <article class="mini-card reveal">
+            <div><div class="card-topline"><span class="label" data-en="Hosted Projects" data-zh="主持项目">Hosted Projects</span><span class="count">6</span></div><h3 data-en="Research projects and innovation programs" data-zh="科研项目与创新资助">Research projects and innovation programs</h3><p data-en="Research and innovation projects with national programs, university funding, and enterprise-issued applied topics." data-zh="涵盖国家级人才项目、学校创新基金，以及企业发布的应用安全与数据智能课题。">Research and innovation projects with national programs, university funding, and enterprise-issued applied topics.</p></div>
+            <button class="open-detail" type="button" data-modal="projects" data-en="View projects" data-zh="查看项目">View projects</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="service">
+      <div class="container">
+        <div class="panel service-panel reveal">
+          <div class="service-summary">
+            <div>
+              <p class="section-kicker" data-en="Academic Service" data-zh="学术服务">Academic Service</p>
+              <h2 class="panel-title" data-en="Reviewer and program committee service." data-zh="审稿与程序委员会服务。">Reviewer and program committee service.</h2>
+              <p data-en="I have reviewed more than 30 manuscripts for journals and conferences, including IEEE TIFS, IEEE TDSC, JDIM, IEEE JSAC, IEEE TAI, WWW, IEEE ICASSP, and IEEE ICME. I also served as a Program Committee member for IEEE BIBM from 2024 to 2026." data-zh="我已为 IEEE TIFS、IEEE TDSC、JDIM、IEEE JSAC、IEEE TAI、WWW、IEEE ICASSP、IEEE ICME 等期刊与会议审阅 30 余篇稿件，并于 2024–2026 年担任 IEEE BIBM 程序委员会委员。">
+                I have reviewed more than 30 manuscripts for journals and conferences, including IEEE TIFS, IEEE TDSC, JDIM, IEEE JSAC, IEEE TAI, WWW, IEEE ICASSP, and IEEE ICME. I also served as a Program Committee member for IEEE BIBM from 2024 to 2026.
+              </p>
+            </div>
+            <div>
+              <div class="service-badges">
+                <span class="service-badge">IEEE TIFS</span>
+                <span class="service-badge">IEEE TDSC</span>
+                <span class="service-badge">IEEE JSAC</span>
+                <span class="service-badge">IEEE TAI</span>
+                <span class="service-badge">WWW</span>
+                <span class="service-badge">IEEE BIBM PC 2024–2026</span>
+                <span class="service-badge">IEEE ICASSP</span>
+                <span class="service-badge">IEEE ICME</span>
+                <span class="service-badge">30+ Reviews</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1192,16 +2053,16 @@
           <div class="dark-panel-inner">
             <div>
               <p class="section-kicker" data-en="Collaboration" data-zh="合作意向">Collaboration</p>
-              <h2 data-en="Selective collaboration in security research translation." data-zh="面向安全科研成果转化的选择性合作。">Selective collaboration in security research translation.</h2>
-              <p data-en="I am open to research collaboration, technical advisory, project design, patent and standardization strategy, and privacy-preserving system architecture. I prefer focused collaborations where rigorous security thinking can create long-term technical assets." data-zh="我开放科研合作、技术顾问、项目设计、专利与标准化路径规划，以及隐私保护系统架构设计。我更倾向于聚焦型合作，使严谨的安全研究转化为长期技术资产。">
-                I am open to research collaboration, technical advisory, project design, patent and standardization strategy, and privacy-preserving system architecture. I prefer focused collaborations where rigorous security thinking can create long-term technical assets.
+              <h2 data-en="Academic collaboration in security, privacy, and trustworthy systems." data-zh="面向安全、隐私与可信系统的学术合作。">Academic collaboration in security, privacy, and trustworthy systems.</h2>
+              <p data-en="I welcome focused collaboration on cryptographic protocols, privacy-preserving machine learning, secure aggregation, anonymous accountability, distributed key generation, and AI security governance. I am also interested in turning rigorous research ideas into project proposals, patent portfolios, standards, and deployable security systems." data-zh="我欢迎围绕密码协议、隐私保护机器学习、安全聚合、匿名问责、分布式密钥生成与AI安全治理开展聚焦型合作，也关注将严谨研究转化为项目方案、专利布局、标准文本与可部署安全系统。">
+                I welcome focused collaboration on cryptographic protocols, privacy-preserving machine learning, secure aggregation, anonymous accountability, distributed key generation, and AI security governance. I am also interested in turning rigorous research ideas into project proposals, patent portfolios, standards, and deployable security systems.
               </p>
             </div>
             <div class="intent-list">
-              <div class="intent-item"><span class="check">✓</span><span data-en="Privacy computing and zero-knowledge proof system design" data-zh="隐私计算与零知识证明系统设计">Privacy computing and zero-knowledge proof system design</span></div>
-              <div class="intent-item"><span class="check">✓</span><span data-en="AI security, data governance, and risk assessment" data-zh="AI安全、数据治理与风险评估">AI security, data governance, and risk assessment</span></div>
-              <div class="intent-item"><span class="check">✓</span><span data-en="Patent, standard, white paper, and technical roadmap planning" data-zh="专利、标准、白皮书与技术路线规划">Patent, standard, white paper, and technical roadmap planning</span></div>
-              <div class="intent-item"><span class="check">✓</span><span data-en="Joint research projects with universities, institutes, and enterprises" data-zh="高校、研究院与企业联合科研项目">Joint research projects with universities, institutes, and enterprises</span></div>
+              <div class="intent-item"><span class="check">✓</span><span data-en="Joint research on zero-knowledge proofs and secure aggregation" data-zh="零知识证明与安全聚合联合研究">Joint research on zero-knowledge proofs and secure aggregation</span></div>
+              <div class="intent-item"><span class="check">✓</span><span data-en="Anonymous accountability and distributed cryptographic protocols" data-zh="匿名问责与分布式密码协议">Anonymous accountability and distributed cryptographic protocols</span></div>
+              <div class="intent-item"><span class="check">✓</span><span data-en="Privacy-preserving machine learning and biomedical data collaboration" data-zh="隐私保护机器学习与生物医学数据协作">Privacy-preserving machine learning and biomedical data collaboration</span></div>
+              <div class="intent-item"><span class="check">✓</span><span data-en="AI security, data governance, patents, and standards" data-zh="AI安全、数据治理、专利与标准">AI security, data governance, patents, and standards</span></div>
             </div>
           </div>
         </div>
@@ -1213,21 +2074,23 @@
         <div class="contact-panel reveal">
           <div class="contact-main">
             <p class="section-kicker" data-en="Contact" data-zh="联系方式">Contact</p>
-            <h2 class="panel-title" data-en="Let this website become a precise expert entry point." data-zh="让这个主页成为清晰、正式的专家入口。">Let this website become a precise expert entry point.</h2>
-            <p data-en="For research collaboration, technical advisory, privacy computing, AI security, standards, patents, or research-to-product strategy, please reach out by email." data-zh="如需科研合作、技术顾问、隐私计算、AI安全、标准、专利或成果转化相关合作，欢迎邮件联系。">
-              For research collaboration, technical advisory, privacy computing, AI security, standards, patents, or research-to-product strategy, please reach out by email.
+            <h2 class="panel-title" data-en="Academic collaboration and research discussion." data-zh="学术合作与研究交流。">Academic collaboration and research discussion.</h2>
+            <p data-en="Please feel free to contact me for research collaboration, invited talks, manuscript discussion, privacy computing, AI security, cryptographic protocols, or trustworthy system design." data-zh="欢迎就科研合作、邀请报告、论文交流、隐私计算、AI安全、密码协议与可信系统设计等方向联系我。">
+              Please feel free to contact me for research collaboration, invited talks, manuscript discussion, privacy computing, AI security, cryptographic protocols, or trustworthy system design.
             </p>
             <div class="contact-methods">
-              <div class="contact-method"><b data-en="Email" data-zh="邮箱">Email</b><span>contact@lu-zhi.com</span></div>
-              <div class="contact-method"><b data-en="Website" data-zh="网站">Website</b><span>lu-zhi.com</span></div>
-              <div class="contact-method"><b data-en="Location" data-zh="地点">Location</b><span data-en="Wuhan / Singapore" data-zh="武汉 / 新加坡">Wuhan / Singapore</span></div>
+              <div class="contact-method"><b data-en="Primary" data-zh="主要邮箱">Primary</b><span><a href="mailto:luzhi@ieee.org">luzhi@ieee.org</a></span></div>
+              <div class="contact-method"><b data-en="Alternative" data-zh="备用邮箱">Alternative</b><span><a href="mailto:luzhizz@foxmail.com">luzhizz@foxmail.com</a></span></div>
+              <div class="contact-method"><b data-en="Profiles" data-zh="学术档案">Profiles</b><span><a href="https://orcid.org/0000-0002-5411-9854" target="_blank" rel="noopener">ORCID</a> · <a href="https://www.webofscience.com/wos/author/record/KYO-8734-2024" target="_blank" rel="noopener">Web of Science</a></span></div>
+              <div class="contact-method"><b data-en="Website" data-zh="个人主页">Website</b><span>lu-zhi.com</span></div>
+              <div class="contact-method"><b data-en="Affiliation" data-zh="任职单位">Affiliation</b><span data-en="School of Computing, National University of Singapore" data-zh="新加坡国立大学计算机学院">School of Computing, National University of Singapore</span></div>
             </div>
           </div>
           <aside class="contact-side">
-            <div class="icon-box" style="background: rgba(255,255,255,0.10); color: #a5f3fc;">ID</div>
-            <h3 data-en="Next content to provide" data-zh="下一步需要补充的信息">Next content to provide</h3>
-            <p data-en="Please provide your portrait, Chinese and English self-introduction, full publication list, projects, standards, patents, awards, and preferred contact email. I can then replace all placeholders and polish the final version." data-zh="接下来你只需要提供个人照片、中英文简介、完整论文、项目、标准著作、专利、奖项和正式联系邮箱。我可以继续替换占位内容并润色成最终版。">
-              Please provide your portrait, Chinese and English self-introduction, full publication list, projects, standards, patents, awards, and preferred contact email. I can then replace all placeholders and polish the final version.
+            <div class="icon-box" style="background: rgba(255,255,255,0.10); color: #a5f3fc;">NUS</div>
+            <h3 data-en="Research Fellow" data-zh="Research Fellow">Research Fellow</h3>
+            <p data-en="School of Computing, National University of Singapore. I welcome academic exchange and focused collaboration on cryptographic systems, privacy computing, and trustworthy AI." data-zh="任职于新加坡国立大学计算机学院。欢迎围绕密码学系统、隐私计算与可信AI开展学术交流和聚焦合作。">
+              School of Computing, National University of Singapore. I welcome academic exchange and focused collaboration on cryptographic systems, privacy computing, and trustworthy AI.
             </p>
           </aside>
         </div>
@@ -1236,7 +2099,7 @@
   </main>
 
   <footer>
-    <div class="container">© <span id="year"></span> <span data-en="Zhi Lu. All rights reserved." data-zh="卢智。保留所有权利。">Zhi Lu. All rights reserved.</span></div>
+    <div class="container">© <span id="year"></span> <span data-en="Zhi Lu. All rights reserved." data-zh="路直。保留所有权利。">Zhi Lu. All rights reserved.</span></div>
   </footer>
 
   <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
@@ -1253,82 +2116,1081 @@
   </div>
 
   <script>
-    const state = { lang: localStorage.getItem('lang') || 'en' };
+    const state = {
+      lang: localStorage.getItem('lang') || 'en',
+      layout: localStorage.getItem('layout') || 'auto'
+    };
 
     const modalData = {
-      experience: {
-        en: { title: 'Experience', subtitle: 'Detailed timeline placeholder. Replace these entries with your final work and research experience.', items: [
-          ['2026', 'Incoming Research Fellow, National University of Singapore', 'Research on security, privacy, cryptography, and trustworthy systems.'],
-          ['Ph.D.', 'Huazhong University of Science and Technology', 'Ph.D. candidate in cyberspace security.'],
-          ['Standards', 'National and industry standardization work', 'Participated in multiple national and industry standards.']
-        ]},
-        zh: { title: '工作经历', subtitle: '详细时间线占位内容。后续可替换为你的完整工作与科研经历。', items: [
-          ['2026', '新加坡国立大学 Research Fellow', '围绕安全、隐私、密码学与可信系统开展研究。'],
-          ['博士', '华中科技大学网络空间安全学院', '网络空间安全方向博士研究生。'],
-          ['标准', '国家标准与行业标准制定工作', '参与多项国家标准与行业标准制定。']
-        ]}
+      "experience": {
+            "en": {
+                  "title": "Education and Appointment",
+                  "subtitle": "Education, advisors, research focus, and current academic appointment.",
+                  "items": [
+                        [
+                              "2026–Present",
+                              "Research Fellow, National University of Singapore",
+                              "School of Computing. Joined Prof. Jiaheng Zhang's group to work on security, privacy, and trustworthy data systems."
+                        ],
+                        [
+                              "2022–2026",
+                              "Ph.D., Huazhong University of Science and Technology",
+                              "Cyberspace Security. Advisor: Prof. Songfeng Lu. Industrial Internet Security Laboratory and Hubei Key Laboratory of Cyberspace Security for Civil-Military Integration. Research on privacy computing, zero-knowledge proofs, anonymous credentials, and secure aggregation."
+                        ],
+                        [
+                              "2020–2022",
+                              "M.S., Huazhong University of Science and Technology",
+                              "Cyberspace Security. Advisor: Prof. Jianxin Zhu. Research on industrial Internet security, including NC-Link, industrial control protocols, and security mechanisms for numerical control systems."
+                        ],
+                        [
+                              "2016–2020",
+                              "B.S., Southern University of Science and Technology",
+                              "Computer Science and Technology. Advisor: Prof. Xin Yao. Undergraduate research focused on natural language processing technologies."
+                        ]
+                  ]
+            },
+            "zh": {
+                  "title": "教育与任职经历",
+                  "subtitle": "教育背景、导师、研究方向与当前学术任职。",
+                  "items": [
+                        [
+                              "2026至今",
+                              "新加坡国立大学 Research Fellow",
+                              "任职于计算机学院，加入张嘉恒教授团队，围绕安全、隐私与可信数据系统开展研究。"
+                        ],
+                        [
+                              "2022–2026",
+                              "华中科技大学博士",
+                              "网络空间安全专业，博士导师路松峰教授。所在团队为工业互联网安全实验室，也是湖北省军民融合网络空间安全重点实验室。博士阶段主要研究隐私计算、零知识证明、匿名凭证与安全聚合。"
+                        ],
+                        [
+                              "2020–2022",
+                              "华中科技大学硕士",
+                              "网络空间安全专业，硕士导师朱建新教授。硕士阶段主要研究工业互联网安全，包括 NC-Link、工控协议与数控系统安全机制。"
+                        ],
+                        [
+                              "2016–2020",
+                              "南方科技大学本科",
+                              "计算机科学与技术专业，导师姚新教授。本科阶段主要研究自然语言处理技术。"
+                        ]
+                  ]
+            }
       },
-      publications: {
-        en: { title: 'Publications', subtitle: 'Replace placeholders with your full selected publication list.', items: [
-          ['Selected Paper', 'WhiteCloak: How to Hold Anonymous Malicious Clients Accountable in Secure Aggregation', 'Replace with final venue, author order, and publication information.'],
-          ['Selected Paper', 'Lattice-Based Special Zero-Knowledge Proofs for Secure Aggregation Input Verification', 'Replace with final venue, author order, and publication information.'],
-          ['Selected Paper', 'Split Aggregation: Lightweight Privacy-Preserving Federated Learning Resistant to Byzantine Attacks', 'Replace with journal, author order, and publication information.']
-        ]},
-        zh: { title: '论文', subtitle: '后续替换为你的完整代表论文清单。', items: [
-          ['代表论文', 'WhiteCloak: How to Hold Anonymous Malicious Clients Accountable in Secure Aggregation', '替换为最终会议、作者顺序与发表信息。'],
-          ['代表论文', 'Lattice-Based Special Zero-Knowledge Proofs for Secure Aggregation Input Verification', '替换为最终会议、作者顺序与发表信息。'],
-          ['代表论文', 'Split Aggregation: Lightweight Privacy-Preserving Federated Learning Resistant to Byzantine Attacks', '替换为期刊、作者顺序与发表信息。']
-        ]}
+      "publications": {
+            "en": {
+                  "title": "Published Papers",
+                  "subtitle": "Published work in security, privacy computing, AI, computer vision, and biomedical computing.",
+                  "items": [
+                        [
+                              "Selected · First author · ACM CCS · Cybersecurity",
+                              "LZKSA: Lattice-Based Special Zero-Knowledge Proofs for Secure Aggregation's Input Verification",
+                              "Journal/Conference: ACM CCS, the ACM Conference on Computer and Communications Security. Area: zero-knowledge proofs and secure aggregation.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected · First author · NDSS · Cybersecurity",
+                              "WhiteCloak: How to Hold Anonymous Malicious Clients Accountable in Secure Aggregation?",
+                              "Journal/Conference: NDSS, the Network and Distributed System Security Symposium. Area: anonymous accountability and secure aggregation.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected · First author · IEEE TIFS · Journal",
+                              "Split Aggregation: Lightweight Privacy-Preserving Federated Learning Resistant to Byzantine Attacks",
+                              "Journal/Conference: IEEE TIFS, Transactions on Information Forensics and Security. Area: privacy-preserving federated learning and Byzantine robustness.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected · Co-first author · ICCV · Computer Vision",
+                              "FLSeg: Enhancing Privacy and Robustness in Federated Learning under Heterogeneous Data via Model Segmentation",
+                              "Journal/Conference: ICCV, the International Conference on Computer Vision. A co-first collaborative work extending privacy and robustness techniques to vision systems.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected · First author · Chinese Journal of Computers · Journal",
+                              "Anonymous Identity Authentication Integrating Zero Trust and Zero-Knowledge Proofs",
+                              "Journal/Conference: Chinese Journal of Computers. Area: zero trust, zero-knowledge proofs, and anonymous authentication.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected · First author · SCIENCE CHINA Information Sciences · Journal",
+                              "HINT: Hidden-Intent Voting without Revoting under Coercion",
+                              "Journal/Conference: SCIENCE CHINA Information Sciences. Area: coercion-resistant voting and intent privacy.",
+                              "highlight"
+                        ],
+                        [
+                              "First author · IEEE TAI · Journal",
+                              "Robust and Verifiable Privacy Federated Learning",
+                              "Journal/Conference: IEEE TAI, Transactions on Artificial Intelligence. Area: verifiable and privacy-preserving federated learning."
+                        ],
+                        [
+                              "First author · Euro-Par · Conference",
+                              "Lightweight Byzantine-Robust and Privacy-Preserving Federated Learning",
+                              "Journal/Conference: Euro-Par, the International European Conference on Parallel and Distributed Computing."
+                        ],
+                        [
+                              "First author · IEEE ICME · Conference",
+                              "α-SAV: Generalized Weighted Input Verification for Secure Aggregation in Federated Learning",
+                              "Journal/Conference: IEEE ICME, International Conference on Multimedia & Expo. Area: secure aggregation and input verification."
+                        ],
+                        [
+                              "First author · IEEE ICME · Conference",
+                              "RIDE: Robust and Decentralized Federated Learning with Input Validation",
+                              "Journal/Conference: IEEE ICME, International Conference on Multimedia & Expo. Area: robust decentralized federated learning."
+                        ],
+                        [
+                              "Co-first author · IEEE BIBM · Interdisciplinary",
+                              "Adaptive Differential Privacy via Gradient Components in Medical Federated Learning",
+                              "Journal/Conference: IEEE BIBM, International Conference on Bioinformatics and Biomedicine. A co-first collaborative work in medical federated learning."
+                        ],
+                        [
+                              "Co-first author · IEEE BIBM · Interdisciplinary",
+                              "Split Learning Optimized For The Medical Field: Reducing Communication Overhead",
+                              "Journal/Conference: IEEE BIBM, International Conference on Bioinformatics and Biomedicine. A co-first collaborative work in privacy-preserving medical AI."
+                        ],
+                        [
+                              "Co-first author · IEEE BIBM · Interdisciplinary",
+                              "Bio-OFL: Biomedical Privacy and Auditable One-shot Federated Learning",
+                              "Journal/Conference: IEEE BIBM, International Conference on Bioinformatics and Biomedicine. A co-first collaborative work on biomedical privacy and auditability."
+                        ],
+                        [
+                              "Co-first author · IEEE BIBM · Interdisciplinary",
+                              "VSDA: Privacy-Preserving Verifiable Secure Distributed Aggregation for Multi-Center Clinical and Genomic Data",
+                              "Journal/Conference: IEEE BIBM, International Conference on Bioinformatics and Biomedicine. A co-first collaborative work on clinical and genomic data aggregation."
+                        ],
+                        [
+                              "Second author · IEEE TAI · Journal",
+                              "FLAT: An Efficient Federated Learning Scheme with Adaptive Topology and Secure Aggregation",
+                              "Journal/Conference: IEEE TAI, Transactions on Artificial Intelligence."
+                        ],
+                        [
+                              "Third author · IEEE TETC · Journal",
+                              "Practical and Robust Privacy-Preserving K-means Clustering Protocols with GPU Acceleration",
+                              "Journal/Conference: IEEE Transactions on Emerging Topics in Computing."
+                        ],
+                        [
+                              "Third author · ACM TIST · Journal",
+                              "Delete but Not Gone: Reactivation of Neural Network Watermarks",
+                              "Journal/Conference: ACM Transactions on Intelligent Systems and Technology."
+                        ],
+                        [
+                              "Third author · SRDS · Conference",
+                              "WINK: A Semi-honest Secure Multi-party Computation Framework with Efficient Comparison Protocol",
+                              "Journal/Conference: SRDS, the International Symposium on Reliable Distributed Systems."
+                        ],
+                        [
+                              "Third author · Digital Forensics and Cyber Crime · Conference",
+                              "FAIR-MPC: Secure and Auditable SMPC for Anonymous Financial Collaboration",
+                              "Journal/Conference: International Conference on Digital Forensics and Cyber Crime."
+                        ],
+                        [
+                              "Fourth author · IEEE ICASSP · Conference",
+                              "FedDiT: Federated Learning by Distillation Token Enhanced Vision Transformer",
+                              "Journal/Conference: IEEE ICASSP, International Conference on Acoustics, Speech and Signal Processing."
+                        ],
+                        [
+                              "Fifth author · Euro-Par · Conference",
+                              "VeriChroma: Ownership Verification for Federated Models via RGB Filters",
+                              "Journal/Conference: Euro-Par, the International European Conference on Parallel and Distributed Computing."
+                        ],
+                        [
+                              "First author · Digital Forensics and Cyber Crime · Conference",
+                              "A PUF Based Audio Fingerprint Based for Device Authentication and Tamper Location",
+                              "Journal/Conference: International Conference on Digital Forensics and Cyber Crime."
+                        ],
+                        [
+                              "Second author · IEEE ISPA/BDCloud/SocialCom/SustainCom · Conference",
+                              "Application Research of Vertical Federated Learning Technology in Banking Risk Control Model Strategy",
+                              "Journal/Conference: IEEE ISPA/BDCloud/SocialCom/SustainCom."
+                        ],
+                        [
+                              "Third author · Journal of Frontiers of Computer Science and Technology · Journal",
+                              "A Survey on Asynchronous Distributed Key Generation Technology",
+                              "Journal/Conference: Journal of Frontiers of Computer Science and Technology."
+                        ],
+                        [
+                              "Fourth author · IEEE SmartWorld/UIC/ScalCom/DigitalTwin/PriComp/Meta · Conference",
+                              "Secure and Privacy-preserving Data-sharing Framework based on Blockchain Technology for Al-Najaf/Iraq Oil Refinery",
+                              "Journal/Conference: IEEE SmartWorld/UIC/ScalCom/DigitalTwin/PriComp/Meta."
+                        ]
+                  ]
+            },
+            "zh": {
+                  "title": "已发表论文",
+                  "subtitle": "安全、隐私计算、AI、计算机视觉与生物医学计算方向的已发表论文。",
+                  "items": [
+                        [
+                              "代表作 · 第一作者 · CCF A · 会议 · 网络安全",
+                              "LZKSA: Lattice-based special zero-knowledge proofs for secure aggregation's input verification",
+                              "期刊/会议：ACM CCS，ACM Conference on Computer and Communications Security。方向：零知识证明与安全聚合。",
+                              "highlight"
+                        ],
+                        [
+                              "代表作 · 第一作者 · CCF A · 会议 · 网络安全",
+                              "WhiteCloak: How to Hold Anonymous Malicious Clients Accountable in Secure Aggregation?",
+                              "期刊/会议：NDSS，Network and Distributed System Security Symposium。方向：匿名问责与安全聚合。",
+                              "highlight"
+                        ],
+                        [
+                              "代表作 · 第一作者 · CCF A · 期刊 · 网络安全",
+                              "Split Aggregation: Lightweight Privacy-Preserving Federated Learning Resistant to Byzantine Attacks",
+                              "期刊/会议：IEEE TIFS，Transactions on Information Forensics and Security。方向：隐私保护联邦学习与拜占庭鲁棒性。",
+                              "highlight"
+                        ],
+                        [
+                              "代表作 · 共同第一作者 · CCF A · 会议 · 图像",
+                              "FLSeg: Enhancing Privacy and Robustness in Federated Learning under Heterogeneous Data via Model Segmentation",
+                              "期刊/会议：ICCV，International Conference on Computer Vision。共同第一作者合作成果，将隐私与鲁棒性方法延伸到视觉系统。",
+                              "highlight"
+                        ],
+                        [
+                              "代表作 · 第一作者 · T1类 · 期刊 · 计算机",
+                              "零信任与零知识融合的匿名身份认证",
+                              "期刊/会议：计算机学报。方向：零信任、零知识证明与匿名身份认证。",
+                              "highlight"
+                        ],
+                        [
+                              "代表作 · 第一作者 · CCF A · 期刊 · 计算机",
+                              "HINT：胁迫下无需重投的隐藏意图投票系统",
+                              "期刊/会议：中国科学: 信息科学。方向：抗胁迫投票与意图隐私。",
+                              "highlight"
+                        ],
+                        [
+                              "第一作者 · 无 CCF 分类 · 期刊 · 人工智能",
+                              "Robust and Verifiable Privacy Federated Learning",
+                              "期刊/会议：IEEE TAI，Transactions on Artificial Intelligence。"
+                        ],
+                        [
+                              "第一作者 · CCF B · 会议 · 并行与分布计算",
+                              "Lightweight Byzantine-Robust and Privacy-Preserving Federated Learning",
+                              "期刊/会议：Euro-Par，International European Conference on Parallel and Distributed Computing。"
+                        ],
+                        [
+                              "第一作者 · CCF B · 会议 · 图像",
+                              "α-SAV: Generalized Weighted Input Verification for Secure Aggregation in Federated Learning",
+                              "期刊/会议：IEEE ICME，International Conference on Multimedia & Expo。"
+                        ],
+                        [
+                              "第一作者 · CCF B · 会议 · 图像",
+                              "RIDE: Robust and Decentralized Federated Learning with Input Validation",
+                              "期刊/会议：IEEE ICME，International Conference on Multimedia & Expo。"
+                        ],
+                        [
+                              "共同第一作者 · CCF B · 会议 · 交叉",
+                              "Adaptive Differential Privacy via Gradient Components in Medical Federated Learning",
+                              "期刊/会议：IEEE BIBM，International Conference on Bioinformatics and Biomedicine。共同第一作者合作成果。"
+                        ],
+                        [
+                              "共同第一作者 · CCF B · 会议 · 交叉",
+                              "Split Learning Optimized For The Medical Field: Reducing Communication Overhead",
+                              "期刊/会议：IEEE BIBM，International Conference on Bioinformatics and Biomedicine。共同第一作者合作成果。"
+                        ],
+                        [
+                              "共同第一作者 · CCF B · 会议 · 交叉",
+                              "Bio-OFL: Biomedical Privacy and Auditable One-shot Federated Learning",
+                              "期刊/会议：IEEE BIBM，International Conference on Bioinformatics and Biomedicine。共同第一作者合作成果。"
+                        ],
+                        [
+                              "共同第一作者 · CCF B · 会议 · 交叉",
+                              "VSDA: Privacy-Preserving Verifiable Secure Distributed Aggregation for Multi-Center Clinical and Genomic Data",
+                              "期刊/会议：IEEE BIBM，International Conference on Bioinformatics and Biomedicine。共同第一作者合作成果。"
+                        ],
+                        [
+                              "第二作者 · 无 CCF 分类 · 期刊 · 人工智能",
+                              "FLAT: An Efficient Federated Learning Scheme with Adaptive Topology and Secure Aggregation",
+                              "期刊/会议：IEEE TAI，Transactions on Artificial Intelligence。"
+                        ],
+                        [
+                              "第三作者 · 中科院二区 · 期刊 · 计算机",
+                              "Practical and Robust Privacy-Preserving K-means Clustering Protocols with GPU Acceleration",
+                              "期刊/会议：IEEE Transactions on Emerging Topics in Computing。"
+                        ],
+                        [
+                              "第三作者 · 中科院三区 · 期刊 · 人工智能",
+                              "Delete but Not Gone: Reactivation of Neural Network Watermarks",
+                              "期刊/会议：ACM Transactions on Intelligent Systems and Technology。"
+                        ],
+                        [
+                              "第三作者 · CCF B · 会议 · 网络安全",
+                              "WINK: A Semi-honest Secure Multi-party Computation Framework with Efficient Comparison Protocol",
+                              "期刊/会议：SRDS，International Symposium on Reliable Distributed Systems。"
+                        ],
+                        [
+                              "第三作者 · CCF C · 会议 · 网络安全",
+                              "FAIR-MPC: Secure and Auditable SMPC for Anonymous Financial Collaboration",
+                              "期刊/会议：International Conference on Digital Forensics and Cyber Crime。"
+                        ],
+                        [
+                              "第四作者 · CCF B · 会议 · 图像",
+                              "FedDiT: Federated Learning by Distillation Token Enhanced Vision Transformer",
+                              "期刊/会议：IEEE ICASSP，International Conference on Acoustics, Speech and Signal Processing。"
+                        ],
+                        [
+                              "第五作者 · CCF B · 会议 · 并行与分布计算",
+                              "VeriChroma: Ownership Verification for Federated Models via RGB Filters",
+                              "期刊/会议：Euro-Par，International European Conference on Parallel and Distributed Computing。"
+                        ],
+                        [
+                              "第一作者 · CCF C · 会议 · 网络安全",
+                              "A PUF Based Audio Fingerprint Based for Device Authentication and Tamper Location",
+                              "期刊/会议：International Conference on Digital Forensics and Cyber Crime。"
+                        ],
+                        [
+                              "第二作者 · CCF C · 会议 · 并行与分布计算",
+                              "Application Research of Vertical Federated Learning Technology in Banking Risk Control Model Strategy",
+                              "期刊/会议：IEEE ISPA/BDCloud/SocialCom/SustainCom。"
+                        ],
+                        [
+                              "第三作者 · T2类 · 期刊 · 计算机",
+                              "异步分布式密钥生成技术综述",
+                              "期刊/会议：计算机科学与探索。"
+                        ],
+                        [
+                              "第四作者 · CCF C · 会议 · 隐私计算",
+                              "Secure and Privacy-preserving Data-sharing Framework based on Blockchain Technology for Al-Najaf/Iraq Oil Refinery",
+                              "期刊/会议：IEEE SmartWorld/UIC/ScalCom/DigitalTwin/PriComp/Meta。"
+                        ]
+                  ]
+            }
       },
-      projects: {
-        en: { title: 'Projects', subtitle: 'Research, transformation, and advisory project placeholders.', items: [
-          ['Project', 'Privacy-preserving data analysis and secure aggregation', 'Add project source, role, period, funding, and contribution.'],
-          ['Project', 'Zero-knowledge proof based input compliance verification', 'Add project source, role, period, funding, and contribution.'],
-          ['Project', 'Anonymous accountability and data security governance', 'Add project source, role, period, funding, and contribution.']
-        ]},
-        zh: { title: '项目', subtitle: '科研、成果转化与技术顾问项目占位内容。', items: [
-          ['项目', '隐私保护数据分析与安全聚合', '补充项目来源、角色、周期、经费与主要贡献。'],
-          ['项目', '基于零知识证明的输入合规性验证', '补充项目来源、角色、周期、经费与主要贡献。'],
-          ['项目', '匿名问责与数据安全治理', '补充项目来源、角色、周期、经费与主要贡献。']
-        ]}
+      "underReview": {
+            "en": {
+                  "title": "Papers Under Review",
+                  "subtitle": "Manuscripts currently under journal or conference review.",
+                  "items": [
+                        [
+                              "Selected · First author · USENIX Security · Under review",
+                              "A3DKG: Anonymous and Accountable Asynchronous Distributed Key Generation",
+                              "Submission venue: USENIX Security 2026. Area: anonymous and accountable distributed key generation.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected · First author · USENIX Security · Under review",
+                              "PSAR: Private Search with Abuse-Accountable Anonymity and Decoy Reuse",
+                              "Submission venue: USENIX Security 2026. Area: private search, anonymity, and abuse accountability.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected · First author · IEEE TIFS · Under review",
+                              "Specialized Efficient Zero-Knowledge Proofs for Secure Aggregation with Input Verification",
+                              "Submission venue: IEEE TIFS, Transactions on Information Forensics and Security. Area: efficient zero-knowledge proofs for secure aggregation.",
+                              "highlight"
+                        ],
+                        [
+                              "Second author · USENIX Security · Under review",
+                              "Signature-free Lattice-Based Asynchronous Distributed Key Generation without PKI setup",
+                              "Submission venue: USENIX Security 2026. Area: lattice-based asynchronous distributed key generation."
+                        ],
+                        [
+                              "Second author · ICASSP · Under review",
+                              "PQADKG: Post-Quantum Asynchronous Distributed Key Generation",
+                              "Submission venue: IEEE ICASSP, International Conference on Acoustics, Speech and Signal Processing."
+                        ],
+                        [
+                              "Second author · IEEE TNSE · Under review",
+                              "Asynchronous Random Committee Election and Distributed Key Generation without Trusted Setup",
+                              "Submission venue: IEEE Transactions on Network Science and Engineering."
+                        ],
+                        [
+                              "Second author · RECOMB · Under review",
+                              "Flexible-Threshold Secret Sharing and Distributed Key Generation for Real-World Biomedical Networks",
+                              "Submission venue: RECOMB, Annual International Conference on Research in Computational Molecular Biology."
+                        ],
+                        [
+                              "Co-first author · IEEE TAI · Under review",
+                              "Real-World Anchored Watermarking with Lattice-Based Aggregation in Federated Learning",
+                              "Submission venue: IEEE TAI, Transactions on Artificial Intelligence."
+                        ],
+                        [
+                              "Second author · IEEE TAI · Under review",
+                              "A Novel Privacy-Preserving Support Vector Machine Inference Method without a Trusted Third Party",
+                              "Submission venue: IEEE TAI, Transactions on Artificial Intelligence."
+                        ],
+                        [
+                              "Third author · IEEE TC · Under review",
+                              "A Blockchain-Based Scalable Verification and Distributed Storage Architecture for Dynamic Data Sharing in Industrial Systems",
+                              "Submission venue: IEEE Transactions on Computers."
+                        ],
+                        [
+                              "Third author · IEEE TETCI · Under review",
+                              "Communication-Efficient Adaptive Federated Learning with Maximum Stability",
+                              "Submission venue: IEEE Transactions on Emerging Topics in Computational Intelligence."
+                        ],
+                        [
+                              "Third author · Cluster Computing · Under review",
+                              "PoRn: A Secure, Resilient, and Energy-Efficient Blockchain Consensus for Large-Scale Distributed and Industrial IoT Systems",
+                              "Submission venue: Cluster Computing."
+                        ],
+                        [
+                              "Third author · DSN · Under review",
+                              "QSVSimplePir: Verifying the Query Structure of Medical Private Information Retrieval",
+                              "Submission venue: DSN, IEEE/IFIP International Conference on Dependable Systems and Networks."
+                        ],
+                        [
+                              "Third author · ACM TOMM · Under review",
+                              "Watermarking for Model Ownership Verification: Invisible at Deployment, Activated by Updates",
+                              "Submission venue: ACM Transactions on Multimedia Computing, Communications, and Applications."
+                        ],
+                        [
+                              "Fourth author · RECOMB · Under review",
+                              "Privacy-Preserving Medical Insurance Claim Verification Scheme",
+                              "Submission venue: RECOMB, Annual International Conference on Research in Computational Molecular Biology."
+                        ],
+                        [
+                              "Fifth author · IEEE TAI · Under review",
+                              "Privacy-Preserving Federated Learning in the Weight-Locking",
+                              "Submission venue: IEEE TAI, Transactions on Artificial Intelligence."
+                        ]
+                  ]
+            },
+            "zh": {
+                  "title": "在审论文",
+                  "subtitle": "在审工作与已发表论文分开展示，避免与正式发表成果混淆。",
+                  "items": [
+                        [
+                              "重点在审 · 第一作者 · CCF A · 会议 · 网络安全",
+                              "A3DKG: Anonymous and Accountable Asynchronous Distributed Key Generation",
+                              "投稿目标：USENIX Security 2026。方向：匿名且可问责的异步分布式密钥生成。",
+                              "highlight"
+                        ],
+                        [
+                              "重点在审 · 第一作者 · CCF A · 会议 · 网络安全",
+                              "PSAR: Private Search with Abuse-Accountable Anonymity and Decoy Reuse",
+                              "投稿目标：USENIX Security 2026。方向：私密搜索、匿名性与滥用问责。",
+                              "highlight"
+                        ],
+                        [
+                              "重点在审 · 第一作者 · CCF A · 期刊 · 网络安全",
+                              "Specialized Efficient Zero-Knowledge Proofs for Secure Aggregation with Input Verification",
+                              "投稿目标：IEEE TIFS，Transactions on Information Forensics and Security。方向：面向安全聚合输入验证的高效零知识证明。",
+                              "highlight"
+                        ],
+                        [
+                              "第二作者 · CCF A · 会议 · 网络安全",
+                              "Signature-free Lattice-Based Asynchronous Distributed Key Generation without PKI setup",
+                              "投稿目标：USENIX Security 2026。方向：基于格的异步分布式密钥生成。"
+                        ],
+                        [
+                              "第二作者 · CCF B · 会议 · 图像",
+                              "PQADKG: Post-Quantum Asynchronous Distributed Key Generation",
+                              "投稿目标：IEEE ICASSP，International Conference on Acoustics, Speech and Signal Processing。"
+                        ],
+                        [
+                              "第二作者 · 中科院二区 · 期刊 · 计算机",
+                              "Asynchronous Random Committee Election and Distributed Key Generation without Trusted Setup",
+                              "投稿目标：IEEE Transactions on Network Science and Engineering。"
+                        ],
+                        [
+                              "第二作者 · CCF B · 会议 · 交叉",
+                              "Flexible-Threshold Secret Sharing and Distributed Key Generation for Real-World Biomedical Networks",
+                              "投稿目标：RECOMB，Annual International Conference on Research in Computational Molecular Biology。"
+                        ],
+                        [
+                              "共同第一作者 · 无 CCF 分类 · 期刊 · 人工智能",
+                              "Real-World Anchored Watermarking with Lattice-Based Aggregation in Federated Learning",
+                              "投稿目标：IEEE TAI，Transactions on Artificial Intelligence。"
+                        ],
+                        [
+                              "第二作者 · 无 CCF 分类 · 期刊 · 人工智能",
+                              "A Novel Privacy-Preserving Support Vector Machine Inference Method without a Trusted Third Party",
+                              "投稿目标：IEEE TAI，Transactions on Artificial Intelligence。"
+                        ],
+                        [
+                              "第三作者 · CCF A · 期刊 · 计算机体系结构",
+                              "A Blockchain-Based Scalable Verification and Distributed Storage Architecture for Dynamic Data Sharing in Industrial Systems",
+                              "投稿目标：IEEE Transactions on Computers。"
+                        ],
+                        [
+                              "第三作者 · 中科院二区 · 期刊 · 人工智能",
+                              "Communication-Efficient Adaptive Federated Learning with Maximum Stability",
+                              "投稿目标：IEEE Transactions on Emerging Topics in Computational Intelligence。"
+                        ],
+                        [
+                              "第三作者 · 中科院三区 · 期刊 · 计算机",
+                              "PoRn: A Secure, Resilient, and Energy-Efficient Blockchain Consensus for Large-Scale Distributed and Industrial IoT Systems",
+                              "投稿目标：Cluster Computing。"
+                        ],
+                        [
+                              "第三作者 · CCF B · 会议 · 网络安全",
+                              "QSVSimplePir: Verifying the Query Structure of Medical Private Information Retrieval",
+                              "投稿目标：DSN，IEEE/IFIP International Conference on Dependable Systems and Networks。"
+                        ],
+                        [
+                              "第三作者 · 中科院二区 · 期刊 · 计算机",
+                              "Watermarking for Model Ownership Verification: Invisible at Deployment, Activated by Updates",
+                              "投稿目标：ACM TOMM，Transactions on Multimedia Computing, Communications, and Applications。"
+                        ],
+                        [
+                              "第四作者 · CCF B · 会议 · 交叉",
+                              "Privacy-Preserving Medical Insurance Claim Verification Scheme",
+                              "投稿目标：RECOMB，Annual International Conference on Research in Computational Molecular Biology。"
+                        ],
+                        [
+                              "第五作者 · 无 CCF 分类 · 期刊 · 人工智能",
+                              "Privacy-Preserving Federated Learning in the Weight-Locking",
+                              "投稿目标：IEEE TAI，Transactions on Artificial Intelligence。"
+                        ]
+                  ]
+            }
       },
-      standards: {
-        en: { title: 'Standards and Books', subtitle: 'Standards, books, and technical documents.', items: [
-          ['National Standard', 'Add national standard title here', 'Add standard number, role, and status.'],
-          ['Industry Standard', 'Add industry standard title here', 'Add standard number, role, and status.'],
-          ['Book or Technical Report', 'Add book or report title here', 'Add publisher, year, and role.']
-        ]},
-        zh: { title: '标准著作', subtitle: '国家标准、行业标准、著作与技术文档。', items: [
-          ['国家标准', '在这里添加国家标准名称', '补充标准号、参与角色与状态。'],
-          ['行业标准', '在这里添加行业标准名称', '补充标准号、参与角色与状态。'],
-          ['著作或技术报告', '在这里添加著作或报告名称', '补充出版社、年份与角色。']
-        ]}
+      "patents": {
+            "en": {
+                  "title": "Patents",
+                  "subtitle": "Patent records related to industrial control security, cryptographic infrastructure, information extraction, aggregation verification, and biomedical privacy.",
+                  "items": [
+                        [
+                              "Invention patent · CN202211485172.3 · CN118133298A",
+                              "A domestic-cryptography-based industrial-control data security protection system and method",
+                              "Applicants: Shenzhen Research Institute of Huazhong University of Science and Technology; Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Granted invention patent · CN202110810801.4 · CN113609047B",
+                              "A data adapter and data adaptation method",
+                              "Applicants: Huazhong University of Science and Technology; South-Central Minzu University."
+                        ],
+                        [
+                              "Invention patent · CN202310215391.8 · CN116684076A",
+                              "A stream encryption machine for numerical control systems and working method",
+                              "Applicants: Shenzhen Research Institute of Huazhong University of Science and Technology; Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Invention patent · CN202310184904.3 · CN116318910A",
+                              "Cryptographic infrastructure and control method for numerical control systems based on domestic cryptographic algorithms",
+                              "Applicant: Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Granted invention patent · CN201911088563.X · CN111382571B",
+                              "Information extraction method, system, server, and storage medium",
+                              "Applicant: Southern University of Science and Technology."
+                        ],
+                        [
+                              "Invention patent · CN202211169019.X · CN115842648A",
+                              "Access-control-agent-based access control system for numerical control systems and working process",
+                              "Applicants: Shenzhen Research Institute of Huazhong University of Science and Technology; Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Invention patent · CN202211196292.1 · CN115801311A",
+                              "A lightweight encryption method for industrial-control network transmission",
+                              "Applicants: Shenzhen Research Institute of Huazhong University of Science and Technology; Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Invention patent · CN202211442140.5 · CN115695042A",
+                              "Identity adapter and identity authentication system for numerical control equipment based on identity adapters",
+                              "Applicants: Shenzhen Research Institute of Huazhong University of Science and Technology; Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Invention patent · CN202510721795.3 · CN120498696A",
+                              "Aggregation verification method, apparatus, device, and storage medium for distributed data",
+                              "Applicant: Wuhan Ding'an Huasheng Technology Co., Ltd."
+                        ],
+                        [
+                              "Invention patent · CN202511589085.6 · CN121505653A",
+                              "Intelligent recognition method, apparatus, device, and medium for electrical drawings",
+                              "Applicants: Huazhong University of Science and Technology; Wuhan Ding'an Huasheng Technology Co., Ltd."
+                        ],
+                        [
+                              "Invention patent · CN202511944267.0 · CN121814391A",
+                              "Privacy-auditable one-shot federated learning method and apparatus for biomedical data",
+                              "Applicant: Wuhan Ding'an Huasheng Technology Co., Ltd."
+                        ]
+                  ]
+            },
+            "zh": {
+                  "title": "专利",
+                  "subtitle": "围绕工控安全、密码基础设施、信息抽取、聚合验证与生物医学隐私等方向的专利。",
+                  "items": [
+                        [
+                              "发明公开 · CN202211485172.3 · CN118133298A",
+                              "一种基于国产密码的工控数据安全防护系统及其工作方法",
+                              "申请人：深圳华中科技大学研究院；华中科技大学。"
+                        ],
+                        [
+                              "发明授权 · CN202110810801.4 · CN113609047B",
+                              "一种数据适配器及数据适配方法",
+                              "申请人：华中科技大学；中南民族大学。"
+                        ],
+                        [
+                              "发明公开 · CN202310215391.8 · CN116684076A",
+                              "一种适用于数控系统的流加密机及其工作方法",
+                              "申请人：深圳华中科技大学研究院；华中科技大学。"
+                        ],
+                        [
+                              "发明公开 · CN202310184904.3 · CN116318910A",
+                              "基于国产密码算法的数控系统密码基础设施及控制方法",
+                              "申请人：华中科技大学。"
+                        ],
+                        [
+                              "发明授权 · CN201911088563.X · CN111382571B",
+                              "一种信息抽取方法、系统、服务器和存储介质",
+                              "申请人：南方科技大学。"
+                        ],
+                        [
+                              "发明公开 · CN202211169019.X · CN115842648A",
+                              "基于访问控制代理的数控系统访问控制系统及其工作过程",
+                              "申请人：深圳华中科技大学研究院；华中科技大学。"
+                        ],
+                        [
+                              "发明公开 · CN202211196292.1 · CN115801311A",
+                              "一种轻量级工控网络传输加密方法",
+                              "申请人：深圳华中科技大学研究院；华中科技大学。"
+                        ],
+                        [
+                              "发明公开 · CN202211442140.5 · CN115695042A",
+                              "身份适配器及基于身份适配器的数控装备身份认证系统",
+                              "申请人：深圳华中科技大学研究院；华中科技大学。"
+                        ],
+                        [
+                              "发明公开 · CN202510721795.3 · CN120498696A",
+                              "分布式数据的聚合验证方法、装置、设备及存储介质",
+                              "申请人：武汉鼎安华盛科技有限公司。"
+                        ],
+                        [
+                              "发明公开 · CN202511589085.6 · CN121505653A",
+                              "电气图纸智能识别方法、装置、设备及介质",
+                              "申请人：华中科技大学；武汉鼎安华盛科技有限公司。"
+                        ],
+                        [
+                              "发明公开 · CN202511944267.0 · CN121814391A",
+                              "用于生物医学数据的隐私可审计单轮联邦学习方法及装置",
+                              "申请人：武汉鼎安华盛科技有限公司。"
+                        ]
+                  ]
+            }
       },
-      patents: {
-        en: { title: 'Patents', subtitle: 'Security technology patent records.', items: [
-          ['Patent', 'Add patent title here', 'Add patent number, inventors, status, and year.'],
-          ['Patent', 'Add patent title here', 'Add patent number, inventors, status, and year.'],
-          ['Patent', 'Add patent title here', 'Add patent number, inventors, status, and year.']
-        ]},
-        zh: { title: '专利', subtitle: '安全技术相关专利记录。', items: [
-          ['专利', '在这里添加专利名称', '补充专利号、发明人、状态与年份。'],
-          ['专利', '在这里添加专利名称', '补充专利号、发明人、状态与年份。'],
-          ['专利', '在这里添加专利名称', '补充专利号、发明人、状态与年份。']
-        ]}
+      "standards": {
+            "en": {
+                  "title": "Standards",
+                  "subtitle": "National and industry standards in digital twins, smart factories, numerical control systems, and trusted protection.",
+                  "items": [
+                        [
+                              "National standard · GB/T 43441.1-2023",
+                              "Information technology—Digital twin—Part 1: General requirements",
+                              "Issuing bodies: State Administration for Market Regulation; Standardization Administration of China."
+                        ],
+                        [
+                              "National standard · GB/T 41970-2022",
+                              "Interconnection interface specification of numerical control machine tools in smart factory",
+                              "Issuing bodies: State Administration for Market Regulation; Standardization Administration of China."
+                        ],
+                        [
+                              "National standard · Under review",
+                              "Trusted protection of machine-tool numerical control systems, Part 1: Testing requirements",
+                              "Issuing bodies: State Administration for Market Regulation; Standardization Administration of China."
+                        ],
+                        [
+                              "National standard · Under review",
+                              "Trusted protection of machine-tool numerical control systems, Part 2: Testing requirements",
+                              "Issuing bodies: State Administration for Market Regulation; Standardization Administration of China."
+                        ],
+                        [
+                              "National standard · Under review",
+                              "Trusted protection of machine-tool numerical control systems, Part 3: Testing requirements",
+                              "Issuing bodies: State Administration for Market Regulation; Standardization Administration of China."
+                        ],
+                        [
+                              "Industry standard · T/ZTCIA 006-2025",
+                              "Security and trusted architecture specification for open numerical control systems",
+                              "Zhongguancun Trusted Computing Industry Alliance group standard."
+                        ],
+                        [
+                              "Industry standard · T/ZTCIA 007-2025",
+                              "General security and trusted technical requirements for numerical-control-equipment interconnection and interoperability",
+                              "Zhongguancun Trusted Computing Industry Alliance group standard."
+                        ],
+                        [
+                              "Industry standard · T/ZTCIA 008-2025",
+                              "Security and trusted testing and verification specification for open numerical control systems",
+                              "Zhongguancun Trusted Computing Industry Alliance group standard."
+                        ]
+                  ]
+            },
+            "zh": {
+                  "title": "标准",
+                  "subtitle": "数字孪生、智能工厂、数控系统与可信防护相关国家标准和行业标准。",
+                  "items": [
+                        [
+                              "国家标准 · GB/T 43441.1-2023",
+                              "信息技术 数字孪生 第1部分：通用要求",
+                              "发布单位：国家市场监督管理总局；国家标准化管理委员会。"
+                        ],
+                        [
+                              "国家标准 · GB/T 41970-2022",
+                              "智能工厂数控机床互联接口规范",
+                              "发布单位：国家市场监督管理总局；国家标准化管理委员会。"
+                        ],
+                        [
+                              "国家标准 · 审核中",
+                              "机床数控系统可信防护 第1部分：测试要求",
+                              "发布单位：国家市场监督管理总局；国家标准化管理委员会。"
+                        ],
+                        [
+                              "国家标准 · 审核中",
+                              "机床数控系统可信防护 第2部分：测试要求",
+                              "发布单位：国家市场监督管理总局；国家标准化管理委员会。"
+                        ],
+                        [
+                              "国家标准 · 审核中",
+                              "机床数控系统可信防护 第3部分：测试要求",
+                              "发布单位：国家市场监督管理总局；国家标准化管理委员会。"
+                        ],
+                        [
+                              "行业标准 · T/ZTCIA 006-2025",
+                              "开放式数控系统安全可信体系结构规范",
+                              "中关村可信计算产业联盟团体标准。"
+                        ],
+                        [
+                              "行业标准 · T/ZTCIA 007-2025",
+                              "数控装备互联互通安全可信通用技术要求",
+                              "中关村可信计算产业联盟团体标准。"
+                        ],
+                        [
+                              "行业标准 · T/ZTCIA 008-2025",
+                              "开放式数控系统安全可信测试验证标准规范",
+                              "中关村可信计算产业联盟团体标准。"
+                        ]
+                  ]
+            }
       },
-      awards: {
-        en: { title: 'Awards', subtitle: 'Awards and honors.', items: [
-          ['Award', 'Add award title here', 'Add awarding organization, year, and level.'],
-          ['Scholarship', 'Add scholarship title here', 'Add awarding organization and year.'],
-          ['Honor', 'Add honor title here', 'Add awarding organization and year.']
-        ]},
-        zh: { title: '奖项', subtitle: '获奖与荣誉记录。', items: [
-          ['奖项', '在这里添加奖项名称', '补充授奖单位、年份与级别。'],
-          ['奖学金', '在这里添加奖学金名称', '补充授奖单位与年份。'],
-          ['荣誉', '在这里添加荣誉称号', '补充授奖单位与年份。']
-        ]}
+      "awards": {
+            "en": {
+                  "title": "Awards and Honors",
+                  "subtitle": "Selected honors are highlighted first.",
+                  "items": [
+                        [
+                              "Selected honor · January 2025",
+                              "CAST Young Talent Support Program, Ph.D. Student Special Program",
+                              "Awarded by the China Association for Science and Technology and the China Computer Federation.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected honor · April 2025",
+                              "Outstanding Student Certificate, Cybersecurity School Student Innovation Funding Program",
+                              "Awarded by the Cyberspace Administration-led program and the China Cybersecurity Association.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected honor · December 2025",
+                              "National Scholarship for Doctoral Students",
+                              "Huazhong University of Science and Technology.",
+                              "highlight"
+                        ],
+                        [
+                              "Selected honor · December 2023",
+                              "National Scholarship for Doctoral Students",
+                              "Huazhong University of Science and Technology.",
+                              "highlight"
+                        ],
+                        [
+                              "Honor · 2026",
+                              "Outstanding Graduate",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Scholarship · December 2025",
+                              "First-Class Doctoral Academic Scholarship",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Scholarship · December 2025",
+                              "Science and Technology Innovation Scholarship",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Honor · December 2025",
+                              "Merit Student Honor",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Scholarship · December 2024",
+                              "Second-Class Doctoral Academic Scholarship",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Scholarship · December 2024",
+                              "Science and Technology Innovation Scholarship",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Honor · December 2024",
+                              "Merit Student Honor",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Scholarship · December 2023",
+                              "First-Class Doctoral Academic Scholarship",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Scholarship · December 2022",
+                              "First-Class Doctoral Academic Scholarship",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Scholarship · December 2021",
+                              "Second-Class Master's Academic Scholarship",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Scholarship · December 2020",
+                              "First-Class Master's Academic Scholarship",
+                              "Huazhong University of Science and Technology."
+                        ],
+                        [
+                              "Honor · June 2020",
+                              "Outstanding Graduate, School of Computer Science",
+                              "Southern University of Science and Technology."
+                        ],
+                        [
+                              "Honor · June 2020",
+                              "Outstanding Graduate, Zhiren College",
+                              "Southern University of Science and Technology."
+                        ],
+                        [
+                              "Award · May 2019",
+                              "Meritorious Winner, Mathematical Contest in Modeling",
+                              "Organized by COMAP."
+                        ],
+                        [
+                              "Scholarship · 2016–2019",
+                              "Undergraduate academic scholarships",
+                              "Southern University of Science and Technology."
+                        ]
+                  ]
+            },
+            "zh": {
+                  "title": "荣誉奖项",
+                  "subtitle": "重点荣誉优先展示。",
+                  "items": [
+                        [
+                              "重点荣誉 · 2025年1月",
+                              "中国科协青年人才托举工程博士生专项",
+                              "授予单位：中国科学技术协会、中国计算机学会。",
+                              "highlight"
+                        ],
+                        [
+                              "重点荣誉 · 2025年4月",
+                              "网络安全学院学生创新资助计划一期优秀学生证书",
+                              "授予单位：中国网络空间安全协会。",
+                              "highlight"
+                        ],
+                        [
+                              "重点荣誉 · 2025年12月",
+                              "博士研究生国家奖学金",
+                              "授予单位：华中科技大学。",
+                              "highlight"
+                        ],
+                        [
+                              "重点荣誉 · 2023年12月",
+                              "博士研究生国家奖学金",
+                              "授予单位：华中科技大学。",
+                              "highlight"
+                        ],
+                        [
+                              "荣誉 · 2026年",
+                              "优秀毕业生",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "奖学金 · 2025年12月",
+                              "博士一等学业奖学金",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "奖学金 · 2025年12月",
+                              "科技创新奖学金",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "荣誉 · 2025年12月",
+                              "三好学生荣誉称号",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "奖学金 · 2024年12月",
+                              "博士二等学业奖学金",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "奖学金 · 2024年12月",
+                              "科技创新奖学金",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "荣誉 · 2024年12月",
+                              "三好学生荣誉称号",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "奖学金 · 2023年12月",
+                              "博士一等学业奖学金",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "奖学金 · 2022年12月",
+                              "博士一等学业奖学金",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "奖学金 · 2021年12月",
+                              "二等硕士学业奖学金",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "奖学金 · 2020年12月",
+                              "一等硕士学业奖学金",
+                              "授予单位：华中科技大学。"
+                        ],
+                        [
+                              "荣誉 · 2020年6月",
+                              "计算机学院优秀毕业生",
+                              "授予单位：南方科技大学。"
+                        ],
+                        [
+                              "荣誉 · 2020年6月",
+                              "致新书院优秀毕业生",
+                              "授予单位：南方科技大学。"
+                        ],
+                        [
+                              "重点荣誉 · 2019年5月",
+                              "美国大学生数学建模大赛一等奖（M奖）",
+                              "授予单位：美国数学及其应用联合会。"
+                        ],
+                        [
+                              "奖学金 · 2016–2019",
+                              "本科阶段学业奖学金",
+                              "授予单位：南方科技大学。"
+                        ]
+                  ]
+            }
+      },
+      "service": {
+            "en": {
+                  "title": "Academic Service",
+                  "subtitle": "Journal reviewing, conference reviewing, program committee service, and manuscript evaluation.",
+                  "items": [
+                        [
+                              "Academic service · Journals, conferences, and PC work",
+                              "TIFS, TDSC, JDIM, JSAC, TAI, WWW, BIBM, ICASSP, ICME",
+                              "Reviewed 30+ manuscripts across security, dependable computing, data intelligence, communications, artificial intelligence, web, signal processing, and multimedia venues. Served as IEEE BIBM Program Committee member from 2024 to 2026.",
+                              "highlight"
+                        ]
+                  ]
+            },
+            "zh": {
+                  "title": "学术服务",
+                  "subtitle": "期刊审稿、会议审稿、程序委员会服务与论文评阅。",
+                  "items": [
+                        [
+                              "学术服务 · 期刊、会议与PC工作",
+                              "TIFS、TDSC、JDIM、JSAC、TAI、WWW、BIBM、ICASSP、ICME",
+                              "累计审阅 30 余篇稿件，覆盖安全、可靠计算、数据智能、通信、人工智能、Web、信号处理与多媒体等方向。2024–2026 年担任 IEEE BIBM 程序委员会委员。",
+                              "highlight"
+                        ]
+                  ]
+            }
+      },
+      "projects": {
+            "en": {
+                  "title": "Hosted Projects",
+                  "subtitle": "Research and innovation projects connecting security research with applied systems.",
+                  "items": [
+                        [
+                              "Host · Cybersecurity School Innovation Funding Program, Phase I",
+                              "Industrial-control protocol simulator with Qi-Anxin",
+                              "A Phase I project organized by the Cyberspace Administration of China and the Cybersecurity Association of China, developed in collaboration with Qi-Anxin for industrial-control protocol simulation.",
+                              "highlight"
+                        ],
+                        [
+                              "Mentored student project · Cybersecurity School Innovation Funding Program, Phase II",
+                              "GPS positioning topic issued by DiDi",
+                              "Guided student work on a DiDi-issued GPS positioning topic, extending security and data analysis experience to real-world location-related scenarios."
+                        ],
+                        [
+                              "Host · Cybersecurity School Innovation Funding Program, Phase III",
+                              "Fuzzy vector matching with Huawei",
+                              "A Phase III project developed with Huawei, focusing on fuzzy vector matching and privacy-aware data matching technologies.",
+                              "highlight"
+                        ],
+                        [
+                              "Mentored student project · Cybersecurity School Innovation Funding Program, Phase III",
+                              "AI-assisted automated data classification and grading issued by Topsec",
+                              "Guided student work on a Topsec-issued topic for automated data classification and grading with artificial intelligence."
+                        ],
+                        [
+                              "Host · CAST Young Talent Support Program",
+                              "Young Talent Support Program, Ph.D. Student Special Program",
+                              "A Ph.D. student support project under the China Association for Science and Technology and the China Computer Federation, with approximately 3,000 selected participants nationwide in the first phase.",
+                              "highlight"
+                        ],
+                        [
+                              "Host · HUST Graduate Innovation Fund",
+                              "Graduate innovation research project",
+                              "University-level graduate innovation funding supporting research in security, privacy, and trustworthy systems."
+                        ]
+                  ]
+            },
+            "zh": {
+                  "title": "主持项目",
+                  "subtitle": "科研与创新资助项目，覆盖安全研究、企业合作与场景落地。",
+                  "items": [
+                        [
+                              "主持 · 网络安全学院创新资助计划一期",
+                              "与奇安信合作的工控协议模拟器项目",
+                              "中央网信办与中国网络空间安全协会牵头举办的创新资助计划一期项目，合作单位为奇安信，方向为工控协议模拟器。",
+                              "highlight"
+                        ],
+                        [
+                              "指导学生 · 网络安全学院创新资助计划二期",
+                              "滴滴公司发布的 GPS 定位课题",
+                              "指导学生围绕滴滴公司发布的 GPS 定位相关课题开展研究，将安全与数据分析能力延伸到真实位置数据场景。"
+                        ],
+                        [
+                              "主持 · 网络安全学院创新资助计划三期",
+                              "与华为合作的模糊向量匹配项目",
+                              "创新资助计划三期项目，合作单位为华为，方向为模糊向量匹配与隐私友好的数据匹配技术。",
+                              "highlight"
+                        ],
+                        [
+                              "指导学生 · 网络安全学院创新资助计划三期",
+                              "天融信发布的基于人工智能的自动化数据分类分级系统",
+                              "指导学生围绕天融信发布的课题开展研究，方向为基于人工智能的自动化数据分类分级系统。"
+                        ],
+                        [
+                              "主持 · 中国科协青年人才托举工程",
+                              "中国科协青年人才托举工程博士生专项项目",
+                              "中国科学技术协会与中国计算机学会相关博士生专项支持，第一期全国约 3000 人入选。",
+                              "highlight"
+                        ],
+                        [
+                              "主持 · 华中科技大学",
+                              "华中科技大学研究生创新基金",
+                              "学校研究生创新项目，支持安全、隐私与可信系统相关研究。"
+                        ]
+                  ]
+            }
       }
-    };
+};
+
+    function applyLayout(layout) {
+      if (!['auto', 'mobile', 'desktop'].includes(layout)) layout = 'auto';
+      state.layout = layout;
+      localStorage.setItem('layout', layout);
+      document.body.setAttribute('data-layout', layout);
+      document.querySelectorAll('[data-view-button]').forEach((button) => {
+        button.classList.toggle('active', button.getAttribute('data-view-button') === layout);
+      });
+    }
+
+    document.querySelectorAll('[data-view-button]').forEach((button) => {
+      button.addEventListener('click', () => {
+        applyLayout(button.getAttribute('data-view-button'));
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuButton = document.querySelector('.menu-button');
+        if (mobileMenu && menuButton && button.closest('.mobile-menu')) {
+          mobileMenu.classList.remove('open');
+          menuButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
 
     function applyLanguage(lang) {
       state.lang = lang;
@@ -1375,13 +3237,16 @@
       if (!data) return;
       modalTitle.textContent = data.title;
       modalSubtitle.textContent = data.subtitle;
-      modalList.innerHTML = data.items.map((item) => `
-        <article class="modal-item">
+      modalList.innerHTML = data.items.map((item) => {
+        const tone = item[3] ? ` ${item[3]}` : '';
+        return `
+        <article class="modal-item${tone}">
           <div class="meta">${item[0]}</div>
           <h4>${item[1]}</h4>
           <p>${item[2]}</p>
         </article>
-      `).join('');
+      `;
+      }).join('');
       backdrop.classList.add('open');
       backdrop.setAttribute('aria-hidden', 'false');
     }
@@ -1416,6 +3281,7 @@
     }, { threshold: 0.12 });
     reveals.forEach((element) => observer.observe(element));
 
+    applyLayout(state.layout);
     applyLanguage(state.lang);
   </script>
 </body>
