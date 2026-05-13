@@ -405,15 +405,15 @@
     .photo-frame {
       position: relative;
       flex: none;
-      width: 132px;
-      aspect-ratio: 3 / 4;
+      width: 144px;
+      aspect-ratio: 4 / 5;
       border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.20);
+      border: 2px solid rgba(255, 255, 255, 0.30);
       background:
         linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03)),
         radial-gradient(circle at 50% 0%, rgba(165, 243, 252, 0.20), transparent 9rem),
         rgba(255, 255, 255, 0.06);
-      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
       display: grid;
       place-items: center;
       overflow: hidden;
@@ -423,7 +423,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center top;
+      object-position: center center;
       display: block;
     }
 
@@ -1095,7 +1095,7 @@
       .button { width: 100%; }
       .identity-top { padding: 18px; }
       .profile-row { gap: 14px; }
-      .photo-frame { width: 96px; }
+      .photo-frame { width: 104px; aspect-ratio: 4 / 5; }
       .identity-info { min-width: 0; }
       .research-grid, .showcase-grid, .detail-strip, .metrics { grid-template-columns: 1fr; }
       .section { padding: 48px 0; }
@@ -1218,8 +1218,8 @@
     }
 
     body[data-layout="mobile"] .photo-frame {
-      width: 92px;
-      aspect-ratio: 3 / 4;
+      width: 100px;
+      aspect-ratio: 4 / 5;
       border-radius: 18px;
     }
 
@@ -1557,9 +1557,6 @@
 
     .section-head { margin-bottom: 38px; }
 
-    @media (max-width: 1080px) {
-
-
     /* Final visual balance overrides */
     h1 { font-size: clamp(31px, 3.55vw, 48px); line-height: 1.12; letter-spacing: -0.038em; }
     .hero-lead { font-size: clamp(16.2px, 1.28vw, 18px); line-height: 1.74; max-width: 780px; }
@@ -1750,6 +1747,304 @@
       .photo-frame { border-radius: 16px; }
     }
 
+
+    /* Readability and alignment refinement */
+    :root {
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+    }
+
+    body {
+      font-size: 16.5px;
+      text-rendering: geometricPrecision;
+    }
+
+    .hero {
+      padding: 72px 0 56px;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(430px, 0.92fr);
+      align-items: start;
+      gap: clamp(42px, 4.6vw, 68px);
+    }
+
+    .hero-copy,
+    .hero-visual {
+      align-self: start;
+    }
+
+    .hero-visual {
+      max-width: 560px;
+      justify-self: end;
+    }
+
+    h1 {
+      font-size: clamp(42px, 4.45vw, 66px);
+      line-height: 1.045;
+      letter-spacing: -0.048em;
+      max-width: 860px;
+    }
+
+    .hero-lead {
+      max-width: 780px;
+      font-size: clamp(18px, 1.36vw, 21px);
+      line-height: 1.82;
+      color: #53667c;
+    }
+
+    .pill {
+      font-size: 14px;
+      padding: 9px 14px;
+    }
+
+    .button {
+      font-size: 15.5px;
+      padding: 15px 24px;
+      min-height: 56px;
+    }
+
+    .identity-card {
+      border-radius: 30px;
+      overflow: hidden;
+    }
+
+    .identity-top {
+      min-height: 252px;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+    }
+
+    .identity-top::after {
+      bottom: 16px;
+      font-size: 20px;
+      opacity: 0.68;
+    }
+
+    .profile-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 156px minmax(0, 1fr);
+      gap: 30px;
+      align-items: center;
+    }
+
+    .photo-frame {
+      width: 156px;
+      aspect-ratio: 4 / 5;
+      border-radius: 22px;
+    }
+
+    .photo-frame.has-photo .photo-placeholder {
+      display: none;
+    }
+
+    .identity-info h2 {
+      font-size: clamp(36px, 2.7vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.045em;
+    }
+
+    .identity-info p {
+      margin-top: 14px;
+      font-size: 17px;
+      line-height: 1.62;
+      color: #cbd7e6;
+    }
+
+    .cipher-chip {
+      margin-top: 18px;
+      padding: 11px 15px;
+      font-size: 13.5px;
+      letter-spacing: 0.08em;
+    }
+
+    .metrics {
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .metric {
+      min-height: 118px;
+      border-radius: 23px;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .metric strong {
+      font-size: clamp(34px, 3vw, 44px);
+      letter-spacing: -0.045em;
+    }
+
+    .metric span {
+      margin-top: 11px;
+      font-size: 14.5px;
+      line-height: 1.38;
+    }
+
+    .hero-axiom {
+      grid-column: 1 / -1;
+      width: 100%;
+      max-width: none;
+      margin-top: 8px;
+      border-radius: 26px;
+      padding: 22px 30px;
+      font-size: clamp(16.5px, 1.18vw, 19px);
+      line-height: 1.8;
+      text-align: center;
+      color: #31475d;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.90), rgba(255,255,255,0.68)),
+        radial-gradient(circle at 15% 50%, rgba(165,243,252,0.18), transparent 14rem),
+        radial-gradient(circle at 85% 50%, rgba(8,145,178,0.12), transparent 14rem);
+    }
+
+    .section {
+      padding: 70px 0;
+    }
+
+    h2.section-title,
+    .section-head h2,
+    .panel-title {
+      font-size: clamp(30px, 2.7vw, 42px);
+      line-height: 1.14;
+    }
+
+    .section-text,
+    .panel p,
+    .mini-card p,
+    .research-card p,
+    .detail-card p,
+    .timeline-item p,
+    .contact-main p,
+    .contact-side p,
+    .info-row,
+    .contact-method {
+      font-size: 16px;
+      line-height: 1.78;
+    }
+
+    .mini-card h3,
+    .research-card h3,
+    .detail-card h3,
+    .timeline-item h3 {
+      font-size: 20px;
+      line-height: 1.36;
+    }
+
+    .open-detail {
+      font-size: 14.5px;
+      padding: 11px 15px;
+    }
+
+    .modal {
+      width: min(1040px, 100%);
+      border-radius: 28px;
+    }
+
+    .modal-header h3 {
+      font-size: 32px;
+    }
+
+    .modal-header p,
+    .modal-item .meta {
+      font-size: 13.5px;
+    }
+
+    .modal-item {
+      padding: 22px;
+      border-radius: 22px;
+    }
+
+    .modal-item h4 {
+      font-size: 20.5px;
+      line-height: 1.42;
+    }
+
+    .modal-item p {
+      font-size: 16.5px;
+      line-height: 1.78;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .hero-visual {
+        max-width: none;
+        justify-self: stretch;
+      }
+
+      .hero-axiom {
+        grid-column: 1;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container { width: min(100% - 28px, var(--max)); }
+      .hero { padding: 42px 0 34px; }
+      h1 { font-size: clamp(36px, 10.2vw, 48px); }
+      .hero-lead { font-size: 16.5px; line-height: 1.76; }
+      .hero-actions { gap: 12px; }
+      .button { font-size: 15px; min-height: 52px; }
+      .identity-top { min-height: 0; padding: 22px; }
+      .profile-row { grid-template-columns: 104px 1fr; gap: 18px; }
+      .photo-frame { width: 112px; aspect-ratio: 4 / 5; border-radius: 18px; }
+      .identity-info h2 { font-size: 30px; }
+      .identity-info p { font-size: 14.8px; margin-top: 8px; }
+      .cipher-chip { font-size: 11.5px; padding: 8px 10px; margin-top: 11px; }
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; }
+      .metric { min-height: 96px; border-radius: 20px; padding: 16px 14px; }
+      .metric strong { font-size: 34px; }
+      .metric span { font-size: 13.5px; }
+      .hero-axiom { text-align: left; padding: 18px 20px; font-size: 15.8px; }
+      .section { padding: 52px 0; }
+      h2.section-title, .section-head h2, .panel-title { font-size: clamp(26px, 7.4vw, 34px); }
+      .section-text, .panel p, .mini-card p, .research-card p, .detail-card p, .timeline-item p, .contact-main p, .contact-side p, .info-row, .contact-method { font-size: 15.5px; }
+      .modal-header h3 { font-size: 26px; }
+      .modal-item h4 { font-size: 18.5px; }
+      .modal-item p { font-size: 15.5px; }
+    }
+
+    body[data-layout="mobile"] .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    body[data-layout="mobile"] .hero-visual {
+      max-width: none;
+      justify-self: stretch;
+    }
+
+    body[data-layout="mobile"] .hero-axiom {
+      grid-column: 1;
+      text-align: left;
+    }
+
+    body[data-layout="mobile"] .profile-row {
+      grid-template-columns: 112px 1fr;
+      gap: 18px;
+    }
+
+    body[data-layout="mobile"] .photo-frame {
+      width: 112px;
+      aspect-ratio: 4 / 5;
+    }
+
+    body[data-layout="mobile"] .metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body[data-layout="desktop"] .hero-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(430px, 0.92fr);
+    }
+
   </style>
 </head>
 <body>
@@ -1816,7 +2111,7 @@
   <main id="top">
     <section class="hero">
       <div class="container hero-grid">
-        <div class="reveal visible">
+        <div class="hero-copy reveal visible">
           <div class="eyebrow-row">
             <span class="pill"><span class="dot"></span><span data-en="Research Fellow · NUS School of Computing" data-zh="Research Fellow · 新加坡国立大学计算机学院">Research Fellow · NUS School of Computing</span></span>
             <span class="pill" data-en="Cryptography · Privacy Computing · AI Security" data-zh="密码学 · 隐私计算 · AI安全">Cryptography · Privacy Computing · AI Security</span>
@@ -1832,10 +2127,6 @@
             <a class="button button-primary" href="#works" data-en="View publications" data-zh="查看论文成果">View publications</a>
             <a class="button button-secondary" href="mailto:luzhi@ieee.org" data-en="Contact me" data-zh="联系我">Contact me</a>
           </div>
-
-          <div class="research-axiom" data-en="I design security mechanisms that make privacy practical, verification efficient, and accountability compatible with anonymity." data-zh="我的研究关注如何让隐私保护可以落地，让验证更加高效，也让问责机制不以牺牲匿名性为代价。">
-            I design security mechanisms that make privacy practical, verification efficient, and accountability compatible with anonymity.
-          </div>
         </div>
 
         <aside class="hero-visual reveal visible" aria-label="Profile summary">
@@ -1843,11 +2134,11 @@
             <div class="identity-top">
               <div class="profile-row">
                 <div class="photo-frame">
-                  <img src="profile.jpg" alt="Portrait of Zhi Lu" onerror="this.style.display='none';" />
+                  <img src="profile.png" alt="Portrait of Zhi Lu" onload="this.closest('.photo-frame').classList.add('has-photo');" onerror="this.style.display='none'; this.closest('.photo-frame').classList.remove('has-photo');" />
                   <div class="photo-placeholder" aria-hidden="true">
                     <div>
                       <strong>ZL</strong>
-                      <span data-en="profile.jpg" data-zh="证件照">profile.jpg</span>
+                      <span data-en="profile.png" data-zh="头像">profile.png</span>
                     </div>
                   </div>
                 </div>
@@ -1867,6 +2158,10 @@
             </div>
           </div>
         </aside>
+
+        <div class="research-axiom hero-axiom reveal visible" data-en="I design security mechanisms that make privacy practical, verification efficient, and accountability compatible with anonymity." data-zh="我的研究关注如何让隐私保护可以落地，让验证更加高效，也让问责机制不以牺牲匿名性为代价。">
+          I design security mechanisms that make privacy practical, verification efficient, and accountability compatible with anonymity.
+        </div>
       </div>
     </section>
 
@@ -3170,14 +3465,28 @@
       }
 };
 
+    const autoMobileQuery = window.matchMedia('(max-width: 900px)');
+
+    function effectiveLayout(layout) {
+      if (layout === 'auto' && autoMobileQuery.matches) return 'mobile';
+      return layout;
+    }
+
     function applyLayout(layout) {
       if (!['auto', 'mobile', 'desktop'].includes(layout)) layout = 'auto';
       state.layout = layout;
       localStorage.setItem('layout', layout);
-      document.body.setAttribute('data-layout', layout);
+      document.body.setAttribute('data-layout-choice', layout);
+      document.body.setAttribute('data-layout', effectiveLayout(layout));
       document.querySelectorAll('[data-view-button]').forEach((button) => {
         button.classList.toggle('active', button.getAttribute('data-view-button') === layout);
       });
+    }
+
+    if (autoMobileQuery.addEventListener) {
+      autoMobileQuery.addEventListener('change', () => applyLayout(state.layout));
+    } else if (autoMobileQuery.addListener) {
+      autoMobileQuery.addListener(() => applyLayout(state.layout));
     }
 
     document.querySelectorAll('[data-view-button]').forEach((button) => {
