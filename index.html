@@ -1,0 +1,1422 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Zhi Lu - Security researcher specializing in cryptography, privacy computing, AI security, data governance, zero-knowledge proofs, anonymous accountability, standards, patents, and research collaboration." />
+  <meta name="theme-color" content="#f7fbff" />
+  <title>Zhi Lu | Security & Cryptography Researcher</title>
+  <style>
+    :root {
+      --bg: #f7fbff;
+      --bg-2: #edf5fb;
+      --ink: #06111f;
+      --muted: #5d6f83;
+      --subtle: #7e8da1;
+      --line: rgba(10, 31, 51, 0.11);
+      --line-strong: rgba(10, 31, 51, 0.18);
+      --glass: rgba(255, 255, 255, 0.70);
+      --glass-strong: rgba(255, 255, 255, 0.88);
+      --blue: #1d4ed8;
+      --cyan: #0891b2;
+      --ice: #a5f3fc;
+      --navy: #07111f;
+      --slate: #102033;
+      --white: #ffffff;
+      --shadow: 0 26px 90px rgba(6, 17, 31, 0.12);
+      --shadow-soft: 0 14px 42px rgba(6, 17, 31, 0.075);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max: 1220px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(6, 17, 31, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 17, 31, 0.035) 1px, transparent 1px),
+        radial-gradient(circle at 50% -10%, rgba(8, 145, 178, 0.22), transparent 34rem),
+        radial-gradient(circle at 92% 14%, rgba(29, 78, 216, 0.16), transparent 30rem),
+        radial-gradient(circle at 8% 48%, rgba(165, 243, 252, 0.26), transparent 26rem),
+        var(--bg);
+      background-size: 42px 42px, 42px 42px, auto, auto, auto, auto;
+      line-height: 1.55;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at center, transparent 0 16rem, rgba(6, 17, 31, 0.018) 16.2rem 16.35rem, transparent 16.5rem),
+        radial-gradient(circle at 82% 28%, transparent 0 10rem, rgba(8, 145, 178, 0.045) 10.1rem 10.2rem, transparent 10.4rem),
+        linear-gradient(135deg, transparent 0 64%, rgba(255, 255, 255, 0.42) 64% 64.2%, transparent 64.4%);
+      opacity: 0.9;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; }
+    button { font: inherit; }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.82);
+      background: rgba(247, 251, 255, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: max-content;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0)),
+        linear-gradient(135deg, #06111f, #164e63 62%, #0e7490);
+      box-shadow: 0 16px 34px rgba(7, 17, 31, 0.22);
+    }
+
+    .brand-name {
+      font-size: 15px;
+      font-weight: 820;
+      letter-spacing: -0.015em;
+      margin: 0;
+    }
+
+    .brand-domain {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0;
+      font-family: var(--mono);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      color: #53667c;
+      font-size: 13px;
+      font-weight: 720;
+    }
+
+    .nav-links a { transition: color 180ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: max-content;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      padding: 4px;
+      box-shadow: 0 10px 28px rgba(6, 17, 31, 0.055);
+    }
+
+    .lang-toggle button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 8px 11px;
+      color: #5d6f83;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.03em;
+    }
+
+    .lang-toggle button.active {
+      color: var(--white);
+      background: var(--navy);
+      box-shadow: 0 8px 18px rgba(6, 17, 31, 0.18);
+    }
+
+    .nav-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 11px 16px;
+      color: var(--white);
+      background: var(--navy);
+      font-size: 13px;
+      font-weight: 850;
+      box-shadow: 0 14px 34px rgba(7, 17, 31, 0.18);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .nav-action:hover { transform: translateY(-1px); background: #0f1d31; }
+
+    .menu-button {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .hero { padding: 78px 0 48px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.96fr);
+      align-items: center;
+      gap: 54px;
+    }
+
+    .eyebrow-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      padding: 8px 12px;
+      color: #40536a;
+      font-size: 13px;
+      font-weight: 720;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 5px rgba(8, 145, 178, 0.12);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(48px, 6vw, 82px);
+      line-height: 0.96;
+      letter-spacing: -0.067em;
+      color: var(--ink);
+      max-width: 920px;
+    }
+
+    .hero-lead {
+      margin: 26px 0 0;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 21px);
+      line-height: 1.78;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 880;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .button-primary {
+      color: var(--white);
+      background: var(--navy);
+      box-shadow: 0 18px 42px rgba(7, 17, 31, 0.20);
+    }
+
+    .button-secondary {
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+    }
+
+    .button:hover { transform: translateY(-2px); }
+    .button-secondary:hover { border-color: rgba(15, 23, 42, 0.22); background: #ffffff; }
+
+    .hero-visual { position: relative; }
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 42px;
+      background: linear-gradient(135deg, rgba(8, 145, 178, 0.24), rgba(255, 255, 255, 0.58), rgba(29, 78, 216, 0.16));
+      filter: blur(14px);
+      z-index: -1;
+    }
+
+    .identity-card {
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      border-radius: 38px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .identity-top {
+      position: relative;
+      min-height: 390px;
+      padding: 24px;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 88% 0%, rgba(165, 243, 252, 0.22), transparent 16rem),
+        linear-gradient(135deg, #07111f, #102033 58%, #164e63);
+      overflow: hidden;
+    }
+
+    .identity-top::after {
+      content: "ZK  AC  DP  HE  MPC  RLWE  SIG  HASH";
+      position: absolute;
+      left: -24px;
+      right: -24px;
+      bottom: 34px;
+      color: rgba(255,255,255,0.055);
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      white-space: nowrap;
+      transform: rotate(-8deg);
+    }
+
+    .photo-frame {
+      position: relative;
+      z-index: 1;
+      height: 238px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02)),
+        radial-gradient(circle at 50% 0%, rgba(165, 243, 252, 0.20), transparent 12rem),
+        rgba(255, 255, 255, 0.05);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .photo-placeholder strong {
+      display: grid;
+      place-items: center;
+      width: 92px;
+      height: 92px;
+      border-radius: 30px;
+      margin: 0 auto 14px;
+      color: var(--ice);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      font-size: 36px;
+      letter-spacing: -0.08em;
+    }
+
+    .photo-placeholder span {
+      display: block;
+      color: #b8c6d6;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .identity-info {
+      position: relative;
+      z-index: 1;
+      margin-top: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .identity-info h2 {
+      color: var(--white);
+      font-size: 34px;
+      margin: 0;
+      letter-spacing: -0.05em;
+    }
+
+    .identity-info p {
+      margin: 9px 0 0;
+      color: #c5d3e3;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .cipher-chip {
+      flex: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      padding: 10px 12px;
+      color: #a5f3fc;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .metric {
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 22px;
+      background: #ffffff;
+      padding: 17px 14px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--ink);
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .section { padding: 64px 0; }
+    .section-head {
+      max-width: 790px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+
+    .section-kicker {
+      margin: 0 0 12px;
+      color: var(--cyan);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    h2.section-title, .section-head h2, .panel-title {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(31px, 4vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.047em;
+    }
+
+    .section-text {
+      margin: 18px auto 0;
+      max-width: 740px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .panel, .mini-card, .detail-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--glass);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .panel { padding: 30px; }
+    .panel p { color: var(--muted); font-size: 15px; line-height: 1.8; }
+
+    .info-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 14px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .info-row b { color: var(--ink); }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 16px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.72);
+      padding: 18px;
+    }
+
+    .timeline-date {
+      color: var(--cyan);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    .timeline-item h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+
+    .timeline-item p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .research-card {
+      min-height: 188px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .research-card::after {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      right: -40px;
+      top: -40px;
+      border: 1px solid rgba(8,145,178,0.16);
+      border-radius: 50%;
+    }
+
+    .icon-box {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      color: #0e7490;
+      background: rgba(8, 145, 178, 0.10);
+    }
+
+    .research-card h3, .mini-card h3, .detail-card h3 {
+      margin: 18px 0 0;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.32;
+      letter-spacing: -0.025em;
+    }
+
+    .research-card p, .mini-card p, .detail-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .mini-card {
+      padding: 22px;
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .mini-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 26px 70px rgba(6, 17, 31, 0.12);
+      border-color: rgba(8,145,178,0.22);
+    }
+
+    .card-topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .label {
+      color: var(--cyan);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .count {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      padding: 5px 9px;
+      color: #53667c;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .mini-card .open-detail {
+      margin-top: 18px;
+      align-self: flex-start;
+    }
+
+    .open-detail {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.78);
+      color: var(--ink);
+      cursor: pointer;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 850;
+      transition: background 180ms ease, transform 180ms ease, border-color 180ms ease;
+    }
+
+    .open-detail:hover { background: #fff; transform: translateY(-1px); border-color: var(--line-strong); }
+
+    .detail-strip {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .detail-card { padding: 24px; }
+
+    .dark-panel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 38px;
+      padding: 42px;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 90% 0%, rgba(165, 243, 252, 0.20), transparent 17rem),
+        radial-gradient(circle at 6% 90%, rgba(29, 78, 216, 0.20), transparent 22rem),
+        linear-gradient(135deg, #07111f, #0d1b2e 64%, #164e63);
+      box-shadow: var(--shadow);
+    }
+
+    .dark-panel::after {
+      content: "011010 · ZK · AUTH · PRIVACY · SECURITY · 101101";
+      position: absolute;
+      right: -30px;
+      bottom: 28px;
+      color: rgba(255,255,255,0.045);
+      font-family: var(--mono);
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      transform: rotate(-6deg);
+      white-space: nowrap;
+    }
+
+    .dark-panel-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .dark-panel .section-kicker { color: var(--ice); }
+    .dark-panel h2 { color: var(--white); }
+    .dark-panel p { color: #c4d2e2; }
+
+    .intent-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .intent-item {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 18px;
+      color: #eef5ff;
+    }
+
+    .check {
+      flex: none;
+      width: 22px;
+      height: 22px;
+      margin-top: 1px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--navy);
+      background: var(--ice);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .contact-panel {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      border: 1px solid var(--line);
+      border-radius: 38px;
+      background: var(--glass-strong);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-main { padding: 40px; }
+    .contact-main p { color: var(--muted); font-size: 16px; line-height: 1.8; max-width: 680px; }
+
+    .contact-methods {
+      display: grid;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .contact-method {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 14px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .contact-method b { color: var(--ink); }
+
+    .contact-side {
+      padding: 40px;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 84% 12%, rgba(165, 243, 252, 0.16), transparent 16rem),
+        linear-gradient(135deg, #07111f, #102033);
+    }
+
+    .contact-side h3 { margin: 18px 0 0; color: var(--white); font-size: 24px; letter-spacing: -0.03em; }
+    .contact-side p { color: #c4d2e2; font-size: 14px; line-height: 1.8; }
+
+    footer {
+      padding: 28px 0 42px;
+      color: #6b7a91;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .mobile-menu { display: none; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      place-items: center;
+      padding: 22px;
+      background: rgba(6, 17, 31, 0.48);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .modal-backdrop.open { display: grid; }
+
+    .modal {
+      width: min(980px, 100%);
+      max-height: min(760px, calc(100vh - 44px));
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 30px;
+      background: rgba(249, 252, 255, 0.96);
+      box-shadow: 0 30px 100px rgba(0,0,0,0.28);
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 24px 26px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 28px;
+      letter-spacing: -0.04em;
+    }
+
+    .modal-header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .modal-close {
+      flex: none;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff;
+      cursor: pointer;
+      color: var(--ink);
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .modal-body {
+      overflow: auto;
+      padding: 24px 26px 28px;
+    }
+
+    .modal-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .modal-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #ffffff;
+      padding: 17px;
+    }
+
+    .modal-item .meta {
+      color: var(--cyan);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .modal-item h4 {
+      margin: 8px 0 0;
+      font-size: 17px;
+      line-height: 1.4;
+      letter-spacing: -0.02em;
+    }
+
+    .modal-item p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 650ms ease, transform 650ms ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1080px) {
+      .nav-links { display: none; }
+      .hero-grid, .two-col, .dark-panel-inner, .contact-panel { grid-template-columns: 1fr; }
+      .research-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .showcase-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .container { width: min(100% - 28px, var(--max)); }
+      .nav { min-height: 70px; }
+      .nav-action { display: none; }
+      .menu-button { display: grid; place-items: center; }
+      .mobile-menu { padding: 0 14px 14px; }
+      .mobile-menu.open { display: block; }
+      .mobile-menu-inner {
+        display: grid;
+        gap: 4px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.92);
+        padding: 10px;
+        box-shadow: var(--shadow-soft);
+      }
+      .mobile-menu a {
+        border-radius: 14px;
+        padding: 12px;
+        color: #40536a;
+        font-weight: 780;
+      }
+      .mobile-menu a:hover { background: #eef3f8; color: var(--ink); }
+      .hero { padding: 44px 0 28px; }
+      h1 { font-size: clamp(43px, 13vw, 62px); }
+      .hero-actions { flex-direction: column; }
+      .button { width: 100%; }
+      .identity-top { min-height: 360px; padding: 18px; }
+      .photo-frame { height: 220px; }
+      .identity-info { flex-direction: column; align-items: flex-start; }
+      .research-grid, .showcase-grid, .detail-strip, .metrics { grid-template-columns: 1fr; }
+      .section { padding: 48px 0; }
+      .panel, .dark-panel, .contact-main, .contact-side { padding: 26px; }
+      .info-row, .timeline-item, .contact-method { grid-template-columns: 1fr; gap: 6px; }
+      .modal-header, .modal-body { padding-left: 18px; padding-right: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Zhi Lu homepage">
+        <div class="brand-mark">ZL</div>
+        <div>
+          <p class="brand-name" data-en="Zhi Lu" data-zh="卢智">Zhi Lu</p>
+          <p class="brand-domain">lu-zhi.com</p>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#about" data-en="About" data-zh="简介">About</a>
+        <a href="#experience" data-en="Experience" data-zh="经历">Experience</a>
+        <a href="#research" data-en="Research" data-zh="方向">Research</a>
+        <a href="#works" data-en="Works" data-zh="成果">Works</a>
+        <a href="#collaboration" data-en="Collaboration" data-zh="合作">Collaboration</a>
+        <a href="#contact" data-en="Contact" data-zh="联系">Contact</a>
+      </nav>
+
+      <div class="nav-right">
+        <div class="lang-toggle" aria-label="Language switcher">
+          <button class="active" type="button" data-lang-button="en">EN</button>
+          <button type="button" data-lang-button="zh">中</button>
+        </div>
+        <a class="nav-action" href="mailto:contact@lu-zhi.com" data-en="Contact" data-zh="联系我">Contact</a>
+        <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-inner">
+        <a href="#about" data-en="About" data-zh="个人简介">About</a>
+        <a href="#experience" data-en="Experience" data-zh="工作经历">Experience</a>
+        <a href="#research" data-en="Research" data-zh="研究方向">Research</a>
+        <a href="#works" data-en="Works" data-zh="代表成果">Works</a>
+        <a href="#collaboration" data-en="Collaboration" data-zh="合作意向">Collaboration</a>
+        <a href="#contact" data-en="Contact" data-zh="联系方式">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal visible">
+          <div class="eyebrow-row">
+            <span class="pill"><span class="dot"></span><span data-en="Cryptography · Security · Privacy" data-zh="密码学 · 安全 · 隐私">Cryptography · Security · Privacy</span></span>
+            <span class="pill" data-en="Security Research Translation" data-zh="安全科研成果转化">Security Research Translation</span>
+          </div>
+
+          <h1 data-en="Building rigorous security research into trustworthy real-world systems." data-zh="将严谨的安全研究转化为可信的现实系统。">Building rigorous security research into trustworthy real-world systems.</h1>
+
+          <p class="hero-lead" data-en="I work on privacy computing, zero-knowledge proofs, anonymous accountability, secure aggregation, AI security, and data governance. My long-term focus is translating frontier security research into technical roadmaps, projects, patents, standards, and deployable system designs." data-zh="我的研究方向包括隐私计算、零知识证明、匿名问责、安全聚合、AI安全与数据治理。我的长期关注点是将前沿安全研究转化为技术路线、项目方案、专利布局、标准体系与可落地的系统设计。">
+            I work on privacy computing, zero-knowledge proofs, anonymous accountability, secure aggregation, AI security, and data governance. My long-term focus is translating frontier security research into technical roadmaps, projects, patents, standards, and deployable system designs.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="mailto:contact@lu-zhi.com" data-en="Discuss a collaboration" data-zh="洽谈合作">Discuss a collaboration</a>
+            <a class="button button-secondary" href="#works" data-en="View representative works" data-zh="查看代表成果">View representative works</a>
+          </div>
+        </div>
+
+        <aside class="hero-visual reveal visible" aria-label="Profile summary">
+          <div class="identity-card">
+            <div class="identity-top">
+              <div class="photo-frame">
+                <!-- Replace profile.jpg with your real photo. Keep the file in the same folder as this index.html. -->
+                <img src="profile.jpg" alt="Portrait of Zhi Lu" onerror="this.style.display='none';" />
+                <div class="photo-placeholder" aria-hidden="true">
+                  <div>
+                    <strong>ZL</strong>
+                    <span data-en="Place your portrait here. Save the image as profile.jpg in the same folder." data-zh="请将个人照片命名为 profile.jpg，并与 index.html 放在同一目录。">Place your portrait here. Save the image as profile.jpg in the same folder.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="identity-info">
+                <div>
+                  <h2 data-en="Zhi Lu" data-zh="卢智">Zhi Lu</h2>
+                  <p data-en="Security Researcher · Privacy Computing · AI Security" data-zh="安全研究者 · 隐私计算 · AI安全">Security Researcher · Privacy Computing · AI Security</p>
+                </div>
+                <span class="cipher-chip">ZK · PRIV · AUTH</span>
+              </div>
+            </div>
+            <div class="metrics">
+              <div class="metric"><strong>5</strong><span data-en="A-class security papers" data-zh="A类安全论文">A-class security papers</span></div>
+              <div class="metric"><strong>10+</strong><span data-en="patents" data-zh="专利">patents</span></div>
+              <div class="metric"><strong>5</strong><span data-en="national standards" data-zh="国家标准">national standards</span></div>
+              <div class="metric"><strong>6</strong><span data-en="industry standards" data-zh="行业标准">industry standards</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container two-col">
+        <div class="panel reveal">
+          <p class="section-kicker" data-en="Profile" data-zh="个人介绍">Profile</p>
+          <h2 class="panel-title" data-en="Research identity with a translational edge." data-zh="兼具科研深度与成果转化能力的安全研究者。">Research identity with a translational edge.</h2>
+          <p data-en="I am a Ph.D. candidate in cyberspace security at Huazhong University of Science and Technology and an incoming Research Fellow at the National University of Singapore. My research lies at the intersection of cryptography, privacy-preserving systems, AI security, and data security governance." data-zh="我是华中科技大学网络空间安全方向博士研究生，即将赴新加坡国立大学担任 Research Fellow。我的研究交叉于密码学、隐私保护系统、AI安全与数据安全治理。">
+            I am a Ph.D. candidate in cyberspace security at Huazhong University of Science and Technology and an incoming Research Fellow at the National University of Singapore. My research lies at the intersection of cryptography, privacy-preserving systems, AI security, and data security governance.
+          </p>
+          <p data-en="This homepage is designed as a long-term expert entry point. It highlights academic publications, standards, patents, projects, awards, and potential collaboration directions." data-zh="该主页将作为长期专家入口，集中展示我的学术论文、标准著作、专利、项目、获奖经历与潜在合作方向。">
+            This homepage is designed as a long-term expert entry point. It highlights academic publications, standards, patents, projects, awards, and potential collaboration directions.
+          </p>
+        </div>
+
+        <div class="panel reveal">
+          <p class="section-kicker" data-en="Affiliation" data-zh="工作单位">Affiliation</p>
+          <div class="info-list">
+            <div class="info-row"><b data-en="Current" data-zh="当前单位">Current</b><span data-en="Huazhong University of Science and Technology, School of Cyber Science and Engineering" data-zh="华中科技大学网络空间安全学院">Huazhong University of Science and Technology, School of Cyber Science and Engineering</span></div>
+            <div class="info-row"><b data-en="Next" data-zh="即将加入">Next</b><span data-en="National University of Singapore, Research Fellow" data-zh="新加坡国立大学 Research Fellow">National University of Singapore, Research Fellow</span></div>
+            <div class="info-row"><b data-en="Focus" data-zh="研究聚焦">Focus</b><span data-en="Cryptography, privacy computing, AI security, secure aggregation, anonymous accountability, data governance" data-zh="密码学、隐私计算、AI安全、安全聚合、匿名问责、数据治理">Cryptography, privacy computing, AI security, secure aggregation, anonymous accountability, data governance</span></div>
+            <div class="info-row"><b data-en="Website" data-zh="个人主页">Website</b><span>lu-zhi.com</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="container two-col">
+        <div class="panel reveal">
+          <p class="section-kicker" data-en="Experience" data-zh="工作经历">Experience</p>
+          <h2 class="panel-title" data-en="A concise timeline for research and professional identity." data-zh="用清晰时间线展示研究与职业身份。">A concise timeline for research and professional identity.</h2>
+          <p data-en="Keep the homepage concise. Detailed academic CV, project list, and full achievements can be opened through detail panels or downloaded as a PDF later." data-zh="主界面保持克制与清晰。完整简历、项目清单和全部成果可以通过详情面板展示，也可以后续提供 PDF 下载。">
+            Keep the homepage concise. Detailed academic CV, project list, and full achievements can be opened through detail panels or downloaded as a PDF later.
+          </p>
+          <button class="open-detail" type="button" data-modal="experience" data-en="View full experience" data-zh="查看完整经历">View full experience</button>
+        </div>
+
+        <div class="timeline reveal">
+          <article class="timeline-item">
+            <div class="timeline-date" data-en="2026" data-zh="2026">2026</div>
+            <div><h3 data-en="Incoming Research Fellow, National University of Singapore" data-zh="即将赴新加坡国立大学担任 Research Fellow">Incoming Research Fellow, National University of Singapore</h3><p data-en="Research on security, privacy, cryptography, and trustworthy systems." data-zh="围绕安全、隐私、密码学与可信系统开展研究。">Research on security, privacy, cryptography, and trustworthy systems.</p></div>
+          </article>
+          <article class="timeline-item">
+            <div class="timeline-date" data-en="Ph.D." data-zh="博士">Ph.D.</div>
+            <div><h3 data-en="Ph.D. Candidate, Huazhong University of Science and Technology" data-zh="华中科技大学网络空间安全博士研究生">Ph.D. Candidate, Huazhong University of Science and Technology</h3><p data-en="Research on privacy computing, secure aggregation, zero-knowledge proofs, and anonymous accountability." data-zh="研究隐私计算、安全聚合、零知识证明与匿名问责机制。">Research on privacy computing, secure aggregation, zero-knowledge proofs, and anonymous accountability.</p></div>
+          </article>
+          <article class="timeline-item">
+            <div class="timeline-date" data-en="Standards" data-zh="标准">Standards</div>
+            <div><h3 data-en="Standardization and patent experience" data-zh="标准化与专利经验">Standardization and patent experience</h3><p data-en="Participated in national and industry standards, with multiple patents in security-related technologies." data-zh="参与多项国家标准与行业标准，并拥有多项安全相关技术专利。">Participated in national and industry standards, with multiple patents in security-related technologies.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="research">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker" data-en="Research Directions" data-zh="研究方向">Research Directions</p>
+          <h2 data-en="Cold, rigorous, and systems-oriented security research." data-zh="清冷、严谨、面向系统落地的安全研究。">Cold, rigorous, and systems-oriented security research.</h2>
+          <p class="section-text" data-en="The research section should be visually compact but technically sharp. It should communicate your field immediately to cryptography, privacy, AI security, and data governance audiences." data-zh="研究方向部分应当视觉克制、技术清晰，使密码学、隐私计算、AI安全与数据治理方向的读者可以迅速理解你的专业定位。">
+            The research section should be visually compact but technically sharp. It should communicate your field immediately to cryptography, privacy, AI security, and data governance audiences.
+          </p>
+        </div>
+
+        <div class="research-grid">
+          <article class="panel research-card reveal"><div class="icon-box">ZK</div><h3 data-en="Zero-Knowledge Proofs" data-zh="零知识证明">Zero-Knowledge Proofs</h3><p data-en="Efficient proof systems for compliance, verification, and privacy-preserving computation." data-zh="面向合规验证、可验证计算与隐私保护计算的高效证明系统。">Efficient proof systems for compliance, verification, and privacy-preserving computation.</p></article>
+          <article class="panel research-card reveal"><div class="icon-box">AC</div><h3 data-en="Anonymous Accountability" data-zh="匿名问责">Anonymous Accountability</h3><p data-en="Anonymous credentials, blocklist governance, and privacy-preserving abuse control." data-zh="匿名凭证、封禁治理与隐私保护下的恶意行为管控。">Anonymous credentials, blocklist governance, and privacy-preserving abuse control.</p></article>
+          <article class="panel research-card reveal"><div class="icon-box">SA</div><h3 data-en="Secure Aggregation" data-zh="安全聚合">Secure Aggregation</h3><p data-en="Input compliance, secure data aggregation, and malicious-client resilience." data-zh="输入合规性、安全数据聚合与恶意客户端鲁棒性。">Input compliance, secure data aggregation, and malicious-client resilience.</p></article>
+          <article class="panel research-card reveal"><div class="icon-box">AI</div><h3 data-en="AI Security Governance" data-zh="AI安全治理">AI Security Governance</h3><p data-en="Security evaluation, data governance, and technical translation for AI systems." data-zh="AI系统的安全评估、数据治理与技术成果转化。">Security evaluation, data governance, and technical translation for AI systems.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="works">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker" data-en="Works and Achievements" data-zh="成果与荣誉">Works and Achievements</p>
+          <h2 data-en="A compact front page, with detailed records one click away." data-zh="主界面简洁展示，详细成果一键展开。">A compact front page, with detailed records one click away.</h2>
+          <p class="section-text" data-en="The front page should avoid long tables. Each category provides a short summary and opens a detailed panel for complete records." data-zh="主页不建议堆长表格。每个类别先给出简洁概览，点击后再展示完整清单。">
+            The front page should avoid long tables. Each category provides a short summary and opens a detailed panel for complete records.
+          </p>
+        </div>
+
+        <div class="showcase-grid">
+          <article class="mini-card reveal">
+            <div><div class="card-topline"><span class="label" data-en="Publications" data-zh="论文">Publications</span><span class="count">5</span></div><h3 data-en="A-class security papers" data-zh="A类安全论文">A-class security papers</h3><p data-en="Selected papers in security, privacy, cryptography, and trustworthy systems." data-zh="安全、隐私、密码学与可信系统方向的代表性论文。">Selected papers in security, privacy, cryptography, and trustworthy systems.</p></div>
+            <button class="open-detail" type="button" data-modal="publications" data-en="View publications" data-zh="查看论文">View publications</button>
+          </article>
+
+          <article class="mini-card reveal">
+            <div><div class="card-topline"><span class="label" data-en="Projects" data-zh="项目">Projects</span><span class="count">Add</span></div><h3 data-en="Research and transformation projects" data-zh="科研与成果转化项目">Research and transformation projects</h3><p data-en="Research projects, applied security systems, and research-to-product initiatives." data-zh="科研项目、应用安全系统与成果转化类项目。">Research projects, applied security systems, and research-to-product initiatives.</p></div>
+            <button class="open-detail" type="button" data-modal="projects" data-en="View projects" data-zh="查看项目">View projects</button>
+          </article>
+
+          <article class="mini-card reveal">
+            <div><div class="card-topline"><span class="label" data-en="Standards and Books" data-zh="标准著作">Standards and Books</span><span class="count">11</span></div><h3 data-en="National and industry standards" data-zh="国家标准与行业标准">National and industry standards</h3><p data-en="Standardization experience in security-related technologies and governance systems." data-zh="安全技术与治理体系相关标准化经验。">Standardization experience in security-related technologies and governance systems.</p></div>
+            <button class="open-detail" type="button" data-modal="standards" data-en="View standards" data-zh="查看标准著作">View standards</button>
+          </article>
+
+          <article class="mini-card reveal">
+            <div><div class="card-topline"><span class="label" data-en="Patents" data-zh="专利">Patents</span><span class="count">10+</span></div><h3 data-en="Security technology patents" data-zh="安全技术专利">Security technology patents</h3><p data-en="Patents related to privacy, secure computation, data security, and trusted systems." data-zh="隐私保护、安全计算、数据安全与可信系统相关专利。">Patents related to privacy, secure computation, data security, and trusted systems.</p></div>
+            <button class="open-detail" type="button" data-modal="patents" data-en="View patents" data-zh="查看专利">View patents</button>
+          </article>
+
+          <article class="mini-card reveal">
+            <div><div class="card-topline"><span class="label" data-en="Awards" data-zh="奖项">Awards</span><span class="count">Add</span></div><h3 data-en="Honors and awards" data-zh="荣誉与奖项">Honors and awards</h3><p data-en="Academic awards, competition awards, scholarships, and recognition." data-zh="学术奖励、竞赛奖项、奖学金与荣誉称号。">Academic awards, competition awards, scholarships, and recognition.</p></div>
+            <button class="open-detail" type="button" data-modal="awards" data-en="View awards" data-zh="查看奖项">View awards</button>
+          </article>
+
+          <article class="mini-card reveal">
+            <div><div class="card-topline"><span class="label" data-en="CV" data-zh="简历">CV</span><span class="count">PDF</span></div><h3 data-en="Detailed academic and advisory profile" data-zh="完整学术与顾问简历">Detailed academic and advisory profile</h3><p data-en="A downloadable CV or service profile can be added after the homepage content is finalized." data-zh="主页内容确定后，可以在这里放置可下载的完整简历或服务介绍 PDF。">A downloadable CV or service profile can be added after the homepage content is finalized.</p></div>
+            <a class="open-detail" href="#contact" data-en="Request CV" data-zh="获取简历">Request CV</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="collaboration">
+      <div class="container">
+        <div class="dark-panel reveal">
+          <div class="dark-panel-inner">
+            <div>
+              <p class="section-kicker" data-en="Collaboration" data-zh="合作意向">Collaboration</p>
+              <h2 data-en="Selective collaboration in security research translation." data-zh="面向安全科研成果转化的选择性合作。">Selective collaboration in security research translation.</h2>
+              <p data-en="I am open to research collaboration, technical advisory, project design, patent and standardization strategy, and privacy-preserving system architecture. I prefer focused collaborations where rigorous security thinking can create long-term technical assets." data-zh="我开放科研合作、技术顾问、项目设计、专利与标准化路径规划，以及隐私保护系统架构设计。我更倾向于聚焦型合作，使严谨的安全研究转化为长期技术资产。">
+                I am open to research collaboration, technical advisory, project design, patent and standardization strategy, and privacy-preserving system architecture. I prefer focused collaborations where rigorous security thinking can create long-term technical assets.
+              </p>
+            </div>
+            <div class="intent-list">
+              <div class="intent-item"><span class="check">✓</span><span data-en="Privacy computing and zero-knowledge proof system design" data-zh="隐私计算与零知识证明系统设计">Privacy computing and zero-knowledge proof system design</span></div>
+              <div class="intent-item"><span class="check">✓</span><span data-en="AI security, data governance, and risk assessment" data-zh="AI安全、数据治理与风险评估">AI security, data governance, and risk assessment</span></div>
+              <div class="intent-item"><span class="check">✓</span><span data-en="Patent, standard, white paper, and technical roadmap planning" data-zh="专利、标准、白皮书与技术路线规划">Patent, standard, white paper, and technical roadmap planning</span></div>
+              <div class="intent-item"><span class="check">✓</span><span data-en="Joint research projects with universities, institutes, and enterprises" data-zh="高校、研究院与企业联合科研项目">Joint research projects with universities, institutes, and enterprises</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="contact-panel reveal">
+          <div class="contact-main">
+            <p class="section-kicker" data-en="Contact" data-zh="联系方式">Contact</p>
+            <h2 class="panel-title" data-en="Let this website become a precise expert entry point." data-zh="让这个主页成为清晰、正式的专家入口。">Let this website become a precise expert entry point.</h2>
+            <p data-en="For research collaboration, technical advisory, privacy computing, AI security, standards, patents, or research-to-product strategy, please reach out by email." data-zh="如需科研合作、技术顾问、隐私计算、AI安全、标准、专利或成果转化相关合作，欢迎邮件联系。">
+              For research collaboration, technical advisory, privacy computing, AI security, standards, patents, or research-to-product strategy, please reach out by email.
+            </p>
+            <div class="contact-methods">
+              <div class="contact-method"><b data-en="Email" data-zh="邮箱">Email</b><span>contact@lu-zhi.com</span></div>
+              <div class="contact-method"><b data-en="Website" data-zh="网站">Website</b><span>lu-zhi.com</span></div>
+              <div class="contact-method"><b data-en="Location" data-zh="地点">Location</b><span data-en="Wuhan / Singapore" data-zh="武汉 / 新加坡">Wuhan / Singapore</span></div>
+            </div>
+          </div>
+          <aside class="contact-side">
+            <div class="icon-box" style="background: rgba(255,255,255,0.10); color: #a5f3fc;">ID</div>
+            <h3 data-en="Next content to provide" data-zh="下一步需要补充的信息">Next content to provide</h3>
+            <p data-en="Please provide your portrait, Chinese and English self-introduction, full publication list, projects, standards, patents, awards, and preferred contact email. I can then replace all placeholders and polish the final version." data-zh="接下来你只需要提供个人照片、中英文简介、完整论文、项目、标准著作、专利、奖项和正式联系邮箱。我可以继续替换占位内容并润色成最终版。">
+              Please provide your portrait, Chinese and English self-introduction, full publication list, projects, standards, patents, awards, and preferred contact email. I can then replace all placeholders and polish the final version.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© <span id="year"></span> <span data-en="Zhi Lu. All rights reserved." data-zh="卢智。保留所有权利。">Zhi Lu. All rights reserved.</span></div>
+  </footer>
+
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <h3 id="modalTitle">Details</h3>
+          <p id="modalSubtitle">Complete records can be edited in the JavaScript data section.</p>
+        </div>
+        <button class="modal-close" type="button" aria-label="Close details">×</button>
+      </div>
+      <div class="modal-body"><div class="modal-list" id="modalList"></div></div>
+    </div>
+  </div>
+
+  <script>
+    const state = { lang: localStorage.getItem('lang') || 'en' };
+
+    const modalData = {
+      experience: {
+        en: { title: 'Experience', subtitle: 'Detailed timeline placeholder. Replace these entries with your final work and research experience.', items: [
+          ['2026', 'Incoming Research Fellow, National University of Singapore', 'Research on security, privacy, cryptography, and trustworthy systems.'],
+          ['Ph.D.', 'Huazhong University of Science and Technology', 'Ph.D. candidate in cyberspace security.'],
+          ['Standards', 'National and industry standardization work', 'Participated in multiple national and industry standards.']
+        ]},
+        zh: { title: '工作经历', subtitle: '详细时间线占位内容。后续可替换为你的完整工作与科研经历。', items: [
+          ['2026', '新加坡国立大学 Research Fellow', '围绕安全、隐私、密码学与可信系统开展研究。'],
+          ['博士', '华中科技大学网络空间安全学院', '网络空间安全方向博士研究生。'],
+          ['标准', '国家标准与行业标准制定工作', '参与多项国家标准与行业标准制定。']
+        ]}
+      },
+      publications: {
+        en: { title: 'Publications', subtitle: 'Replace placeholders with your full selected publication list.', items: [
+          ['Selected Paper', 'WhiteCloak: How to Hold Anonymous Malicious Clients Accountable in Secure Aggregation', 'Replace with final venue, author order, and publication information.'],
+          ['Selected Paper', 'Lattice-Based Special Zero-Knowledge Proofs for Secure Aggregation Input Verification', 'Replace with final venue, author order, and publication information.'],
+          ['Selected Paper', 'Split Aggregation: Lightweight Privacy-Preserving Federated Learning Resistant to Byzantine Attacks', 'Replace with journal, author order, and publication information.']
+        ]},
+        zh: { title: '论文', subtitle: '后续替换为你的完整代表论文清单。', items: [
+          ['代表论文', 'WhiteCloak: How to Hold Anonymous Malicious Clients Accountable in Secure Aggregation', '替换为最终会议、作者顺序与发表信息。'],
+          ['代表论文', 'Lattice-Based Special Zero-Knowledge Proofs for Secure Aggregation Input Verification', '替换为最终会议、作者顺序与发表信息。'],
+          ['代表论文', 'Split Aggregation: Lightweight Privacy-Preserving Federated Learning Resistant to Byzantine Attacks', '替换为期刊、作者顺序与发表信息。']
+        ]}
+      },
+      projects: {
+        en: { title: 'Projects', subtitle: 'Research, transformation, and advisory project placeholders.', items: [
+          ['Project', 'Privacy-preserving data analysis and secure aggregation', 'Add project source, role, period, funding, and contribution.'],
+          ['Project', 'Zero-knowledge proof based input compliance verification', 'Add project source, role, period, funding, and contribution.'],
+          ['Project', 'Anonymous accountability and data security governance', 'Add project source, role, period, funding, and contribution.']
+        ]},
+        zh: { title: '项目', subtitle: '科研、成果转化与技术顾问项目占位内容。', items: [
+          ['项目', '隐私保护数据分析与安全聚合', '补充项目来源、角色、周期、经费与主要贡献。'],
+          ['项目', '基于零知识证明的输入合规性验证', '补充项目来源、角色、周期、经费与主要贡献。'],
+          ['项目', '匿名问责与数据安全治理', '补充项目来源、角色、周期、经费与主要贡献。']
+        ]}
+      },
+      standards: {
+        en: { title: 'Standards and Books', subtitle: 'Standards, books, and technical documents.', items: [
+          ['National Standard', 'Add national standard title here', 'Add standard number, role, and status.'],
+          ['Industry Standard', 'Add industry standard title here', 'Add standard number, role, and status.'],
+          ['Book or Technical Report', 'Add book or report title here', 'Add publisher, year, and role.']
+        ]},
+        zh: { title: '标准著作', subtitle: '国家标准、行业标准、著作与技术文档。', items: [
+          ['国家标准', '在这里添加国家标准名称', '补充标准号、参与角色与状态。'],
+          ['行业标准', '在这里添加行业标准名称', '补充标准号、参与角色与状态。'],
+          ['著作或技术报告', '在这里添加著作或报告名称', '补充出版社、年份与角色。']
+        ]}
+      },
+      patents: {
+        en: { title: 'Patents', subtitle: 'Security technology patent records.', items: [
+          ['Patent', 'Add patent title here', 'Add patent number, inventors, status, and year.'],
+          ['Patent', 'Add patent title here', 'Add patent number, inventors, status, and year.'],
+          ['Patent', 'Add patent title here', 'Add patent number, inventors, status, and year.']
+        ]},
+        zh: { title: '专利', subtitle: '安全技术相关专利记录。', items: [
+          ['专利', '在这里添加专利名称', '补充专利号、发明人、状态与年份。'],
+          ['专利', '在这里添加专利名称', '补充专利号、发明人、状态与年份。'],
+          ['专利', '在这里添加专利名称', '补充专利号、发明人、状态与年份。']
+        ]}
+      },
+      awards: {
+        en: { title: 'Awards', subtitle: 'Awards and honors.', items: [
+          ['Award', 'Add award title here', 'Add awarding organization, year, and level.'],
+          ['Scholarship', 'Add scholarship title here', 'Add awarding organization and year.'],
+          ['Honor', 'Add honor title here', 'Add awarding organization and year.']
+        ]},
+        zh: { title: '奖项', subtitle: '获奖与荣誉记录。', items: [
+          ['奖项', '在这里添加奖项名称', '补充授奖单位、年份与级别。'],
+          ['奖学金', '在这里添加奖学金名称', '补充授奖单位与年份。'],
+          ['荣誉', '在这里添加荣誉称号', '补充授奖单位与年份。']
+        ]}
+      }
+    };
+
+    function applyLanguage(lang) {
+      state.lang = lang;
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+      document.querySelectorAll('[data-en][data-zh]').forEach((el) => {
+        el.textContent = el.getAttribute(`data-${lang}`);
+      });
+      document.querySelectorAll('[data-lang-button]').forEach((button) => {
+        button.classList.toggle('active', button.getAttribute('data-lang-button') === lang);
+      });
+    }
+
+    document.querySelectorAll('[data-lang-button]').forEach((button) => {
+      button.addEventListener('click', () => applyLanguage(button.getAttribute('data-lang-button')));
+    });
+
+    const year = document.getElementById('year');
+    if (year) year.textContent = new Date().getFullYear();
+
+    const menuButton = document.querySelector('.menu-button');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (menuButton && mobileMenu) {
+      menuButton.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.toggle('open');
+        menuButton.setAttribute('aria-expanded', String(isOpen));
+      });
+      mobileMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('open');
+          menuButton.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    const backdrop = document.getElementById('modalBackdrop');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+    const modalList = document.getElementById('modalList');
+    const modalClose = document.querySelector('.modal-close');
+
+    function openModal(key) {
+      const data = modalData[key] && modalData[key][state.lang];
+      if (!data) return;
+      modalTitle.textContent = data.title;
+      modalSubtitle.textContent = data.subtitle;
+      modalList.innerHTML = data.items.map((item) => `
+        <article class="modal-item">
+          <div class="meta">${item[0]}</div>
+          <h4>${item[1]}</h4>
+          <p>${item[2]}</p>
+        </article>
+      `).join('');
+      backdrop.classList.add('open');
+      backdrop.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      backdrop.classList.remove('open');
+      backdrop.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('[data-modal]').forEach((button) => {
+      button.addEventListener('click', () => openModal(button.getAttribute('data-modal')));
+    });
+
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (backdrop) {
+      backdrop.addEventListener('click', (event) => {
+        if (event.target === backdrop) closeModal();
+      });
+    }
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeModal();
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach((element) => observer.observe(element));
+
+    applyLanguage(state.lang);
+  </script>
+</body>
+</html>
