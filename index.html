@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Zhi Lu — Research Fellow at the National University of Singapore, working on cryptography, privacy computing, and trustworthy AI.">
 <title>Zhi Lu · 路直</title>
+<link rel="canonical" href="https://www.lu-zhi.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b85c3c'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' font-weight='600' fill='%23faf9f5' text-anchor='middle'%3EZL%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#faf9f5">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.lu-zhi.com/">
+<meta property="og:title" content="Zhi Lu · 路直 — Cryptography &amp; Privacy Computing">
+<meta property="og:description" content="Research Fellow at NUS. Zero-knowledge proofs, secure aggregation, distributed key generation. 知者不言。">
+<meta property="og:image" content="https://www.lu-zhi.com/couple.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root{
   --bg:#faf9f5;--surface:#ffffff;--sunk:#f2efe6;--ink:#1f1e1c;--ink-2:#3a3732;--muted:#67625a;
@@ -61,6 +70,9 @@ h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:
 .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--surface)}
 .btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .btn.primary:hover{color:var(--bg);opacity:.88}
+.profiles{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:18px;font-size:15px}
+.profiles a{color:var(--muted);text-decoration:none;padding:4px 0}
+.profiles a:hover{color:var(--accent)}
 .photo{margin:0;width:100%;max-width:340px;justify-self:end}
 .photo img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center 50%;border-radius:22px;background:var(--sunk)}
 .photo figcaption{margin-top:12px;font:italic 15px/1.4 var(--serif);color:var(--muted);text-align:center}
@@ -71,6 +83,12 @@ h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:
 .stat+.stat{border-left:1px solid var(--line)}
 .stat b{display:block;font:500 34px/1.1 var(--serif);letter-spacing:-.01em}
 .stat span{font-size:14.5px;line-height:1.5;color:var(--muted)}
+
+/* motto */
+.motto{margin:64px auto 0;max-width:760px;text-align:center}
+.motto blockquote{margin:0;font:400 clamp(21px,2.6vw,27px)/1.6 var(--serif);color:var(--ink-2);text-wrap:balance}
+.motto blockquote::before{content:"";display:block;width:36px;height:2px;margin:0 auto 24px;background:var(--accent)}
+.motto em{font-style:normal;font-weight:600;color:var(--accent)}
 
 /* sections */
 section{padding:88px 0 0}
@@ -103,6 +121,8 @@ p{margin:0 0 16px}
 .wip{display:grid;gap:12px}
 .wip .card{flex-direction:row;align-items:flex-start;gap:16px}
 .dot{flex:none;width:10px;height:10px;margin-top:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
+.book-line{font-family:var(--serif)!important;font-style:italic;font-size:16.5px!important;color:var(--ink-2)}
+body[data-lang=zh] .book-line{font-style:normal}
 .status{font:500 13px var(--mono);letter-spacing:.04em;color:var(--accent);margin-bottom:4px}
 .recent{list-style:none;margin:0;padding:0}
 .recent li{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2)}
@@ -138,6 +158,11 @@ p{margin:0 0 16px}
 .list .m b{color:var(--ink-2);font-weight:600}
 .list .r{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
 .list .yr{font:500 13px var(--mono);color:var(--muted)}
+.h4-note{text-transform:none;letter-spacing:0;font:400 13px var(--sans)}
+.list.feat{padding:0;counter-reset:f}
+.list.feat li{grid-template-columns:28px 1fr;gap:12px;counter-increment:f}
+.list.feat li::before{content:counter(f,decimal-leading-zero);font:500 13px/1.9 var(--mono);color:var(--accent)}
+.list.feat li:first-child{border-top:0;padding-top:4px}
 
 /* cards */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -164,6 +189,7 @@ footer{margin-top:96px;padding:40px 0 56px;border-top:1px solid var(--ink);displ
 .totop.show{opacity:1;transform:none;pointer-events:auto}
 .totop:hover{color:var(--accent)}
 footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
+footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
 
 @media (max-width:900px){
   .hero,.about,.news{grid-template-columns:1fr;gap:40px}
@@ -255,6 +281,10 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
         <a class="btn primary" href="mailto:zhilu@nus.edu.sg">zhilu@nus.edu.sg</a>
         <a class="btn" href="#publications"><span class="en">Selected papers ↓</span><span class="zh">代表论文 ↓</span></a>
       </div>
+      <div class="profiles">
+        <a href="https://scholar.google.com/citations?user=S-lmKsYAAAAJ" target="_blank" rel="noreferrer">Google Scholar ↗</a>
+        <a href="https://orcid.org/0000-0002-5411-9854" target="_blank" rel="noreferrer">ORCID ↗</a>
+      </div>
     </div>
     <figure class="photo">
       <img src="couple.jpg" alt="Zhi Lu on a garden path" width="1000" height="1334">
@@ -268,6 +298,13 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
     <div class="stat"><b>8</b><span class="en">national &amp; group standards</span><span class="zh">项国家 / 团体标准</span></div>
     <div class="stat"><b>11</b><span class="en">invention patents</span><span class="zh">项发明专利</span></div>
   </div>
+
+  <figure class="motto">
+    <blockquote>
+      <span class="zh">零知识证明让<em>“知者不言”</em>这句老子的哲思成为可构造的协议：不泄露任何秘密，却能令人确信你知道。</span>
+      <span class="en">Zero-knowledge proofs turn Laozi's <em>“those who know do not speak”</em> into a constructible protocol: reveal no secret, yet convince others that you know.</span>
+    </blockquote>
+  </figure>
 
   <!-- About -->
   <section id="about">
@@ -324,22 +361,25 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
               <p><span class="en">A systematic treatment of ZKP — from foundations to constructions and applications.</span><span class="zh">系统介绍零知识证明，从基础理论到构造与应用。</span></p>
             </div>
           </article>
-          <article class="card">
-            <span class="dot"></span>
-            <div>
-              <div class="status"><span class="en">IN PROGRESS</span><span class="zh">进行中</span></div>
-              <h3><span class="en">Anamorphic zero-knowledge proofs</span><span class="zh">Anamorphic 零知识证明</span></h3>
-              <p><span class="en">A new paper bringing anamorphic cryptography to zero-knowledge proofs.</span><span class="zh">将 anamorphic 密码学引入零知识证明的新工作。</span></p>
-            </div>
-          </article>
         </div>
+
+        <h4><span class="en">Featured work under review</span><span class="zh">在投代表作</span> <span class="h4-note"><span class="en">· all first-authored</span><span class="zh">· 均为第一作者</span></span></h4>
+        <ol class="list feat">
+          <li><div><span class="t">ProofOut: Did Your Data Really Stay Out of LLM Training?</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Fang Liu, Songfeng Lu, Jiaheng Zhang</div></div></li>
+          <li><div><span class="t">ZeroM: Verifying Memory-Off in LLMs with Zero-Knowledge Proofs</span></div></li>
+          <li><div><span class="t">Anamorphic Proofs of Knowledge from Prover Randomness</span><div class="m"><span class="en">Bringing anamorphic cryptography to zero-knowledge proofs</span><span class="zh">将 anamorphic 密码学引入零知识证明</span></div></div></li>
+          <li><div><span class="t">VeilCall: Private Regex Enforcement for Web Agent Tool Calls</span></div></li>
+          <li><div><span class="t">zkRule: Inspecting Encrypted Web Files without Seeing Them</span></div></li>
+        </ol>
+
         <details class="more">
-          <summary><span class="en">Papers under review</span><span class="zh">在投论文</span> <span class="n">16</span></summary>
+          <summary><span class="en">All papers under review</span><span class="zh">其余在投论文</span> <span class="n">17</span></summary>
           <ul class="list">
-            <li><div><span class="t">ProofOut: Did Your Data Really Stay Out of LLM Training?</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Fang Liu, Songfeng Lu, Jiaheng Zhang</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
-            <li><div><span class="t">DECOY: Decoy Reuse for Private Vector Search</span><div class="m"><b>Zhi Lu</b>, Shuai Guo, Fang Liu, Songfeng Lu, Jiaheng Zhang</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">HeirShift: Private and Updatable Authorization for Digital Inheritance</span></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">Docket: Server Accountability for Input-Validated Secure Aggregation</span></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">Janus: Anamorphic Watermarking for Covert Forensics in Large Language Models</span></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">AUDITPIR: How Can a Third Party Audit a PIR Query It Is Not Allowed to See?</span></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
             <li><div><span class="t">SzFL: Secure Zero-Knowledge Verification for Federated Learning</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Hewang Nie, Fang Liu, Songfeng Lu</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
-            <li><div><span class="t">AVSA: Accountable and Verifiable Secure Aggregation</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Hewang Nie, Fang Liu, Songfeng Lu</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
             <li><div><span class="t">Real-World Anchored Watermarking with Lattice-Based Aggregation in Federated Learning</span></div><div class="r"><span class="yr"><span class="en">Co-first author</span><span class="zh">共同第一作者</span></span></div></li>
             <li><div><span class="t">Signature-free Lattice-Based Asynchronous Distributed Key Generation without PKI Setup</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
             <li><div><span class="t">PQADKG: Post-Quantum Asynchronous Distributed Key Generation</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
@@ -557,7 +597,8 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
   <footer id="contact">
     <div>
       <div class="big"><span class="en">Let's talk research.</span><span class="zh">欢迎交流与合作。</span></div>
-      <a href="mailto:zhilu@nus.edu.sg">zhilu@nus.edu.sg</a> · <a href="mailto:luzhi@ieee.org">luzhi@ieee.org</a>
+      <p class="invite"><span class="en">Students and researchers interested in zero-knowledge proofs or privacy computing are always welcome to reach out.</span><span class="zh">欢迎对零知识证明、隐私计算感兴趣的同学与研究者联系交流。</span></p>
+      <a href="mailto:zhilu@nus.edu.sg">zhilu@nus.edu.sg</a> · <a href="mailto:luzhi@ieee.org">luzhi@ieee.org</a> · <a href="https://scholar.google.com/citations?user=S-lmKsYAAAAJ" target="_blank" rel="noreferrer">Google Scholar</a> · <a href="https://orcid.org/0000-0002-5411-9854" target="_blank" rel="noreferrer">ORCID</a>
     </div>
     <div style="align-self:flex-end">© 2026 Zhi Lu · <span class="en">Singapore</span><span class="zh">新加坡</span></div>
   </footer>
