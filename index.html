@@ -51,7 +51,8 @@ body[data-lang=en] .zh,body[data-lang=zh] .en{display:none!important}
 .hero{display:grid;grid-template-columns:1.25fr 1fr;gap:64px;align-items:center;padding:72px 0 56px}
 .eyebrow{font:500 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 20px}
 h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:0 0 6px}
-.cn-name{font:400 22px/1 var(--serif);color:var(--muted);margin:0 0 26px}
+.cn-name{font:400 22px/1 var(--serif);color:var(--muted);margin:0 0 26px;display:flex;align-items:center;gap:12px}
+.pron{font:500 13px/1 var(--sans);padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
 .lede{font:400 21px/1.55 var(--serif);color:var(--ink-2);margin:0 0 28px;max-width:34em}
 .lede strong{font-weight:600;color:var(--ink)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px;padding:0;list-style:none}
@@ -239,7 +240,7 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
     <div>
       <p class="eyebrow"><span class="en">Research Fellow · NUS Computing</span><span class="zh">新加坡国立大学 · 博士后研究员</span></p>
       <h1>Zhi Lu</h1>
-      <p class="cn-name">路直</p>
+      <p class="cn-name">路直 <span class="pron"><span class="en">he / him</span><span class="zh">男</span></span></p>
       <p class="lede">
         <span class="en">I build cryptographic tools that let people <strong>compute together without giving up their privacy</strong> — and that hold misbehaving parties accountable when trust breaks down.</span>
         <span class="zh">我研究如何让多方<strong>在不泄露隐私的前提下协同计算</strong>，并在信任失效时，依然能让作恶者被追责。</span>
@@ -397,21 +398,21 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
       </li>
       <li class="pub zh">
         <div class="venue">计算机学报 2026<br><span class="tier t1">T1</span></div>
-        <div><h3>融合零信任与零知识证明的匿名身份认证</h3><div class="authors"><b>Zhi Lu</b>, Songfeng Lu</div></div>
+        <div><h3>融合零信任与零知识证明的匿名身份认证</h3><div class="authors"><b>路直</b>，沈任飞，聂何望，骆婷，路松峰</div></div>
         <a class="go" data-s="Anonymous Identity Authentication Integrating Zero Trust and Zero-Knowledge Proofs">论文 ↗</a>
       </li>
       <li class="pub zh">
         <div class="venue">中国科学：信息科学 2026<br><span class="tier t1">T1</span></div>
-        <div><h3>HINT: Hidden-Intent Voting without Revoting under Coercion</h3><div class="authors"><b>Zhi Lu</b>, Songfeng Lu</div></div>
-        <a class="go" data-s>论文 ↗</a>
+        <div><h3>HINT：胁迫下无需重投的隐藏意图投票系统</h3><div class="authors"><b>路直</b>，沈任飞，路松峰</div></div>
+        <a class="go" data-s="HINT: Hidden-Intent Voting without Revoting under Coercion">论文 ↗</a>
       </li>
     </ol>
 
     <details class="more">
       <summary><span class="en">All other publications</span><span class="zh">全部其他论文</span> <span class="n"><span class="en">23</span><span class="zh">21</span></span></summary>
       <ul class="list">
-        <li class="en"><div><a class="t" data-s>Anonymous Identity Authentication Integrating Zero Trust and Zero-Knowledge Proofs</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu · Chinese Journal of Computers</div></div><div class="r"><span class="yr">2026</span></div></li>
-        <li class="en"><div><a class="t" data-s>HINT: Hidden-Intent Voting without Revoting under Coercion</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu · SCIENCE CHINA Information Sciences</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li class="en"><div><a class="t" data-s>Anonymous Identity Authentication Integrating Zero Trust and Zero-Knowledge Proofs</a><div class="m"><b>Zhi Lu</b>, Renfei Shen, Hewang Nie, Ting Luo, Songfeng Lu · Chinese Journal of Computers</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li class="en"><div><a class="t" data-s>HINT: Hidden-Intent Voting without Revoting under Coercion</a><div class="m"><b>Zhi Lu</b>, Renfei Shen, Songfeng Lu · SCIENCE CHINA Information Sciences</div></div><div class="r"><span class="yr">2026</span></div></li>
         <li><div><a class="t" data-s>Asynchronous Random Committee Election for Preprocessing in Asynchronous Distributed Key Generation</a><div class="m">Renfei Shen*, <b>Zhi Lu*</b>, Fang Liu, Songfeng Lu · IEEE TNSM</div></div><div class="r"><span class="yr">2026</span></div></li>
         <li><div><a class="t" data-s>Robust and Verifiable Privacy Federated Learning</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu, Xueming Tang, Junjun Wu · IEEE TAI</div></div><div class="r"><span class="yr">2024</span></div></li>
         <li><div><a class="t" data-s>Lightweight Byzantine-Robust and Privacy-Preserving Federated Learning</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu, Yongquan Cui, Junjun Wu, Hewang Nie, Jue Xiao, Zepu Yi · Euro-Par</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
@@ -467,7 +468,7 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
       <summary><span class="en">More projects</span><span class="zh">更多项目</span> <span class="n">4</span></summary>
       <ul class="list">
         <li><div><span class="t"><span class="en">Key technologies for post-quantum secure distributed key infrastructure</span><span class="zh">面向后量子安全的分布式密钥基础设施关键技术研究</span></span><div class="m"><span class="en">Innovation Funding Program, Cyberspace Administration of China</span><span class="zh">中央网信办创新资助计划</span></div></div><div class="r"><span class="tier t1"><span class="en">Participant</span><span class="zh">参与</span></span></div></li>
-        <li><div><span class="t"><span class="en">Identity and access management for AI agents in cybersecurity — topic issued by Topsec</span><span class="zh">面向网络安全领域 AI 智能体的身份和访问管理研究 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program</span><span class="zh">网络安全学院学生创新资助计划</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
+        <li><div><span class="t"><span class="en">Identity and access management for AI agents in cybersecurity — topic issued by Topsec</span><span class="zh">面向网络安全领域 AI 智能体的身份和访问管理研究 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase IV</span><span class="zh">网络安全学院学生创新资助计划第四期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
         <li><div><span class="t"><span class="en">GPS positioning — topic issued by DiDi</span><span class="zh">GPS 定位 —— 滴滴出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase II</span><span class="zh">网络安全学院学生创新资助计划第二期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
         <li><div><span class="t"><span class="en">AI-assisted data classification &amp; grading — topic issued by Topsec</span><span class="zh">人工智能辅助数据自动分类分级 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase III</span><span class="zh">网络安全学院学生创新资助计划第三期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
       </ul>
