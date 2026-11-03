@@ -14,7 +14,7 @@
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){:root{
-  --bg:#1b1a18;--surface:#242320;--sunk:#201f1c;--ink:#f1eee6;--ink-2:#d6d2c8;--muted:#a19c92;
+  --bg:#1b1a18;--surface:#242320;--sunk:#2b2a26;--ink:#f1eee6;--ink-2:#d6d2c8;--muted:#a19c92;
   --line:#35332e;--accent:#e2896a;--accent-soft:#3a2a23;
 }}
 *{box-sizing:border-box}
@@ -71,13 +71,12 @@ section{padding:64px 0 8px}
 h2{font:500 32px/1.15 var(--serif);letter-spacing:-.015em;margin:0}
 .sec-note{margin-left:auto;font-size:13.5px;color:var(--muted)}
 h3{font:600 17px/1.4 var(--sans);margin:0}
+h4{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:36px 0 12px}
 p{margin:0 0 16px}
-.muted{color:var(--muted)}
 
 /* about */
 .about{display:grid;grid-template-columns:1.3fr 1fr;gap:56px}
 .about p{font-size:17px;color:var(--ink-2)}
-.quote{margin:24px 0 0;padding:4px 0 4px 20px;border-left:2px solid var(--accent);font:italic 19px/1.55 var(--serif);color:var(--ink)}
 .timeline{list-style:none;margin:0;padding:0}
 .timeline li{display:grid;grid-template-columns:92px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
 .timeline li:first-child{border-top:0;padding-top:0}
@@ -91,16 +90,46 @@ p{margin:0 0 16px}
 .value .k{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
 .value p{font-size:15px;color:var(--ink-2);margin:6px 0 0;line-height:1.6}
 
+/* news */
+.news{display:grid;grid-template-columns:1.3fr 1fr;gap:56px}
+.wip{display:grid;gap:12px}
+.wip .card{flex-direction:row;align-items:flex-start;gap:16px}
+.dot{flex:none;width:10px;height:10px;margin-top:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
+.status{font:500 12px var(--mono);letter-spacing:.04em;color:var(--accent);margin-bottom:4px}
+.recent{list-style:none;margin:0;padding:0}
+.recent li{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2)}
+.recent li:first-child{border-top:0;padding-top:0}
+.recent time{font:500 13px/1.75 var(--mono);color:var(--muted)}
+
 /* publications */
 .pubs{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .pub{display:grid;grid-template-columns:150px 1fr auto;gap:24px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline}
-.venue{font:600 14px/1.3 var(--mono);color:var(--accent)}
-.venue small{display:block;font:400 12px var(--sans);color:var(--muted);margin-top:4px}
+.venue{font:600 14px/1.3 var(--mono);color:var(--ink)}
+.venue .tier{margin-top:8px}
 .pub h3{font:500 19px/1.4 var(--serif);letter-spacing:-.005em}
 .authors{font-size:14px;color:var(--muted);margin-top:6px}
 .authors b{color:var(--ink);font-weight:600}
-.pub .go{font-size:13px;color:var(--muted);text-decoration:none;white-space:nowrap}
-.pub .go:hover{color:var(--accent)}
+.go{font-size:13px;color:var(--muted);text-decoration:none;white-space:nowrap}
+.go:hover{color:var(--accent)}
+.tier{display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.03em;padding:5px 8px;border-radius:6px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tier.a{background:var(--accent);color:var(--bg)}
+.tier.t1{background:var(--accent-soft);color:var(--accent)}
+
+/* expandable lists */
+.more{margin-top:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.more summary{list-style:none;cursor:pointer;padding:16px 22px;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600}
+.more summary::-webkit-details-marker{display:none}
+.more summary::after{content:"";margin-left:auto;width:8px;height:8px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .2s}
+.more[open] summary::after{transform:rotate(-135deg) translateY(-3px)}
+.more summary:hover{color:var(--accent)}
+.more summary .n{font:500 13px var(--mono);color:var(--muted);font-weight:400}
+.list{list-style:none;margin:0;padding:0 22px 8px}
+.list li{display:grid;grid-template-columns:1fr auto;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.list .t{font-size:15px;font-weight:600;line-height:1.45;text-decoration:none}
+.list .m{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.list .m b{color:var(--ink-2);font-weight:600}
+.list .r{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.list .yr{font:500 12px var(--mono);color:var(--muted)}
 
 /* cards */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -108,27 +137,24 @@ p{margin:0 0 16px}
 .tag{align-self:flex-start;font:500 12px/1 var(--sans);padding:5px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .tag.plain{background:var(--sunk);color:var(--muted)}
 .card p{font-size:15px;color:var(--ink-2);margin:0;line-height:1.6}
+.hl{font:500 14px var(--serif);color:var(--accent)}
 
 /* honors */
-.honors{list-style:none;margin:0;padding:0}
-.honors li{display:grid;grid-template-columns:1fr auto;gap:16px;padding:18px 0;border-top:1px solid var(--line)}
-.honors li:last-child{border-bottom:1px solid var(--line)}
-.honors .by{font-size:14px;color:var(--muted);margin-top:2px}
-.honors time{font:500 13px/1.9 var(--mono);color:var(--muted)}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:56px}
-
-/* contributions */
-.figs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.fig b{display:block;font:500 40px/1 var(--serif);margin-bottom:10px}
+.honors{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.honor{display:grid;grid-template-columns:132px 1fr;gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.badge{font:500 26px/1.1 var(--serif);color:var(--accent);letter-spacing:-.01em}
+.badge small{display:block;font:500 12px/1.4 var(--sans);color:var(--muted);margin-top:4px;letter-spacing:0}
+.honor .by{font-size:14px;color:var(--muted);margin-top:3px;line-height:1.5}
+.honor time{font:500 12px var(--mono);color:var(--muted)}
 
 footer{margin-top:88px;padding:40px 0 56px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;font-size:14px;color:var(--muted)}
 footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
 
 @media (max-width:900px){
-  .hero,.about,.split{grid-template-columns:1fr;gap:40px}
+  .hero,.about,.news{grid-template-columns:1fr;gap:40px}
   .hero{padding-top:44px}
   .photo{max-width:320px;justify-self:start}
-  .values,.figs{grid-template-columns:1fr}
+  .values{grid-template-columns:1fr}
   .stats{grid-template-columns:repeat(2,1fr)}
   .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid var(--line)}
@@ -141,12 +167,19 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
   .links a{padding:7px 9px;font-size:13px}
   .grid{grid-template-columns:1fr}
   .pub{grid-template-columns:1fr;gap:6px}
+  .venue{display:flex;gap:10px;align-items:center}
+  .venue .tier{margin-top:0}
   .pub .go{justify-self:start;margin-top:4px}
   .sec-head{flex-wrap:wrap}
   .sec-note{margin-left:0;width:100%}
   h2{font-size:27px}
   .lede{font-size:19px}
   .timeline li{grid-template-columns:80px 1fr}
+  .honor{grid-template-columns:1fr;gap:8px}
+  .list{padding:0 16px 8px}
+  .more summary{padding:14px 16px}
+  .list li{grid-template-columns:1fr}
+  .list .r{flex-direction:row;align-items:center;text-align:left}
 }
 </style>
 </head>
@@ -157,6 +190,7 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
     <a class="brand" href="#">Zhi Lu</a>
     <nav class="links" aria-label="Sections">
       <a href="#about"><span class="en">About</span><span class="zh">关于</span></a>
+      <a href="#news"><span class="en">News</span><span class="zh">动态</span></a>
       <a href="#publications"><span class="en">Papers</span><span class="zh">论文</span></a>
       <a href="#projects"><span class="en">Projects</span><span class="zh">项目</span></a>
       <a href="#honors"><span class="en">Honors</span><span class="zh">荣誉</span></a>
@@ -188,13 +222,13 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
       </div>
     </div>
     <figure class="photo">
-      <img src="couple.jpg" alt="Zhi Lu with partner on a garden path" width="1000" height="1334">
-      <figcaption><span class="en">At a conference, together with her.</span><span class="zh">和她一起参加会议。</span></figcaption>
+      <img src="couple.jpg" alt="Zhi Lu on a garden path" width="1000" height="1334">
+      <figcaption><span class="en">Attending a conference together.</span><span class="zh">一起参加会议。</span></figcaption>
     </figure>
   </div>
 
   <div class="stats">
-    <div class="stat"><b>5</b><span class="en">CCF-A papers (NDSS, CCS, ICCV, TIFS)</span><span class="zh">篇 CCF-A 论文（NDSS、CCS、ICCV、TIFS）</span></div>
+    <div class="stat"><b>5</b><span class="en">CCF-A papers (NDSS ×2, CCS, ICCV, TIFS)</span><span class="zh">篇 CCF-A 论文（NDSS ×2、CCS、ICCV、TIFS）</span></div>
     <div class="stat"><b>PC</b><span class="en">USENIX Security 2027</span><span class="zh">USENIX Security 2027 程序委员</span></div>
     <div class="stat"><b>8</b><span class="en">national &amp; group standards</span><span class="zh">项国家 / 团体标准</span></div>
     <div class="stat"><b>11</b><span class="en">invention patents</span><span class="zh">项发明专利</span></div>
@@ -209,10 +243,6 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
         <p class="zh">我是新加坡国立大学计算机学院的博士后研究员，合作导师为<a href="https://www.comp.nus.edu.sg/cs/people/zhangjh/" target="_blank" rel="noreferrer">张嘉恒教授</a>。研究方向包括零知识证明、安全聚合、分布式密钥生成、匿名凭证与匿名可追责机制 —— 这些都是可信人工智能与可信数据系统的基础。</p>
         <p class="en">Before NUS, I earned my Ph.D. and M.S. in Cyberspace Security at Huazhong University of Science and Technology under Prof. Songfeng Lu and Prof. Jianxin Zhu, and my B.S. in Computer Science at SUSTech under Prof. Xin Yao.</p>
         <p class="zh">此前，我在华中科技大学获得网络空间安全博士和硕士学位，师从路松峰教授与朱建新教授；本科毕业于南方科技大学计算机科学与技术专业，师从姚新教授。</p>
-        <blockquote class="quote">
-          <span class="en">Good research is rarely a solo effort. I owe a great deal to my advisors, and I learn as much from the students I work with as they learn from me.</span>
-          <span class="zh">好的研究很少是一个人完成的。我很感激一路上的导师，也常常从一起做研究的学弟学妹身上学到很多。</span>
-        </blockquote>
       </div>
       <div>
         <h3 style="margin-bottom:16px"><span class="en">Experience</span><span class="zh">经历</span></h3>
@@ -227,14 +257,14 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
 
     <div class="values">
       <div class="value">
-        <div class="k"><span class="en">Leading</span><span class="zh">带领</span></div>
+        <div class="k"><span class="en">Leading</span><span class="zh">主持</span></div>
         <h3><span class="en">Industry-facing research</span><span class="zh">面向产业的研究</span></h3>
         <p><span class="en">Led projects with Huawei and Qi-Anxin, turning research questions from industry into working systems.</span><span class="zh">主持与华为、奇安信合作的项目，把产业界的真实问题做成可用的系统。</span></p>
       </div>
       <div class="value">
         <div class="k"><span class="en">Mentoring</span><span class="zh">指导</span></div>
-        <h3><span class="en">Growing with students</span><span class="zh">和学弟学妹一起成长</span></h3>
-        <p><span class="en">Guided student teams on topics from DiDi and Topsec; several of my papers are co-first-authored with students I mentored.</span><span class="zh">指导学生团队完成滴滴、天融信出题的课题；多篇论文与我指导的同学共同第一作者。</span></p>
+        <h3><span class="en">Mentoring Ph.D. &amp; master's students</span><span class="zh">指导博士、硕士研究生</span></h3>
+        <p><span class="en">I mentor Ph.D. and master's students in their research; many of our papers are co-first-authored, and I've led student teams on industry problems from DiDi and Topsec.</span><span class="zh">指导多名博士、硕士研究生开展研究，多篇论文与所指导的同学共同第一作者；带领学生团队完成滴滴、天融信出题的产业课题。</span></p>
       </div>
       <div class="value">
         <div class="k"><span class="en">Serving</span><span class="zh">服务</span></div>
@@ -244,93 +274,248 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
     </div>
   </section>
 
+  <!-- News -->
+  <section id="news">
+    <div class="sec-head"><span class="sec-num">02</span><h2><span class="en">News</span><span class="zh">动态</span></h2></div>
+    <div class="news">
+      <div>
+        <h4 style="margin-top:0"><span class="en">Working on now</span><span class="zh">正在进行</span></h4>
+        <div class="wip">
+          <article class="card">
+            <span class="dot"></span>
+            <div>
+              <div class="status"><span class="en">WRITING</span><span class="zh">撰写中</span></div>
+              <h3><span class="en">A book on zero-knowledge proofs</span><span class="zh">零知识证明专著</span></h3>
+              <p><span class="en">A systematic treatment of ZKP — from foundations to constructions and applications.</span><span class="zh">系统介绍零知识证明，从基础理论到构造与应用。</span></p>
+            </div>
+          </article>
+          <article class="card">
+            <span class="dot"></span>
+            <div>
+              <div class="status"><span class="en">IN PROGRESS</span><span class="zh">进行中</span></div>
+              <h3><span class="en">Anamorphic zero-knowledge proofs</span><span class="zh">Anamorphic 零知识证明</span></h3>
+              <p><span class="en">A new paper bringing anamorphic cryptography to zero-knowledge proofs.</span><span class="zh">将 anamorphic 密码学引入零知识证明的新工作。</span></p>
+            </div>
+          </article>
+        </div>
+        <details class="more">
+          <summary><span class="en">Papers under review</span><span class="zh">在投论文</span> <span class="n">16</span></summary>
+          <ul class="list">
+            <li><div><span class="t">ProofOut: Did Your Data Really Stay Out of LLM Training?</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Fang Liu, Songfeng Lu, Jiaheng Zhang</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">DECOY: Decoy Reuse for Private Vector Search</span><div class="m"><b>Zhi Lu</b>, Shuai Guo, Fang Liu, Songfeng Lu, Jiaheng Zhang</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">SzFL: Secure Zero-Knowledge Verification for Federated Learning</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Hewang Nie, Fang Liu, Songfeng Lu</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">AVSA: Accountable and Verifiable Secure Aggregation</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Hewang Nie, Fang Liu, Songfeng Lu</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">Real-World Anchored Watermarking with Lattice-Based Aggregation in Federated Learning</span></div><div class="r"><span class="yr"><span class="en">Co-first author</span><span class="zh">共同第一作者</span></span></div></li>
+            <li><div><span class="t">Signature-free Lattice-Based Asynchronous Distributed Key Generation without PKI Setup</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
+            <li><div><span class="t">PQADKG: Post-Quantum Asynchronous Distributed Key Generation</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
+            <li><div><span class="t">Asynchronous Distributed Key Generation with Flexible Threshold and Batched Key Derivation</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
+            <li><div><span class="t">A Novel Privacy-Preserving Support Vector Machine Inference Method without a Trusted Third Party</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
+            <li><div><span class="t">A Blockchain-Based Scalable Verification and Distributed Storage Architecture for Dynamic Data Sharing in Industrial Systems</span></div><div class="r"><span class="yr"><span class="en">Third author</span><span class="zh">第三作者</span></span></div></li>
+            <li><div><span class="t">Communication-Efficient Adaptive Federated Learning with Maximum Stability</span></div><div class="r"><span class="yr"><span class="en">Third author</span><span class="zh">第三作者</span></span></div></li>
+            <li><div><span class="t">PoRn: A Secure, Resilient, and Energy-Efficient Blockchain Consensus for Large-Scale Distributed and Industrial IoT Systems</span></div><div class="r"><span class="yr"><span class="en">Third author</span><span class="zh">第三作者</span></span></div></li>
+            <li><div><span class="t">QSVSimplePir: Verifying the Query Structure of Medical Private Information Retrieval</span></div><div class="r"><span class="yr"><span class="en">Third author</span><span class="zh">第三作者</span></span></div></li>
+            <li><div><span class="t">Privacy-Preserving Medical Insurance Claim Verification Scheme</span></div><div class="r"><span class="yr"><span class="en">Fourth author</span><span class="zh">第四作者</span></span></div></li>
+            <li><div><span class="t">Privacy-Preserving Federated Learning in the Gradient Lock</span></div><div class="r"><span class="yr"><span class="en">Fifth author</span><span class="zh">第五作者</span></span></div></li>
+            <li><div><span class="t">Coherent Semantic Watermarking: Model-Auditable Geometric Ownership Verification for Multimodal Large Language Models</span></div><div class="r"><span class="yr"><span class="en">Author</span><span class="zh">作者</span></span></div></li>
+          </ul>
+        </details>
+      </div>
+      <div>
+        <h4 style="margin-top:0"><span class="en">Recently</span><span class="zh">近期</span></h4>
+        <ul class="recent">
+          <li><time>2026</time><span><span class="en">Joined the Program Committee of USENIX Security 2027.</span><span class="zh">担任 USENIX Security 2027 程序委员会委员。</span></span></li>
+          <li><time>2026</time><span><span class="en">A3DKG accepted to NDSS 2027.</span><span class="zh">A3DKG 被 NDSS 2027 录用。</span></span></li>
+          <li><time>2026</time><span><span class="en">Joined NUS School of Computing as a Research Fellow.</span><span class="zh">加入新加坡国立大学计算机学院任博士后研究员。</span></span></li>
+          <li><time>2025</time><span><span class="en">Selected for the CAST Young Talent Support Program (Ph.D. track, first cohort).</span><span class="zh">入选首届中国科协青年人才托举工程博士生专项计划。</span></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- Publications -->
   <section id="publications">
-    <div class="sec-head"><span class="sec-num">02</span><h2><span class="en">Selected Papers</span><span class="zh">代表论文</span></h2><span class="sec-note"><span class="en">All CCF-A · * equal contribution</span><span class="zh">均为 CCF-A · * 共同第一作者</span></span></div>
+    <div class="sec-head"><span class="sec-num">03</span><h2><span class="en">Selected Papers</span><span class="zh">代表论文</span></h2><span class="sec-note"><span class="en">* equal contribution</span><span class="zh">* 共同第一作者</span></span></div>
     <ol class="pubs">
       <li class="pub">
-        <div class="venue">NDSS 2027<small><span class="en">Security top-4</span><span class="zh">安全四大</span></small></div>
+        <div class="venue">NDSS 2027<br><span class="tier a">CCF-A</span></div>
         <div><h3>A3DKG: Anonymous and Accountable Asynchronous Distributed Key Generation</h3><div class="authors"><b>Zhi Lu</b>, Renfei Shen, Fang Liu, Songfeng Lu</div></div>
-        <a class="go" href="https://scholar.google.com/scholar?q=%22A3DKG%3A%20Anonymous%20and%20Accountable%20Asynchronous%20Distributed%20Key%20Generation%22" target="_blank" rel="noreferrer">Paper ↗</a>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
       </li>
       <li class="pub">
-        <div class="venue">CCS 2025<small><span class="en">Security top-4</span><span class="zh">安全四大</span></small></div>
+        <div class="venue">CCS 2025<br><span class="tier a">CCF-A</span></div>
         <div><h3>LZKSA: Lattice-Based Special Zero-Knowledge Proofs for Secure Aggregation's Input Verification</h3><div class="authors"><b>Zhi Lu</b>, Songfeng Lu</div></div>
-        <a class="go" href="https://scholar.google.com/scholar?q=%22LZKSA%3A%20Lattice-Based%20Special%20Zero-Knowledge%20Proofs%20for%20Secure%20Aggregation's%20Input%20Verification%22" target="_blank" rel="noreferrer">Paper ↗</a>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
       </li>
       <li class="pub">
-        <div class="venue">NDSS 2026<small><span class="en">Security top-4</span><span class="zh">安全四大</span></small></div>
+        <div class="venue">NDSS 2026<br><span class="tier a">CCF-A</span></div>
         <div><h3>WhiteCloak: How to Hold Anonymous Malicious Clients Accountable in Secure Aggregation?</h3><div class="authors"><b>Zhi Lu</b>, Yongquan Cui, Songfeng Lu</div></div>
-        <a class="go" href="https://scholar.google.com/scholar?q=%22WhiteCloak%3A%20How%20to%20Hold%20Anonymous%20Malicious%20Clients%20Accountable%20in%20Secure%20Aggregation%3F%22" target="_blank" rel="noreferrer">Paper ↗</a>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
       </li>
       <li class="pub">
-        <div class="venue">ICCV 2025<small><span class="en">Computer vision</span><span class="zh">计算机视觉</span></small></div>
+        <div class="venue">ICCV 2025<br><span class="tier a">CCF-A</span></div>
         <div><h3>FLSeg: Enhancing Privacy and Robustness in Federated Learning under Heterogeneous Data via Model Segmentation</h3><div class="authors">Zichun Su*, <b>Zhi Lu*</b>, Yutong Wu, Renfei Shen, Songfeng Lu</div></div>
-        <a class="go" href="https://scholar.google.com/scholar?q=%22FLSeg%3A%20Enhancing%20Privacy%20and%20Robustness%20in%20Federated%20Learning%20under%20Heterogeneous%20Data%20via%20Model%20Segmentation%22" target="_blank" rel="noreferrer">Paper ↗</a>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
       </li>
       <li class="pub">
-        <div class="venue">IEEE TIFS 2024<small><span class="en">Journal</span><span class="zh">期刊</span></small></div>
+        <div class="venue">IEEE TIFS 2024<br><span class="tier a">CCF-A</span></div>
         <div><h3>Split Aggregation: Lightweight Privacy-Preserving Federated Learning Resistant to Byzantine Attacks</h3><div class="authors"><b>Zhi Lu</b>, Songfeng Lu, Yongquan Cui, Xueming Tang, Junjun Wu</div></div>
-        <a class="go" href="https://scholar.google.com/scholar?q=%22Split%20Aggregation%3A%20Lightweight%20Privacy-Preserving%20Federated%20Learning%20Resistant%20to%20Byzantine%20Attacks%22" target="_blank" rel="noreferrer">Paper ↗</a>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
+      </li>
+      <li class="pub zh">
+        <div class="venue">计算机学报 2026<br><span class="tier t1">T1</span></div>
+        <div><h3>融合零信任与零知识证明的匿名身份认证</h3><div class="authors"><b>Zhi Lu</b>, Songfeng Lu</div></div>
+        <a class="go" data-s="Anonymous Identity Authentication Integrating Zero Trust and Zero-Knowledge Proofs">论文 ↗</a>
+      </li>
+      <li class="pub zh">
+        <div class="venue">中国科学：信息科学 2026<br><span class="tier t1">T1</span></div>
+        <div><h3>HINT: Hidden-Intent Voting without Revoting under Coercion</h3><div class="authors"><b>Zhi Lu</b>, Songfeng Lu</div></div>
+        <a class="go" data-s>论文 ↗</a>
       </li>
     </ol>
+
+    <details class="more">
+      <summary><span class="en">All other publications</span><span class="zh">全部其他论文</span> <span class="n"><span class="en">23</span><span class="zh">21</span></span></summary>
+      <ul class="list">
+        <li class="en"><div><a class="t" data-s>Anonymous Identity Authentication Integrating Zero Trust and Zero-Knowledge Proofs</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu · Chinese Journal of Computers</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li class="en"><div><a class="t" data-s>HINT: Hidden-Intent Voting without Revoting under Coercion</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu · SCIENCE CHINA Information Sciences</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Asynchronous Random Committee Election for Preprocessing in Asynchronous Distributed Key Generation</a><div class="m">Renfei Shen*, <b>Zhi Lu*</b>, Fang Liu, Songfeng Lu · IEEE TNSM</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Robust and Verifiable Privacy Federated Learning</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu, Xueming Tang, Junjun Wu · IEEE TAI</div></div><div class="r"><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>Lightweight Byzantine-Robust and Privacy-Preserving Federated Learning</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu, Yongquan Cui, Junjun Wu, Hewang Nie, Jue Xiao, Zepu Yi · Euro-Par</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>α-SAV: Generalized Weighted Input Verification for Secure Aggregation in Federated Learning</a><div class="m"><b>Zhi Lu</b>, Yuhao Long, Qirui Zhou, Mengyuan Zou, Wenjie Cai, Songfeng Lu · ICME</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>RIDE: Robust and Decentralized Federated Learning with Input Validation</a><div class="m"><b>Zhi Lu</b>, Mengyuan Zou, Samir M. Umran, Yuhao Long, Songfeng Lu, Junjun Wu, Mu Wang · ICME</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>Adaptive Differential Privacy via Gradient Components in Medical Federated Learning</a><div class="m">Zechen Yu*, <b>Zhi Lu*</b>, Songfeng Lu, Yongquan Cui, Xueming Tang, Junjun Wu · BIBM</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>Split Learning Optimized For The Medical Field: Reducing Communication Overhead</a><div class="m">Shuai Guo*, <b>Zhi Lu*</b>, Songfeng Lu, Yongquan Cui, Xueming Tang, Junjun Wu · BIBM</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>Bio-OFL: Biomedical Privacy and Auditable One-shot Federated Learning</a><div class="m">Zhe Dong*, <b>Zhi Lu*</b>, Yuanqing Feng, Shuai Guo, Zilong Wang, Yutong Wu, Songfeng Lu · BIBM</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>VSDA: Privacy-Preserving Verifiable Secure Distributed Aggregation for Multi-Center Clinical and Genomic Data</a><div class="m">Zhe Dong*, <b>Zhi Lu*</b>, Renfei Shen, Hewang Nie, Jue Xiao, Junming Li, Songfeng Lu · BIBM</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>FLAT: An Efficient Federated Learning Scheme with Adaptive Topology and Secure Aggregation</a><div class="m">Yuanqing Feng, Tao Bai, <b>Zhi Lu</b>, Xueming Tang, Songfeng Lu · IEEE TAI</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Practical and Robust Privacy-Preserving K-means Clustering Protocols with GPU Acceleration</a><div class="m">Tao Bai, Yuanqing Feng, <b>Zhi Lu</b>, Xueming Tang, Songfeng Lu, Yongquan Cui · IEEE TETC</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Delete but Not Gone: Reactivation of Neural Network Watermarks</a><div class="m">Hewang Nie, Jue Xiao, <b>Zhi Lu</b>, Renfei Shen, Songfeng Lu · ACM TIST</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>WINK: A Semi-honest Secure Multi-party Computation Framework with Efficient Comparison Protocol</a><div class="m">Yuanqing Feng, Tao Bai, <b>Zhi Lu</b>, Junjun Wu, Xueming Tang, Songfeng Lu · SRDS</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>Watermarking for Model Ownership Verification: Invisible at Deployment, Activated by Updates</a><div class="m">Hewang Nie, Jue Xiao, <b>Zhi Lu</b>, Renfei Shen, Chunqiang Yu, Zhenjun Tang · ACM TOPS</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>FAIR-MPC: Secure and Auditable SMPC for Anonymous Financial Collaboration</a><div class="m">Tao Bai, Yuanqing Feng, <b>Zhi Lu</b>, Songfeng Lu · ICDF2C</div></div><div class="r"><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>FedDiT: Federated Learning by Distillation Token Enhanced Vision Transformer</a><div class="m">Jue Xiao, Zepu Yi, Hewang Nie, <b>Zhi Lu</b>, Xueming Tang, Songfeng Lu, Zhiguo Huang, Runqing Zhang · ICASSP</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>VeriChroma: Ownership Verification for Federated Models via RGB Filters</a><div class="m">Hewang Nie, Songfeng Lu, Mu Wang, Jue Xiao, <b>Zhi Lu</b>, Zepu Yi · Euro-Par</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>A PUF Based Audio Fingerprint Based for Device Authentication and Tamper Location</a><div class="m"><b>Zhi Lu</b>, Haochen Dou, Songfeng Lu, Xueming Tang, Junjun Wu, Samir Mohammed Umran · ICDF2C</div></div><div class="r"><span class="yr">2023</span></div></li>
+        <li><div><a class="t" data-s>Application Research of Vertical Federated Learning Technology in Banking Risk Control Model Strategy</a><div class="m">Yong Luo, <b>Zhi Lu</b>, Xiaofei Yin, Songfeng Lu, Yiting Weng · IEEE ISPA</div></div><div class="r"><span class="tier">CCF-C</span><span class="yr">2023</span></div></li>
+        <li><div><a class="t" data-s="A Survey on Asynchronous Distributed Key Generation Technology"><span class="en">A Survey on Asynchronous Distributed Key Generation Technology</span><span class="zh">异步分布式密钥生成技术综述</span></a><div class="m">Renfei Shen, Fang Liu, <b>Zhi Lu</b>, Songfeng Lu · <span class="en">Journal of Frontiers of Computer Science and Technology</span><span class="zh">计算机科学与探索</span></div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Secure and Privacy-preserving Data-sharing Framework based on Blockchain Technology for Al-Najaf/Iraq Oil Refinery</a><div class="m">Samir M. Umran, Songfeng Lu, Zaid Ameen Abduljabbar, <b>Zhi Lu</b>, Bingyan Feng, Lu Zheng · IEEE SmartWorld</div></div><div class="r"><span class="yr">2022</span></div></li>
+      </ul>
+    </details>
   </section>
 
   <!-- Projects -->
   <section id="projects">
-    <div class="sec-head"><span class="sec-num">03</span><h2><span class="en">Selected Projects</span><span class="zh">代表项目</span></h2></div>
+    <div class="sec-head"><span class="sec-num">04</span><h2><span class="en">Selected Projects</span><span class="zh">代表项目</span></h2></div>
     <div class="grid">
       <article class="card">
         <span class="tag"><span class="en">Principal investigator</span><span class="zh">主持</span></span>
-        <h3><span class="en">CAST Young Talent Support Program (Ph.D.)</span><span class="zh">中国科协青年人才托举工程 · 博士生专项</span></h3>
-        <p><span class="en">Funded by CAST and CCF; about 3,000 Ph.D. students selected nationwide in the first cohort.</span><span class="zh">由中国科协与中国计算机学会支持，首期全国约遴选 3,000 人。</span></p>
+        <h3><span class="en">CAST Young Talent Support Program — Ph.D. Track</span><span class="zh">中国科协青年人才托举工程 · 博士生专项</span></h3>
+        <div class="hl"><span class="en">First cohort · ~3,000 selected nationwide</span><span class="zh">首届 · 全国约 3,000 人入选</span></div>
+        <p><span class="en">Supported by the China Association for Science and Technology and the China Computer Federation.</span><span class="zh">由中国科学技术协会与中国计算机学会支持。</span></p>
+      </article>
+      <article class="card">
+        <span class="tag"><span class="en">Principal investigator</span><span class="zh">主持</span></span>
+        <h3><span class="en">HUST Graduate Innovation Fund</span><span class="zh">华中科技大学研究生创新基金项目</span></h3>
+        <p><span class="en">University-funded research on security, privacy and trustworthy systems.</span><span class="zh">校级研究生创新基金，支持安全、隐私与可信系统方向研究。</span></p>
       </article>
       <article class="card">
         <span class="tag"><span class="en">Principal investigator · with Huawei</span><span class="zh">主持 · 与华为合作</span></span>
         <h3><span class="en">Privacy-aware fuzzy vector matching</span><span class="zh">隐私保护的模糊向量匹配</span></h3>
-        <p><span class="en">Cybersecurity Innovation Funding Program, Phase III — matching data without exposing it.</span><span class="zh">网络安全学院学生创新资助计划第三期，在不暴露数据的前提下完成匹配。</span></p>
+        <p><span class="en">Cybersecurity Student Innovation Funding Program, Phase III — matching data without exposing it.</span><span class="zh">网络安全学院学生创新资助计划第三期，在不暴露数据的前提下完成匹配。</span></p>
       </article>
       <article class="card">
         <span class="tag"><span class="en">Principal investigator · with Qi-Anxin</span><span class="zh">主持 · 与奇安信合作</span></span>
         <h3><span class="en">Industrial-control protocol simulator</span><span class="zh">工业控制协议仿真器</span></h3>
-        <p><span class="en">Phase I of the program organized by the Cyberspace Administration of China and the Cybersecurity Association of China.</span><span class="zh">国家网信办与中国网络空间安全协会组织的创新资助计划第一期。</span></p>
-      </article>
-      <article class="card">
-        <span class="tag plain"><span class="en">Mentor · DiDi &amp; Topsec topics</span><span class="zh">指导 · 滴滴、天融信出题</span></span>
-        <h3><span class="en">Student teams on real-world security problems</span><span class="zh">带学生团队解决真实安全问题</span></h3>
-        <p><span class="en">Guided teams on GPS positioning (DiDi) and AI-assisted data classification &amp; grading (Topsec).</span><span class="zh">指导学生完成 GPS 定位（滴滴）与人工智能辅助数据分类分级（天融信）课题。</span></p>
+        <p><span class="en">Phase I of the program led by the Cyberspace Administration of China with the Cybersecurity Association of China.</span><span class="zh">中央网信办牵头、中国网络空间安全协会组织的创新资助计划第一期。</span></p>
       </article>
     </div>
+    <details class="more">
+      <summary><span class="en">Mentored student projects</span><span class="zh">指导的学生项目</span> <span class="n">2</span></summary>
+      <ul class="list">
+        <li><div><span class="t"><span class="en">GPS positioning — topic issued by DiDi</span><span class="zh">GPS 定位 —— 滴滴出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase II</span><span class="zh">网络安全学院学生创新资助计划第二期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
+        <li><div><span class="t"><span class="en">AI-assisted data classification &amp; grading — topic issued by Topsec</span><span class="zh">人工智能辅助数据自动分类分级 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase III</span><span class="zh">网络安全学院学生创新资助计划第三期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
+      </ul>
+    </details>
   </section>
 
-  <!-- Honors + Impact -->
-  <div class="split">
-    <section id="honors">
-      <div class="sec-head"><span class="sec-num">04</span><h2><span class="en">Honors</span><span class="zh">代表荣誉</span></h2></div>
-      <ul class="honors">
-        <li><div><h3><span class="en">CAST Young Talent Support Program</span><span class="zh">中国科协青年人才托举工程</span></h3><div class="by"><span class="en">China Association for Science and Technology · CCF</span><span class="zh">中国科学技术协会 · 中国计算机学会</span></div></div><time>2025</time></li>
-        <li><div><h3><span class="en">National Scholarship (×2)</span><span class="zh">博士研究生国家奖学金（两次）</span></h3><div class="by"><span class="en">Huazhong University of Science and Technology</span><span class="zh">华中科技大学</span></div></div><time>2023 · 25</time></li>
-        <li><div><h3><span class="en">Outstanding Student, Cybersecurity Innovation Program</span><span class="zh">网络安全学院学生创新资助计划优秀学生</span></h3><div class="by"><span class="en">Cybersecurity Association of China</span><span class="zh">中国网络空间安全协会</span></div></div><time>2025</time></li>
-        <li><div><h3><span class="en">Outstanding Graduate</span><span class="zh">优秀毕业生</span></h3><div class="by"><span class="en">Huazhong University of Science and Technology</span><span class="zh">华中科技大学</span></div></div><time>2026</time></li>
-      </ul>
-    </section>
+  <!-- Honors -->
+  <section id="honors">
+    <div class="sec-head"><span class="sec-num">05</span><h2><span class="en">Honors</span><span class="zh">代表荣誉</span></h2></div>
+    <ul class="honors">
+      <li class="honor">
+        <div class="badge">12<small><span class="en">awardees nationwide</span><span class="zh">全国仅 12 人获评</span></small></div>
+        <div><h3><span class="en">Outstanding Student, Cybersecurity Student Innovation Funding Program</span><span class="zh">网络安全学院学生创新资助计划 · 优秀学生</span></h3><div class="by"><span class="en">Led by the Cyberspace Administration of China · Cybersecurity Association of China</span><span class="zh">中央网信办牵头 · 中国网络空间安全协会</span> · <time>2025</time></div></div>
+      </li>
+      <li class="honor">
+        <div class="badge">~3,000<small><span class="en">first cohort, nationwide</span><span class="zh">首届 · 全国入选人数</span></small></div>
+        <div><h3><span class="en">CAST Young Talent Support Program — Ph.D. Track</span><span class="zh">中国科协青年人才托举工程 · 博士生专项计划</span></h3><div class="by"><span class="en">China Association for Science and Technology · CCF</span><span class="zh">中国科学技术协会 · 中国计算机学会</span> · <time>2025</time></div></div>
+      </li>
+      <li class="honor">
+        <div class="badge">×2<small><span class="en">2023 &amp; 2025</span><span class="zh">2023、2025 年</span></small></div>
+        <div><h3><span class="en">National Scholarship for Doctoral Students</span><span class="zh">博士研究生国家奖学金</span></h3><div class="by"><span class="en">Huazhong University of Science and Technology</span><span class="zh">华中科技大学</span></div></div>
+      </li>
+      <li class="honor">
+        <div class="badge">2026<small><span class="en">Ph.D. graduation</span><span class="zh">博士毕业</span></small></div>
+        <div><h3><span class="en">Outstanding Graduate</span><span class="zh">优秀毕业生</span></h3><div class="by"><span class="en">Huazhong University of Science and Technology</span><span class="zh">华中科技大学</span></div></div>
+      </li>
+    </ul>
+  </section>
 
-    <section id="impact">
-      <div class="sec-head"><span class="sec-num">05</span><h2><span class="en">Beyond Papers</span><span class="zh">学术成果</span></h2></div>
-      <div class="grid" style="grid-template-columns:1fr">
-        <article class="card">
-          <span class="tag"><span class="en">Standards</span><span class="zh">标准</span></span>
-          <h3><span class="en">2 national standards published, 3 under review, 3 group standards</span><span class="zh">参与制定国家标准 2 项（另有 3 项审查中）、团体标准 3 项</span></h3>
-          <p><span class="en">Including GB/T 43441.1-2023 (Digital twin — General requirements) and GB/T 41970-2022 (Smart-factory CNC interconnection).</span><span class="zh">包括 GB/T 43441.1-2023《信息技术 数字孪生 第1部分：通用要求》与 GB/T 41970-2022《智能工厂数控机床互联接口规范》。</span></p>
-        </article>
-        <article class="card">
-          <span class="tag"><span class="en">Patents</span><span class="zh">专利</span></span>
-          <h3><span class="en">11 invention patents, 2 granted</span><span class="zh">发明专利 11 项，已授权 2 项</span></h3>
-          <p><span class="en">On industrial-control security, cryptographic infrastructure for CNC systems, aggregation verification and biomedical privacy.</span><span class="zh">涵盖工业控制安全、数控系统密码基础设施、聚合验证与生物医学隐私。</span></p>
-        </article>
-      </div>
-    </section>
-  </div>
+  <!-- Impact -->
+  <section id="impact">
+    <div class="sec-head"><span class="sec-num">06</span><h2><span class="en">Beyond Papers</span><span class="zh">学术成果</span></h2></div>
+    <div class="grid">
+      <article class="card">
+        <span class="tag"><span class="en">Standards</span><span class="zh">标准</span></span>
+        <h3><span class="en">8 national &amp; group standards</span><span class="zh">参与制定国家 / 团体标准 8 项</span></h3>
+        <p><span class="en">2 national standards published, 3 under review, plus 3 group standards — on digital twins, smart factories and trusted CNC systems.</span><span class="zh">已发布国家标准 2 项、审查中 3 项，团体标准 3 项，涉及数字孪生、智能工厂与数控系统可信防护。</span></p>
+      </article>
+      <article class="card">
+        <span class="tag"><span class="en">Patents</span><span class="zh">专利</span></span>
+        <h3><span class="en">11 invention patents, 2 granted</span><span class="zh">发明专利 11 项，已授权 2 项</span></h3>
+        <p><span class="en">On industrial-control security, cryptographic infrastructure for CNC systems, aggregation verification and biomedical privacy.</span><span class="zh">涵盖工业控制安全、数控系统密码基础设施、聚合验证与生物医学隐私。</span></p>
+      </article>
+    </div>
+
+    <details class="more">
+      <summary><span class="en">All standards</span><span class="zh">全部标准</span> <span class="n">8</span></summary>
+      <ul class="list">
+        <li><div><span class="t"><span class="en">Information technology — Digital twin — Part 1: General requirements</span><span class="zh">信息技术 数字孪生 第1部分：通用要求</span></span><div class="m">GB/T 43441.1-2023</div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Interconnection interface specification of CNC machine tools in smart factories</span><span class="zh">智能工厂数控机床互联接口规范</span></span><div class="m">GB/T 41970-2022</div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Trusted protection of machine-tool CNC systems, Part 1: Testing requirements</span><span class="zh">机床数控系统可信防护 第1部分：检测要求</span></span><div class="m"><span class="en">Under review</span><span class="zh">审查中</span></div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Trusted protection of machine-tool CNC systems, Part 2: Testing requirements</span><span class="zh">机床数控系统可信防护 第2部分：检测要求</span></span><div class="m"><span class="en">Under review</span><span class="zh">审查中</span></div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Trusted protection of machine-tool CNC systems, Part 3: Testing requirements</span><span class="zh">机床数控系统可信防护 第3部分：检测要求</span></span><div class="m"><span class="en">Under review</span><span class="zh">审查中</span></div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Security and trusted architecture specification for open CNC systems</span><span class="zh">开放式数控系统安全可信架构规范</span></span><div class="m">T/ZTCIA 006-2025</div></div><div class="r"><span class="tier"><span class="en">Group</span><span class="zh">团体标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">General security and trusted technical requirements for CNC-equipment interconnection</span><span class="zh">数控装备互联互通安全可信通用技术要求</span></span><div class="m">T/ZTCIA 007-2025</div></div><div class="r"><span class="tier"><span class="en">Group</span><span class="zh">团体标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Security and trusted testing and verification specification for open CNC systems</span><span class="zh">开放式数控系统安全可信测试验证规范</span></span><div class="m">T/ZTCIA 008-2025</div></div><div class="r"><span class="tier"><span class="en">Group</span><span class="zh">团体标准</span></span></div></li>
+      </ul>
+    </details>
+
+    <details class="more">
+      <summary><span class="en">All patents</span><span class="zh">全部专利</span> <span class="n">11</span></summary>
+      <ul class="list">
+        <li><div><span class="t"><span class="en">A data adapter and data adaptation method</span><span class="zh">一种数据适配器及数据适配方法</span></span><div class="m">CN113609047B</div></div><div class="r"><span class="tier t1"><span class="en">Granted</span><span class="zh">已授权</span></span></div></li>
+        <li><div><span class="t"><span class="en">Information extraction method, system, server, and storage medium</span><span class="zh">信息抽取方法、系统、服务器及存储介质</span></span><div class="m">CN111382571B</div></div><div class="r"><span class="tier t1"><span class="en">Granted</span><span class="zh">已授权</span></span></div></li>
+        <li><div><span class="t"><span class="en">A domestic-cryptography-based industrial-control data security protection system and method</span><span class="zh">一种基于国密算法的工业控制数据安全防护系统及方法</span></span><div class="m">CN118133298A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">A stream encryption machine for CNC systems and working method</span><span class="zh">一种面向数控系统的流加密机及其工作方法</span></span><div class="m">CN116684076A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Cryptographic infrastructure and control method for CNC systems based on domestic cryptographic algorithms</span><span class="zh">基于国密算法的数控系统密码基础设施及控制方法</span></span><div class="m">CN116318910A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Access-control-agent-based access control system for CNC systems and working process</span><span class="zh">基于访问控制代理的数控系统访问控制系统及工作流程</span></span><div class="m">CN115842648A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">A lightweight encryption method for industrial-control network transmission</span><span class="zh">一种面向工业控制网络传输的轻量级加密方法</span></span><div class="m">CN115801311A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Identity adapter and identity authentication system for CNC equipment based on identity adapters</span><span class="zh">身份适配器及基于身份适配器的数控设备身份认证系统</span></span><div class="m">CN115695042A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Aggregation verification method, apparatus, device, and storage medium for distributed data</span><span class="zh">分布式数据的聚合验证方法、装置、设备及存储介质</span></span><div class="m">CN120498696A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Intelligent recognition method, apparatus, device, and medium for electrical drawings</span><span class="zh">电气图纸智能识别方法、装置、设备及介质</span></span><div class="m">CN121505653A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Privacy-auditable one-shot federated learning method and apparatus for biomedical data</span><span class="zh">面向生物医学数据的隐私可审计一次性联邦学习方法及装置</span></span><div class="m">CN121814391A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+      </ul>
+    </details>
+
+    <details class="more">
+      <summary><span class="en">Academic service</span><span class="zh">学术服务</span></summary>
+      <ul class="list">
+        <li><div><span class="t"><span class="en">Program Committee</span><span class="zh">程序委员会委员</span></span><div class="m">USENIX Security 2027</div></div></li>
+        <li><div><span class="t"><span class="en">Reviewer</span><span class="zh">审稿人</span></span><div class="m">IEEE TIFS, IEEE TDSC, IEEE JSAC, IEEE TAI, JDIM, WWW, IEEE BIBM, IEEE ICASSP, IEEE ICME</div></div></li>
+      </ul>
+    </details>
+  </section>
 
   <footer id="contact">
     <div>
@@ -351,6 +536,14 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
   var saved=null;try{saved=localStorage.getItem("site-language")}catch(e){}
   if(saved!=="en"&&saved!=="zh")saved=/^zh/i.test(navigator.language||"")?"zh":"en";
   setLang(saved);
+
+  // Paper links: search Google Scholar by exact title
+  [].forEach.call(document.querySelectorAll("[data-s]"),function(a){
+    var q=a.getAttribute("data-s");
+    if(!q){var li=a.closest("li"),h=li&&li.querySelector("h3");q=(h&&a.classList.contains("go")?h:a).textContent.trim()}
+    a.href="https://scholar.google.com/scholar?q="+encodeURIComponent('"'+q+'"');
+    a.target="_blank";a.rel="noreferrer";
+  });
 
   var top=document.getElementById("top");
   addEventListener("scroll",function(){top.classList.toggle("scrolled",scrollY>8)},{passive:true});
