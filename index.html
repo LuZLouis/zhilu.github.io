@@ -7,19 +7,24 @@
 <title>Zhi Lu · 路直</title>
 <style>
 :root{
-  --bg:#faf9f5;--surface:#ffffff;--sunk:#f2efe6;--ink:#1f1e1c;--ink-2:#3d3a35;--muted:#76716a;
+  --bg:#faf9f5;--surface:#ffffff;--sunk:#f2efe6;--ink:#1f1e1c;--ink-2:#3a3732;--muted:#67625a;
   --line:#e7e2d6;--accent:#b85c3c;--accent-soft:#f6e6dc;--max:1080px;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){:root{
-  --bg:#1b1a18;--surface:#242320;--sunk:#2b2a26;--ink:#f1eee6;--ink-2:#d6d2c8;--muted:#a19c92;
+  --bg:#1b1a18;--surface:#242320;--sunk:#2b2a26;--ink:#f1eee6;--ink-2:#d9d5cb;--muted:#afaa9f;
   --line:#35332e;--accent:#e2896a;--accent-soft:#3a2a23;
 }}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:72px}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+/* Chinese: CJK glyphs fall back to a clean sans instead of thin SimSun */
+body[data-lang=zh]{line-height:1.8;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+body[data-lang=zh] h2{font-weight:600}
+body[data-lang=zh] .lede{font-size:20px}
+body[data-lang=zh] .photo figcaption{font-style:normal}
 a{color:inherit;text-decoration-color:var(--line);text-underline-offset:3px}
 a:hover{color:var(--accent);text-decoration-color:currentColor}
 img{display:block;max-width:100%}
@@ -35,7 +40,7 @@ body[data-lang=en] .zh,body[data-lang=zh] .en{display:none!important}
 .brand{font:600 17px/1 var(--serif);text-decoration:none;white-space:nowrap}
 .links{display:flex;gap:4px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
 .links::-webkit-scrollbar{display:none}
-.links a{padding:7px 12px;border-radius:999px;font-size:14px;color:var(--muted);text-decoration:none;white-space:nowrap;transition:background .15s,color .15s}
+.links a{padding:8px 13px;border-radius:999px;font-size:15px;color:var(--muted);text-decoration:none;white-space:nowrap;transition:background .15s,color .15s}
 .links a:hover{color:var(--ink)}
 .links a.on{background:var(--sunk);color:var(--ink)}
 .lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:2px;flex:none}
@@ -49,6 +54,8 @@ h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:
 .cn-name{font:400 22px/1 var(--serif);color:var(--muted);margin:0 0 26px}
 .lede{font:400 21px/1.55 var(--serif);color:var(--ink-2);margin:0 0 28px;max-width:34em}
 .lede strong{font-weight:600;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px;padding:0;list-style:none}
+.chips li{font-size:14px;line-height:1;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);background:var(--surface)}
 .cta{display:flex;flex-wrap:wrap;gap:10px}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--surface)}
 .btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
@@ -62,16 +69,16 @@ h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:
 .stat{padding:22px 20px}
 .stat+.stat{border-left:1px solid var(--line)}
 .stat b{display:block;font:500 34px/1.1 var(--serif);letter-spacing:-.01em}
-.stat span{font-size:13.5px;color:var(--muted)}
+.stat span{font-size:14.5px;line-height:1.5;color:var(--muted)}
 
 /* sections */
-section{padding:64px 0 8px}
-.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px}
-.sec-num{font:500 13px var(--mono);color:var(--accent)}
-h2{font:500 32px/1.15 var(--serif);letter-spacing:-.015em;margin:0}
-.sec-note{margin-left:auto;font-size:13.5px;color:var(--muted)}
-h3{font:600 17px/1.4 var(--sans);margin:0}
-h4{font:500 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:36px 0 12px}
+section{padding:88px 0 0}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:32px;padding-top:18px;border-top:1px solid var(--ink)}
+.sec-num{font:500 14px var(--mono);color:var(--accent)}
+h2{font:500 34px/1.15 var(--serif);letter-spacing:-.015em;margin:0}
+.sec-note{margin-left:auto;font-size:14px;color:var(--muted)}
+h3{font:600 17.5px/1.45 var(--sans);margin:0}
+h4{font:500 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:36px 0 14px}
 p{margin:0 0 16px}
 
 /* about */
@@ -82,22 +89,22 @@ p{margin:0 0 16px}
 .timeline li:first-child{border-top:0;padding-top:0}
 .timeline time{font:500 13px/1.9 var(--mono);color:var(--muted)}
 .timeline .now time{color:var(--accent)}
-.timeline small{display:block;font-size:14px;color:var(--muted);line-height:1.5;margin-top:2px}
+.timeline small{display:block;font-size:15px;color:var(--muted);line-height:1.5;margin-top:2px}
 
 /* values */
 .values{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
-.value{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
-.value .k{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.value p{font-size:15px;color:var(--ink-2);margin:6px 0 0;line-height:1.6}
+.value{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+.value .k{font:500 13px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.value p{font-size:16px;color:var(--ink-2);margin:8px 0 0;line-height:1.65}
 
 /* news */
 .news{display:grid;grid-template-columns:1.3fr 1fr;gap:56px}
 .wip{display:grid;gap:12px}
 .wip .card{flex-direction:row;align-items:flex-start;gap:16px}
 .dot{flex:none;width:10px;height:10px;margin-top:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
-.status{font:500 12px var(--mono);letter-spacing:.04em;color:var(--accent);margin-bottom:4px}
+.status{font:500 13px var(--mono);letter-spacing:.04em;color:var(--accent);margin-bottom:4px}
 .recent{list-style:none;margin:0;padding:0}
-.recent li{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2)}
+.recent li{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2)}
 .recent li:first-child{border-top:0;padding-top:0}
 .recent time{font:500 13px/1.75 var(--mono);color:var(--muted)}
 
@@ -106,18 +113,18 @@ p{margin:0 0 16px}
 .pub{display:grid;grid-template-columns:150px 1fr auto;gap:24px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline}
 .venue{font:600 14px/1.3 var(--mono);color:var(--ink)}
 .venue .tier{margin-top:8px}
-.pub h3{font:500 19px/1.4 var(--serif);letter-spacing:-.005em}
-.authors{font-size:14px;color:var(--muted);margin-top:6px}
+.pub h3{font:500 20px/1.4 var(--serif);letter-spacing:-.005em}
+.authors{font-size:15px;color:var(--muted);margin-top:6px}
 .authors b{color:var(--ink);font-weight:600}
-.go{font-size:13px;color:var(--muted);text-decoration:none;white-space:nowrap}
+.go{font-size:14px;color:var(--muted);text-decoration:none;white-space:nowrap;padding:4px 0}
 .go:hover{color:var(--accent)}
-.tier{display:inline-block;font:600 11px/1 var(--mono);letter-spacing:.03em;padding:5px 8px;border-radius:6px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tier{display:inline-block;font:600 12px/1 var(--mono);letter-spacing:.03em;padding:5px 8px;border-radius:6px;background:var(--sunk);color:var(--muted);white-space:nowrap}
 .tier.a{background:var(--accent);color:var(--bg)}
 .tier.t1{background:var(--accent-soft);color:var(--accent)}
 
 /* expandable lists */
 .more{margin-top:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
-.more summary{list-style:none;cursor:pointer;padding:16px 22px;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600}
+.more summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600}
 .more summary::-webkit-details-marker{display:none}
 .more summary::after{content:"";margin-left:auto;width:8px;height:8px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .2s}
 .more[open] summary::after{transform:rotate(-135deg) translateY(-3px)}
@@ -125,29 +132,36 @@ p{margin:0 0 16px}
 .more summary .n{font:500 13px var(--mono);color:var(--muted);font-weight:400}
 .list{list-style:none;margin:0;padding:0 22px 8px}
 .list li{display:grid;grid-template-columns:1fr auto;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
-.list .t{font-size:15px;font-weight:600;line-height:1.45;text-decoration:none}
-.list .m{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.list .t{font-size:16px;font-weight:600;line-height:1.5;text-decoration:none}
+.list .m{font-size:14.5px;color:var(--muted);margin-top:4px;line-height:1.55}
 .list .m b{color:var(--ink-2);font-weight:600}
 .list .r{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
-.list .yr{font:500 12px var(--mono);color:var(--muted)}
+.list .yr{font:500 13px var(--mono);color:var(--muted)}
 
 /* cards */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px}
-.tag{align-self:flex-start;font:500 12px/1 var(--sans);padding:5px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.tag{align-self:flex-start;font:500 13px/1 var(--sans);padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .tag.plain{background:var(--sunk);color:var(--muted)}
-.card p{font-size:15px;color:var(--ink-2);margin:0;line-height:1.6}
-.hl{font:500 14px var(--serif);color:var(--accent)}
+.card p{font-size:16px;color:var(--ink-2);margin:0;line-height:1.65}
+.hl{font:600 15px var(--sans);color:var(--accent)}
+.card,.value,.honor{transition:border-color .2s,box-shadow .2s}
+.card:hover,.value:hover,.honor:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--line));box-shadow:0 8px 24px -16px rgba(0,0,0,.25)}
 
 /* honors */
 .honors{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .honor{display:grid;grid-template-columns:132px 1fr;gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
 .badge{font:500 26px/1.1 var(--serif);color:var(--accent);letter-spacing:-.01em}
-.badge small{display:block;font:500 12px/1.4 var(--sans);color:var(--muted);margin-top:4px;letter-spacing:0}
-.honor .by{font-size:14px;color:var(--muted);margin-top:3px;line-height:1.5}
-.honor time{font:500 12px var(--mono);color:var(--muted)}
+.badge small{display:block;font:500 13px/1.4 var(--sans);color:var(--muted);margin-top:4px;letter-spacing:0}
+.honor .by{font-size:15px;color:var(--muted);margin-top:4px;line-height:1.5}
+.honor time{font:500 13px var(--mono);color:var(--muted)}
 
-footer{margin-top:88px;padding:40px 0 56px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;font-size:14px;color:var(--muted)}
+footer{margin-top:96px;padding:40px 0 56px;border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;font-size:15px;color:var(--muted)}
+
+/* back to top */
+.totop{position:fixed;right:20px;bottom:20px;z-index:20;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:18px;cursor:pointer;box-shadow:0 6px 20px -8px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
+.totop.show{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{color:var(--accent)}
 footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
 
 @media (max-width:900px){
@@ -160,11 +174,25 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
   .stat:nth-child(n+3){border-top:1px solid var(--line)}
 }
 @media (max-width:640px){
-  .wrap{padding:0 16px}
-  .nav{gap:12px}
+  body{font-size:16px}
+  .wrap{padding:0 18px}
+  .nav{gap:10px;height:56px}
   .brand{display:none}
-  .links{margin:0}
-  .links a{padding:7px 9px;font-size:13px}
+  .links{margin:0;flex:1;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .links a{padding:8px 11px;font-size:14.5px}
+  .hero{padding:36px 0 40px;gap:32px}
+  .photo{max-width:none}
+  .photo img{aspect-ratio:1/1;object-position:center 55%}
+  section{padding-top:64px}
+  .sec-head{margin-bottom:24px}
+  .chips li{font-size:13.5px}
+  .stat{padding:18px 14px}
+  .stat b{font-size:30px}
+  .values{margin-top:28px}
+  .news{gap:32px}
+  .pub h3{font-size:18.5px}
+  .card{padding:20px}
+  .totop{right:14px;bottom:14px}
   .grid{grid-template-columns:1fr}
   .pub{grid-template-columns:1fr;gap:6px}
   .venue{display:flex;gap:10px;align-items:center}
@@ -216,6 +244,12 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
         <span class="en">I build cryptographic tools that let people <strong>compute together without giving up their privacy</strong> — and that hold misbehaving parties accountable when trust breaks down.</span>
         <span class="zh">我研究如何让多方<strong>在不泄露隐私的前提下协同计算</strong>，并在信任失效时，依然能让作恶者被追责。</span>
       </p>
+      <ul class="chips">
+        <li><span class="en">Zero-knowledge proofs</span><span class="zh">零知识证明</span></li>
+        <li><span class="en">Secure aggregation</span><span class="zh">安全聚合</span></li>
+        <li><span class="en">Distributed key generation</span><span class="zh">分布式密钥生成</span></li>
+        <li><span class="en">Anonymous accountability</span><span class="zh">匿名可追责</span></li>
+      </ul>
       <div class="cta">
         <a class="btn primary" href="mailto:zhilu@nus.edu.sg">zhilu@nus.edu.sg</a>
         <a class="btn" href="#publications"><span class="en">Selected papers ↓</span><span class="zh">代表论文 ↓</span></a>
@@ -264,7 +298,7 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
       <div class="value">
         <div class="k"><span class="en">Mentoring</span><span class="zh">指导</span></div>
         <h3><span class="en">Mentoring Ph.D. &amp; master's students</span><span class="zh">指导博士、硕士研究生</span></h3>
-        <p><span class="en">I mentor Ph.D. and master's students in their research; many of our papers are co-first-authored, and I've led student teams on industry problems from DiDi and Topsec.</span><span class="zh">指导多名博士、硕士研究生开展研究，多篇论文与所指导的同学共同第一作者；带领学生团队完成滴滴、天融信出题的产业课题。</span></p>
+        <p><span class="en">I mentor Ph.D. and master's students in their research; many of our papers are co-first-authored, and I've led student teams on three industry problems from DiDi and Topsec.</span><span class="zh">指导多名博士、硕士研究生开展研究，多篇论文与所指导的同学共同第一作者；带领学生团队完成滴滴、天融信出题的 3 项产业课题。</span></p>
       </div>
       <div class="value">
         <div class="k"><span class="en">Serving</span><span class="zh">服务</span></div>
@@ -430,8 +464,10 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
       </article>
     </div>
     <details class="more">
-      <summary><span class="en">Mentored student projects</span><span class="zh">指导的学生项目</span> <span class="n">2</span></summary>
+      <summary><span class="en">More projects</span><span class="zh">更多项目</span> <span class="n">4</span></summary>
       <ul class="list">
+        <li><div><span class="t"><span class="en">Key technologies for post-quantum secure distributed key infrastructure</span><span class="zh">面向后量子安全的分布式密钥基础设施关键技术研究</span></span><div class="m"><span class="en">Innovation Funding Program, Cyberspace Administration of China</span><span class="zh">中央网信办创新资助计划</span></div></div><div class="r"><span class="tier t1"><span class="en">Participant</span><span class="zh">参与</span></span></div></li>
+        <li><div><span class="t"><span class="en">Identity and access management for AI agents in cybersecurity — topic issued by Topsec</span><span class="zh">面向网络安全领域 AI 智能体的身份和访问管理研究 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program</span><span class="zh">网络安全学院学生创新资助计划</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
         <li><div><span class="t"><span class="en">GPS positioning — topic issued by DiDi</span><span class="zh">GPS 定位 —— 滴滴出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase II</span><span class="zh">网络安全学院学生创新资助计划第二期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
         <li><div><span class="t"><span class="en">AI-assisted data classification &amp; grading — topic issued by Topsec</span><span class="zh">人工智能辅助数据自动分类分级 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase III</span><span class="zh">网络安全学院学生创新资助计划第三期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
       </ul>
@@ -526,6 +562,8 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
   </footer>
 </main>
 
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
+
 <script>
 (function(){
   var body=document.body,btns=[].slice.call(document.querySelectorAll("[data-set-lang]"));
@@ -545,18 +583,24 @@ footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
     a.target="_blank";a.rel="noreferrer";
   });
 
-  var top=document.getElementById("top");
-  addEventListener("scroll",function(){top.classList.toggle("scrolled",scrollY>8)},{passive:true});
+  var top=document.getElementById("top"),up=document.getElementById("totop");
+  addEventListener("scroll",function(){top.classList.toggle("scrolled",scrollY>8);up.classList.toggle("show",scrollY>innerHeight)},{passive:true});
+  up.addEventListener("click",function(){scrollTo({top:0,behavior:"smooth"})});
 
   var links=[].slice.call(document.querySelectorAll(".links a"));
   var map={};links.forEach(function(a){map[a.getAttribute("href").slice(1)]=a});
-  if("IntersectionObserver" in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){
-      if(e.isIntersecting){links.forEach(function(a){a.classList.remove("on")});
-        var a=map[e.target.id];if(a){a.classList.add("on");a.scrollIntoView({block:"nearest",inline:"nearest"})}}
-    })},{rootMargin:"-45% 0px -50% 0px"});
-    Object.keys(map).forEach(function(id){var s=document.getElementById(id);if(s)io.observe(s)});
-  }
+  // Highlight the section whose top has passed 40% of the viewport (exactly one at a time)
+  var secs=Object.keys(map).map(function(id){return document.getElementById(id)}).filter(Boolean),cur=null;
+  function spy(){
+    var y=innerHeight*.4,hit=null;
+    secs.forEach(function(s){if(s.getBoundingClientRect().top<=y)hit=s});
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-2)hit=secs[secs.length-1];
+    var a=hit?map[hit.id]:null;if(a===cur)return;
+    links.forEach(function(l){l.classList.toggle("on",l===a)});cur=a;
+    // scroll only the nav strip; scrollIntoView would also drag the page back while the user scrolls
+    if(a){var c=a.parentNode;if(c.scrollWidth>c.clientWidth)c.scrollTo({left:a.offsetLeft-c.offsetLeft-(c.clientWidth-a.offsetWidth)/2,behavior:"smooth"})}}
+  addEventListener("scroll",spy,{passive:true});
+  spy();
 })();
 </script>
 </body>
