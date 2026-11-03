@@ -33,7 +33,6 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 var(--sans);-w
 body[data-lang=zh]{line-height:1.8;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
 body[data-lang=zh] h2{font-weight:600}
 body[data-lang=zh] .lede{font-size:20px}
-body[data-lang=zh] .photo figcaption{font-style:normal}
 a{color:inherit;text-decoration-color:var(--line);text-underline-offset:3px}
 a:hover{color:var(--accent);text-decoration-color:currentColor}
 img{display:block;max-width:100%}
@@ -43,8 +42,13 @@ img{display:block;max-width:100%}
 body[data-lang=en] .zh,body[data-lang=zh] .en{display:none!important}
 
 /* nav */
-.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
-.top.scrolled{border-bottom-color:var(--line)}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border-bottom:1px solid transparent;transition:background .3s,border-color .3s,box-shadow .3s}
+.top.scrolled{background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom-color:color-mix(in srgb,var(--line) 70%,transparent);box-shadow:0 10px 30px -22px rgba(40,30,20,.45)}
+
+/* gentle reveal on scroll (JS adds .rv; disabled for reduced motion) */
+.rv.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.2,1),border-color .2s,box-shadow .2s}
+.rv.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv.rv{opacity:1;transform:none;transition:none}}
 .nav{display:flex;align-items:center;gap:24px;height:60px}
 .brand{font:600 17px/1 var(--serif);text-decoration:none;white-space:nowrap}
 .links{display:flex;gap:4px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
@@ -73,9 +77,13 @@ h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:
 .profiles{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:18px;font-size:15px}
 .profiles a{color:var(--muted);text-decoration:none;padding:4px 0}
 .profiles a:hover{color:var(--accent)}
-.photo{margin:0;width:100%;max-width:340px;justify-self:end}
-.photo img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center 50%;border-radius:22px;background:var(--sunk)}
-.photo figcaption{margin-top:12px;font:italic 15px/1.4 var(--serif);color:var(--muted);text-align:center}
+.photo{margin:0;width:100%;max-width:340px;justify-self:end;position:relative}
+.ph{border-radius:22px;overflow:hidden;background:var(--sunk);box-shadow:0 1px 2px rgba(40,30,20,.06),0 28px 56px -28px rgba(40,30,20,.45);transform:translateZ(0)}
+.photo img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center 50%;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.photo:hover img{transform:scale(1.035)}
+/* frosted-glass caption floating on the photo */
+.photo figcaption{position:absolute;left:14px;bottom:14px;margin:0;padding:8px 14px;border-radius:999px;font:500 14px/1.2 var(--sans);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);
+  background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:0 8px 24px -12px rgba(0,0,0,.35)}
 
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:24px}
@@ -287,7 +295,7 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
       </div>
     </div>
     <figure class="photo">
-      <img src="couple.jpg" alt="Zhi Lu on a garden path" width="1000" height="1334">
+      <div class="ph"><img src="couple.jpg" alt="Zhi Lu on a garden path" width="1000" height="1334"></div>
       <figcaption><span class="en">Attending a conference together.</span><span class="zh">一起参加会议。</span></figcaption>
     </figure>
   </div>
@@ -624,6 +632,23 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
     a.href="https://scholar.google.com/scholar?q="+encodeURIComponent('"'+q+'"');
     a.target="_blank";a.rel="noreferrer";
   });
+
+  // Reveal blocks as they scroll into view, siblings slightly staggered
+  var pending=[].slice.call(document.querySelectorAll(".stats,.motto,.sec-head,.about>div,.value,.news>div,.pub,.grid>.card,.honor,section>.more"));
+  pending.forEach(function(b){
+    var i=[].indexOf.call(b.parentNode.children,b);
+    b.style.transitionDelay=Math.min(i,4)*70+"ms";
+    b.classList.add("rv")});
+  function reveal(){
+    if(!pending.length)return;
+    var lim=innerHeight*.94;
+    pending=pending.filter(function(b){
+      var r=b.getBoundingClientRect();
+      if(r.top<lim||r.bottom<0){b.classList.add("in");return false}
+      return true})}
+  addEventListener("scroll",reveal,{passive:true});
+  addEventListener("resize",reveal);
+  reveal();
 
   var top=document.getElementById("top"),up=document.getElementById("totop");
   addEventListener("scroll",function(){top.classList.toggle("scrolled",scrollY>8);up.classList.toggle("show",scrollY>innerHeight)},{passive:true});
