@@ -82,8 +82,6 @@ h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:
 .photo img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center 50%;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .photo:hover img{transform:scale(1.035)}
 /* frosted-glass caption floating on the photo */
-.photo figcaption{position:absolute;left:14px;bottom:14px;margin:0;padding:8px 14px;border-radius:999px;font:500 14px/1.2 var(--sans);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);
-  background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:0 8px 24px -12px rgba(0,0,0,.35)}
 
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:24px}
@@ -295,9 +293,7 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
       </div>
     </div>
     <figure class="photo">
-      <div class="ph"><img src="couple.jpg" alt="Zhi Lu on a garden path" width="1000" height="1334"></div>
-      <figcaption><span class="en">Attending a conference together.</span><span class="zh">一起参加会议。</span></figcaption>
-    </figure>
+      <div class="ph"><img src="couple.jpg" alt="Zhi Lu on a garden path" width="1000" height="1334"></div>    </figure>
   </div>
 
   <div class="stats">
@@ -321,15 +317,14 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
       <div>
         <p class="en">I'm a Research Fellow in the School of Computing at the National University of Singapore, working with <a href="https://www.comp.nus.edu.sg/cs/people/zhangjh/" target="_blank" rel="noreferrer">Prof. Jiaheng Zhang</a>. My work spans zero-knowledge proofs, secure aggregation, distributed key generation, anonymous credentials and anonymous accountability — the building blocks of trustworthy AI and data systems.</p>
         <p class="zh">我是新加坡国立大学计算机学院的博士后研究员，合作导师为<a href="https://www.comp.nus.edu.sg/cs/people/zhangjh/" target="_blank" rel="noreferrer">张嘉恒教授</a>。研究方向包括零知识证明、安全聚合、分布式密钥生成、匿名凭证与匿名可追责机制 —— 这些都是可信人工智能与可信数据系统的基础。</p>
-        <p class="en">Before NUS, I earned my Ph.D. and M.S. in Cyberspace Security at Huazhong University of Science and Technology under Prof. Songfeng Lu and Prof. Jianxin Zhu, and my B.S. in Computer Science at SUSTech under Prof. Xin Yao.</p>
-        <p class="zh">此前，我在华中科技大学获得网络空间安全博士和硕士学位，师从路松峰教授与朱建新教授；本科毕业于南方科技大学计算机科学与技术专业，师从姚新教授。</p>
+        <p class="en">Before NUS, I completed a combined M.S.–Ph.D. program in Cyberspace Security at Huazhong University of Science and Technology under Prof. Songfeng Lu and Prof. Jianxin Zhu, and my B.S. in Computer Science at SUSTech under Prof. Xin Yao.</p>
+        <p class="zh">此前，我在华中科技大学网络空间安全专业硕博连读并获得博士学位，师从路松峰教授与朱建新教授；本科毕业于南方科技大学计算机科学与技术专业，师从姚新教授。</p>
       </div>
       <div>
         <h3 style="margin-bottom:16px"><span class="en">Experience</span><span class="zh">经历</span></h3>
         <ol class="timeline">
           <li class="now"><time>2026 –</time><div><span class="en">Research Fellow</span><span class="zh">博士后研究员</span><small><span class="en">National University of Singapore</span><span class="zh">新加坡国立大学 · 计算机学院</span></small></div></li>
-          <li><time>2022 – 26</time><div><span class="en">Ph.D., Cyberspace Security</span><span class="zh">博士 · 网络空间安全</span><small><span class="en">Huazhong Univ. of Science &amp; Technology</span><span class="zh">华中科技大学</span></small></div></li>
-          <li><time>2020 – 22</time><div><span class="en">M.S., Cyberspace Security</span><span class="zh">硕士 · 网络空间安全</span><small><span class="en">Huazhong Univ. of Science &amp; Technology</span><span class="zh">华中科技大学</span></small></div></li>
+          <li><time>2020 – 26</time><div><span class="en">M.S.–Ph.D. (combined), Cyberspace Security</span><span class="zh">硕博连读 · 网络空间安全</span><small><span class="en">Huazhong Univ. of Science &amp; Technology</span><span class="zh">华中科技大学</span></small></div></li>
           <li><time>2016 – 20</time><div><span class="en">B.S., Computer Science</span><span class="zh">学士 · 计算机科学与技术</span><small><span class="en">Southern Univ. of Science &amp; Technology</span><span class="zh">南方科技大学</span></small></div></li>
         </ol>
       </div>
@@ -371,13 +366,13 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
           </article>
         </div>
 
-        <h4><span class="en">Featured work under review</span><span class="zh">在投代表作</span> <span class="h4-note"><span class="en">· all first-authored</span><span class="zh">· 均为第一作者</span></span></h4>
+        <h4><span class="en">Featured work under review</span><span class="zh">在投代表作</span> <span class="h4-note"><span class="en">· all first-authored, all built on ZKP</span><span class="zh">· 均为第一作者，均基于零知识证明</span></span></h4>
         <ol class="list feat">
-          <li><div><span class="t">ProofOut: Did Your Data Really Stay Out of LLM Training?</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Fang Liu, Songfeng Lu, Jiaheng Zhang</div></div></li>
-          <li><div><span class="t">ZeroM: Verifying Memory-Off in LLMs with Zero-Knowledge Proofs</span></div></li>
-          <li><div><a class="t" href="https://eprint.iacr.org/2026/2706" target="_blank" rel="noreferrer">Anamorphic Proofs of Knowledge from Prover Randomness</a><div class="m"><span class="en">Bringing anamorphic cryptography to zero-knowledge proofs</span><span class="zh">将 anamorphic 密码学引入零知识证明</span></div></div></li>
-          <li><div><span class="t">VeilCall: Private Regex Enforcement for Web Agent Tool Calls</span></div></li>
-          <li><div><span class="t">zkRule: Inspecting Encrypted Web Files without Seeing Them</span></div></li>
+          <li><div><span class="t">ProofOut: Did Your Data Really Stay Out of LLM Training?</span><div class="m"><span class="en">Proves that an LLM's opt-out really took effect — your data stayed out of training.</span><span class="zh">证明大模型的 Opt-Out 确实生效：你的数据真的没有被拿去训练。</span></div></div></li>
+          <li><div><span class="t">ZeroM: Verifying Memory-Off in LLMs with Zero-Knowledge Proofs</span><div class="m"><span class="en">Proves that an LLM's memory really is switched off.</span><span class="zh">证明大模型的记忆（Memory）功能确实已经关闭。</span></div></div></li>
+          <li><div><a class="t" href="https://eprint.iacr.org/2026/2706" target="_blank" rel="noreferrer">Anamorphic Proofs of Knowledge from Prover Randomness</a><div class="m"><span class="en">Brings anamorphic cryptography to ZKP: a hidden channel carried by the prover's randomness.</span><span class="zh">将 anamorphic 密码学引入零知识证明，借证明者的随机性传递隐蔽信息。</span></div></div></li>
+          <li><div><span class="t">VeilCall: Private Regex Enforcement for Web Agent Tool Calls</span><div class="m"><span class="en">Checks that an agent's encrypted tool-call inputs are legitimate, without seeing them.</span><span class="zh">对 Agent 工具调用的密文输入做合法性检查，全程不看明文。</span></div></div></li>
+          <li><div><span class="t">zkRule: Inspecting Encrypted Web Files without Seeing Them</span><div class="m"><span class="en">Audits data in encrypted file systems without decrypting it.</span><span class="zh">对加密文件系统中的数据进行合规审查，无需解密。</span></div></div></li>
         </ol>
 
         <details class="more">
@@ -488,26 +483,26 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
 
   <!-- Projects -->
   <section id="projects">
-    <div class="sec-head"><span class="sec-num">04</span><h2><span class="en">Selected Projects</span><span class="zh">代表项目</span></h2></div>
+    <div class="sec-head"><span class="sec-num">04</span><h2><span class="en">Selected Projects</span><span class="zh">代表项目</span></h2><span class="sec-note"><span class="en">All applied for and led by me as the applicant</span><span class="zh">均由本人作为申报人申请并主持</span></span></div>
     <div class="grid">
       <article class="card">
-        <span class="tag"><span class="en">Principal investigator</span><span class="zh">主持</span></span>
+        <span class="tag"><span class="en">Applicant · PI</span><span class="zh">申报人 · 主持</span></span>
         <h3><span class="en">CAST Young Talent Support Program — Ph.D. Track</span><span class="zh">中国科协青年人才托举工程 · 博士生专项</span></h3>
         <div class="hl"><span class="en">First cohort · ~3,000 selected nationwide</span><span class="zh">首届 · 全国约 3,000 人入选</span></div>
         <p><span class="en">Supported by the China Association for Science and Technology and the China Computer Federation.</span><span class="zh">由中国科学技术协会与中国计算机学会支持。</span></p>
       </article>
       <article class="card">
-        <span class="tag"><span class="en">Principal investigator</span><span class="zh">主持</span></span>
+        <span class="tag"><span class="en">Applicant · PI</span><span class="zh">申报人 · 主持</span></span>
         <h3><span class="en">HUST Graduate Innovation Fund</span><span class="zh">华中科技大学研究生创新基金项目</span></h3>
         <p><span class="en">University-funded research on security, privacy and trustworthy systems.</span><span class="zh">校级研究生创新基金，支持安全、隐私与可信系统方向研究。</span></p>
       </article>
       <article class="card">
-        <span class="tag"><span class="en">Principal investigator · with Huawei</span><span class="zh">主持 · 与华为合作</span></span>
+        <span class="tag"><span class="en">Applicant · PI · with Huawei</span><span class="zh">申报人 · 主持 · 与华为合作</span></span>
         <h3><span class="en">Privacy-aware fuzzy vector matching</span><span class="zh">隐私保护的模糊向量匹配</span></h3>
         <p><span class="en">Cybersecurity Student Innovation Funding Program, Phase III — matching data without exposing it.</span><span class="zh">网络安全学院学生创新资助计划第三期，在不暴露数据的前提下完成匹配。</span></p>
       </article>
       <article class="card">
-        <span class="tag"><span class="en">Principal investigator · with Qi-Anxin</span><span class="zh">主持 · 与奇安信合作</span></span>
+        <span class="tag"><span class="en">Applicant · PI · with Qi-Anxin</span><span class="zh">申报人 · 主持 · 与奇安信合作</span></span>
         <h3><span class="en">Industrial-control protocol simulator</span><span class="zh">工业控制协议仿真器</span></h3>
         <p><span class="en">Phase I of the program led by the Cyberspace Administration of China with the Cybersecurity Association of China.</span><span class="zh">中央网信办牵头、中国网络空间安全协会组织的创新资助计划第一期。</span></p>
       </article>
@@ -515,10 +510,10 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
     <details class="more">
       <summary><span class="en">More projects</span><span class="zh">更多项目</span> <span class="n">4</span></summary>
       <ul class="list">
-        <li><div><span class="t"><span class="en">Key technologies for post-quantum secure distributed key infrastructure</span><span class="zh">面向后量子安全的分布式密钥基础设施关键技术研究</span></span><div class="m"><span class="en">Innovation Funding Program, Cyberspace Administration of China</span><span class="zh">中央网信办创新资助计划</span></div></div><div class="r"><span class="tier t1"><span class="en">Participant</span><span class="zh">参与</span></span></div></li>
-        <li><div><span class="t"><span class="en">Identity and access management for AI agents in cybersecurity — topic issued by Topsec</span><span class="zh">面向网络安全领域 AI 智能体的身份和访问管理研究 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase IV</span><span class="zh">网络安全学院学生创新资助计划第四期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
-        <li><div><span class="t"><span class="en">GPS positioning — topic issued by DiDi</span><span class="zh">GPS 定位 —— 滴滴出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase II</span><span class="zh">网络安全学院学生创新资助计划第二期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
-        <li><div><span class="t"><span class="en">AI-assisted data classification &amp; grading — topic issued by Topsec</span><span class="zh">人工智能辅助数据自动分类分级 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase III</span><span class="zh">网络安全学院学生创新资助计划第三期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor</span><span class="zh">指导</span></span></div></li>
+        <li><div><span class="t"><span class="en">Key technologies for post-quantum secure distributed key infrastructure</span><span class="zh">面向后量子安全的分布式密钥基础设施关键技术研究</span></span><div class="m"><span class="en">Innovation Funding Program, Cyberspace Administration of China</span><span class="zh">中央网信办创新资助计划</span></div></div><div class="r"><span class="tier"><span class="en">Participant · advisor-led</span><span class="zh">参与 · 导师项目</span></span></div></li>
+        <li><div><span class="t"><span class="en">Identity and access management for AI agents in cybersecurity — topic issued by Topsec</span><span class="zh">面向网络安全领域 AI 智能体的身份和访问管理研究 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase IV</span><span class="zh">网络安全学院学生创新资助计划第四期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor · student team</span><span class="zh">指导 · 学生团队</span></span></div></li>
+        <li><div><span class="t"><span class="en">GPS positioning — topic issued by DiDi</span><span class="zh">GPS 定位 —— 滴滴出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase II</span><span class="zh">网络安全学院学生创新资助计划第二期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor · student team</span><span class="zh">指导 · 学生团队</span></span></div></li>
+        <li><div><span class="t"><span class="en">AI-assisted data classification &amp; grading — topic issued by Topsec</span><span class="zh">人工智能辅助数据自动分类分级 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase III</span><span class="zh">网络安全学院学生创新资助计划第三期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor · student team</span><span class="zh">指导 · 学生团队</span></span></div></li>
       </ul>
     </details>
   </section>
@@ -541,7 +536,7 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
       </li>
       <li class="honor">
         <div class="badge">2026<small><span class="en">Ph.D. graduation</span><span class="zh">博士毕业</span></small></div>
-        <div><h3><span class="en">Outstanding Graduate</span><span class="zh">优秀毕业生</span></h3><div class="by"><span class="en">Huazhong University of Science and Technology</span><span class="zh">华中科技大学</span></div></div>
+        <div><h3><span class="en">Outstanding Graduate &amp; Outstanding Doctoral Dissertation</span><span class="zh">优秀毕业生 · 优秀博士学位论文</span></h3><div class="by"><span class="en">Huazhong University of Science and Technology</span><span class="zh">华中科技大学</span></div></div>
       </li>
     </ul>
   </section>
@@ -596,7 +591,8 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
     <details class="more">
       <summary><span class="en">Academic service</span><span class="zh">学术服务</span></summary>
       <ul class="list">
-        <li><div><span class="t"><span class="en">Program Committee</span><span class="zh">程序委员会委员</span></span><div class="m">USENIX Security 2027</div></div></li>
+        <li><div><span class="t"><span class="en">Program Committee</span><span class="zh">程序委员会委员</span></span><div class="m">USENIX Security 2027 · IEEE BIBM 2024–2026</div></div></li>
+        <li><div><span class="t"><span class="en">Workshop Co-Chair</span><span class="zh">研讨会联合主席</span></span><div class="m">IEEE BIBM Workshop — Smart Medicine and Privacy Protection Workshop: Challenges and Frontiers in Biomedical and Health Informatics</div></div></li>
         <li><div><span class="t"><span class="en">Reviewer</span><span class="zh">审稿人</span></span><div class="m">IEEE TIFS, IEEE TDSC, IEEE JSAC, IEEE TAI, JDIM, WWW, IEEE BIBM, IEEE ICASSP, IEEE ICME</div></div></li>
       </ul>
     </details>
