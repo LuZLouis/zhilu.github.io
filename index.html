@@ -81,24 +81,73 @@ h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:
 .ph{border-radius:22px;overflow:hidden;background:var(--sunk);box-shadow:0 1px 2px rgba(40,30,20,.06),0 28px 56px -28px rgba(40,30,20,.45);transform:translateZ(0)}
 .photo img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center 50%;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .photo:hover img{transform:scale(1.035)}
-/* frosted-glass caption floating on the photo */
+
+/* hero entrance: text lines rise in one after another, photo settles in */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+@keyframes settle{from{opacity:0;transform:scale(.965) translateY(10px)}}
+.hero>div:first-child>*{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+.hero>div:first-child>:nth-child(2){animation-delay:.08s}
+.hero>div:first-child>:nth-child(3){animation-delay:.16s}
+.hero>div:first-child>:nth-child(4){animation-delay:.24s}
+.hero>div:first-child>:nth-child(5){animation-delay:.32s}
+.hero>div:first-child>:nth-child(6){animation-delay:.4s}
+.hero>div:first-child>:nth-child(7){animation-delay:.46s}
+.photo{animation:settle 1.1s .2s cubic-bezier(.2,.7,.2,1) both}
+@media (prefers-reduced-motion:reduce){.hero>div:first-child>*,.photo{animation:none}}
 
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:24px}
 .stat{padding:22px 20px}
 .stat+.stat{border-left:1px solid var(--line)}
-.stat b{display:block;font:500 34px/1.1 var(--serif);letter-spacing:-.01em}
+.stat b{display:block;font:500 34px/1.1 var(--serif);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .stat span{font-size:14.5px;line-height:1.5;color:var(--muted)}
 
-/* motto */
-.motto{margin:64px auto 0;max-width:760px;text-align:center}
+/* ZKP band: motto + book + interactive demo */
+.zk-band{margin-top:64px;padding:56px 40px 40px;border:1px solid var(--line);border-radius:28px;
+  background:radial-gradient(90% 70% at 50% 0%,var(--accent-soft),transparent 70%),var(--sunk)}
+.motto{margin:0 auto;max-width:760px;text-align:center}
 .motto blockquote{margin:0;font:400 clamp(21px,2.6vw,27px)/1.6 var(--serif);color:var(--ink-2);text-wrap:balance}
-.motto blockquote::before{content:"";display:block;width:36px;height:2px;margin:0 auto 24px;background:var(--accent)}
-.motto em{font-style:normal;font-weight:600;color:var(--accent)}
+.motto blockquote::before{content:"";display:block;width:36px;height:2px;margin:0 auto 24px;background:var(--accent);transition:width 1s .2s cubic-bezier(.2,.7,.2,1)}
+.motto.rv:not(.in) blockquote::before{width:0}
+.motto em{font-style:normal;font-weight:600;color:var(--accent);background:linear-gradient(currentColor,currentColor) 0 100%/100% 1.5px no-repeat;transition:background-size 1.2s .5s cubic-bezier(.2,.7,.2,1)}
+.motto.rv:not(.in) em{background-size:0 1.5px}
+.zk-show{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:44px}
+.show{display:flex;flex-direction:column;gap:8px;padding:22px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--ink);text-decoration:none}
+.show .vis{display:grid;place-items:center;height:132px;margin-bottom:8px;border-radius:14px;background:linear-gradient(135deg,var(--accent-soft),var(--bg) 75%)}
+.show p{font-size:16px;line-height:1.65;color:var(--ink-2);margin:0}
+.show .btn{align-self:flex-start;margin-top:auto}
+.show .demo-tag{margin-bottom:2px}
+.show .open{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600;color:var(--accent)}
+.show .open i{display:inline-block;font-style:normal;transition:transform .2s}
+.zk-show>.show.rv.in{transition:opacity .6s ease,transform .3s cubic-bezier(.2,.7,.2,1),border-color .2s,box-shadow .2s}
+.zk-show>.show.rv.in:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 18px 36px -24px rgba(40,30,20,.5)}
+a.show:hover{color:var(--ink)}
+a.show:hover .open i{transform:translateX(4px)}
+.show .demo-anim{width:250px;height:auto}
+.status .live{display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--accent);vertical-align:1px;animation:live 2s infinite}
+@keyframes live{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}70%,100%{box-shadow:0 0 0 8px transparent}}
+/* book visual: open book whose right page runs a commit → challenge → response round */
+.bk{width:230px;height:auto;overflow:visible}
+.bk .pg{fill:var(--surface);stroke:var(--muted);stroke-width:1.2;stroke-linejoin:round}
+.bk .ln{stroke:var(--line);stroke-width:3;stroke-linecap:round}
+.bk .who{font:600 12px var(--mono);fill:var(--muted);text-anchor:middle}
+.bk .ar{fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.bk .a1{animation:bkA1 6s infinite}.bk .a2{animation:bkA2 6s infinite}.bk .a3{animation:bkA3 6s infinite}
+.bk .ok{transform-box:fill-box;transform-origin:center;animation:bkOk 6s infinite}
+.bk .ok circle{fill:var(--accent)}.bk .ok path{fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@keyframes bkA1{0%,4%{stroke-dashoffset:1}18%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bkA2{0%,22%{stroke-dashoffset:1}36%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bkA3{0%,40%{stroke-dashoffset:1}54%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bkOk{0%,58%{opacity:0;transform:scale(.4)}66%{opacity:1;transform:scale(1.15)}72%,90%{opacity:1;transform:scale(1)}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.bk .ar,.bk .ok,.status .live{animation:none;stroke-dashoffset:0}}
 
 /* sections */
 section{padding:88px 0 0}
-.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:32px;padding-top:18px;border-top:1px solid var(--ink)}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:32px;padding-top:18px;border-top:1px solid var(--ink);position:relative}
+/* the rule above each section draws itself in from the left */
+.sec-head.rv{border-top-color:transparent}
+.sec-head.rv::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--ink);transform-origin:left;transition:transform 1.1s .1s cubic-bezier(.2,.7,.2,1)}
+.sec-head.rv:not(.in)::before{transform:scaleX(0)}
 .sec-num{font:500 14px var(--mono);color:var(--accent)}
 h2{font:500 34px/1.15 var(--serif);letter-spacing:-.015em;margin:0}
 .sec-note{margin-left:auto;font-size:14px;color:var(--muted)}
@@ -124,12 +173,6 @@ p{margin:0 0 16px}
 
 /* news */
 .news{display:grid;grid-template-columns:1.3fr 1fr;gap:56px}
-.wip{display:grid;gap:12px}
-.wip .card{flex-direction:row;align-items:flex-start;gap:16px}
-.dot{flex:none;width:10px;height:10px;margin-top:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
-.book-line{font-family:var(--serif)!important;font-style:italic;font-size:16.5px!important;color:var(--ink-2)}
-body[data-lang=zh] .book-line{font-style:normal}
-.learn{margin-top:14px}
 .status{font:500 13px var(--mono);letter-spacing:.04em;color:var(--accent);margin-bottom:4px}
 .recent{list-style:none;margin:0;padding:0}
 .recent li{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2)}
@@ -170,15 +213,9 @@ body[data-lang=zh] .book-line{font-style:normal}
 .list.feat li{grid-template-columns:28px 1fr;gap:12px;counter-increment:f}
 .list.feat li::before{content:counter(f,decimal-leading-zero);font:500 13px/1.9 var(--mono);color:var(--accent)}
 .list.feat li:first-child{border-top:0;padding-top:4px}
-/* zkRule interactive demo teaser */
-.demo-cta{display:grid;grid-template-columns:170px minmax(0,1fr) auto;gap:16px;align-items:center;margin-top:12px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,var(--accent-soft),var(--surface) 70%);text-decoration:none;color:var(--ink);transition:border-color .2s,transform .2s,box-shadow .2s}
-.demo-cta:hover{border-color:var(--accent);color:var(--ink);transform:translateY(-1px);box-shadow:0 12px 26px -18px rgba(40,30,20,.45)}
-.demo-tag{display:block;font:600 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.demo-txt b{display:block;font-size:15.5px;line-height:1.45;margin:2px 0}
-.demo-sub{display:block;font-size:13.5px;line-height:1.5;color:var(--muted)}
-.demo-go{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;transition:transform .2s}
-.demo-cta:hover .demo-go{transform:translateX(3px)}
-.demo-anim{width:170px;height:72px;overflow:visible}
+/* zkRule interactive demo animation */
+.demo-tag{display:block;font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.demo-anim{overflow:visible}
 .demo-anim *{transform-box:fill-box;transform-origin:center}
 .da-tiles rect{fill:var(--surface);stroke:var(--line);stroke-width:1.2;animation:daTiles 5s infinite}
 .da-tiles rect.hot{fill:var(--accent-soft);stroke:var(--accent)}
@@ -196,7 +233,6 @@ body[data-lang=zh] .book-line{font-style:normal}
 @keyframes daRing{0%,50%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1)}72%,100%{opacity:0;transform:scale(1.3)}}
 @keyframes daStamp{0%,68%{opacity:0;transform:scale(1.7) rotate(-8deg)}76%,92%{opacity:1;transform:scale(1) rotate(-8deg)}100%{opacity:0;transform:scale(1) rotate(-8deg)}}
 @media (prefers-reduced-motion:reduce){.demo-anim *{animation:none!important}.da-tiles rect{opacity:.25}.da-ring{opacity:0}}
-@media (max-width:640px){.demo-cta{grid-template-columns:minmax(0,1fr) auto}.demo-anim{grid-column:1/-1;width:100%;max-width:220px}}
 
 /* cards */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -229,7 +265,7 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
   .hero,.about,.news{grid-template-columns:1fr;gap:40px}
   .hero{padding-top:44px}
   .photo{max-width:320px;justify-self:start}
-  .values{grid-template-columns:1fr}
+  .values,.zk-show{grid-template-columns:1fr}
   .stats{grid-template-columns:repeat(2,1fr)}
   .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid var(--line)}
@@ -250,6 +286,9 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
   .stat{padding:18px 14px}
   .stat b{font-size:30px}
   .values{margin-top:28px}
+  .zk-band{margin-top:44px;padding:36px 16px 16px;border-radius:22px}
+  .zk-show{margin-top:32px}
+  .show{padding:18px}
   .news{gap:32px}
   .pub h3{font-size:18.5px}
   .card{padding:20px}
@@ -331,12 +370,51 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
     <div class="stat"><b>11</b><span class="en">invention patents</span><span class="zh">项发明专利</span></div>
   </div>
 
-  <figure class="motto">
-    <blockquote>
-      <span class="zh">零知识证明让<em>“知者不言”</em>这句老子的哲思成为可构造的协议：不泄露任何秘密，却能令人确信你知道。</span>
-      <span class="en">Zero-knowledge proofs turn Laozi's <em>“those who know do not speak”</em> into a constructible protocol: reveal no secret, yet convince others that you know.</span>
-    </blockquote>
-  </figure>
+  <div class="zk-band">
+    <figure class="motto">
+      <blockquote>
+        <span class="zh">零知识证明让<em>“知者不言”</em>这句老子的哲思成为可构造的协议：不泄露任何秘密，却能令人确信你知道。</span>
+        <span class="en">Zero-knowledge proofs turn Laozi's <em>“those who know do not speak”</em> into a constructible protocol: reveal no secret, yet convince others that you know.</span>
+      </blockquote>
+    </figure>
+
+    <div class="zk-show">
+      <article class="show">
+        <div class="vis">
+          <svg class="bk" viewBox="0 0 220 110" aria-hidden="true">
+            <path class="pg" d="M110 20 Q78 8 18 13 L18 96 Q78 91 110 103 Z"/>
+            <path class="pg" d="M110 20 Q142 8 202 13 L202 96 Q142 91 110 103 Z"/>
+            <path class="ln" d="M32 32 H96 M32 44 H96 M32 56 H90 M32 68 H96 M32 80 H74"/>
+            <text class="who" x="128" y="36">P</text><text class="who" x="186" y="36">V</text>
+            <path class="ar a1" pathLength="1" d="M134 48 H178 M173 44 L178 48 L173 52"/>
+            <path class="ar a2" pathLength="1" d="M178 62 H134 M139 58 L134 62 L139 66"/>
+            <path class="ar a3" pathLength="1" d="M134 76 H178 M173 72 L178 76 L173 80"/>
+            <g class="ok"><circle cx="186" cy="88" r="8"/><path d="M182 88 L185 91 L190 85"/></g>
+          </svg>
+        </div>
+        <div class="status"><span class="live"></span><span class="en">WRITING</span><span class="zh">撰写中</span></div>
+        <h3><span class="en">A book on zero-knowledge proofs</span><span class="zh">零知识证明专著</span></h3>
+        <p><span class="en">A systematic treatment of ZKP — from foundations to constructions and applications. Start with the illustrated primer.</span><span class="zh">系统介绍零知识证明，从基础理论到构造与应用。可以先从图解入门讲义读起。</span></p>
+        <a class="btn primary" href="zkp/"><span class="en">An illustrated ZKP primer →</span><span class="zh">图解零知识证明：入门讲义 →</span></a>
+      </article>
+
+      <a class="show" href="zkrule/">
+        <div class="vis">
+          <svg class="demo-anim" viewBox="0 0 150 64" aria-hidden="true">
+            <g class="da-tiles"><rect x="4" y="12" width="15" height="18" rx="3"/><rect class="hot" x="22" y="12" width="15" height="18" rx="3"/><rect class="hot" x="40" y="12" width="15" height="18" rx="3"/><rect x="58" y="12" width="15" height="18" rx="3"/></g>
+            <text class="da-cipher" x="4" y="46">9f3a·c1e0·77b2</text>
+            <g class="da-env"><rect x="84" y="14" width="24" height="17" rx="3"/><path d="M84 14 L96 24 L108 14"/></g>
+            <circle class="da-ring" cx="96" cy="22" r="17"/>
+            <g class="da-stamp"><rect x="114" y="12" width="32" height="20" rx="4"/><text x="130" y="23"><tspan class="en">HIT</tspan><tspan class="zh">命中</tspan></text></g>
+          </svg>
+        </div>
+        <span class="demo-tag"><span class="en">Interactive demo · zkRule</span><span class="zh">互动演示 · zkRule</span></span>
+        <h3><span class="en">Audit a message you can't read</span><span class="zh">不看明文，也能查出违禁词</span></h3>
+        <p><span class="en">Type a sentence, then watch it get encrypted, proved in zero knowledge, and caught.</span><span class="zh">输入一句话，看它被加密、被零知识证明，再被审核机构查出来。</span></p>
+        <span class="open"><span class="en">Try it </span><span class="zh">打开演示 </span><i>→</i></span>
+      </a>
+    </div>
+  </div>
 
   <!-- About -->
   <section id="about">
@@ -388,20 +466,17 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
           <li><div><span class="t">ZeroM: Verifying Memory-Off in LLMs with Zero-Knowledge Proofs</span><div class="m"><span class="en">Proves that an LLM's memory really is switched off.</span><span class="zh">证明大模型的记忆（Memory）功能确实已经关闭。</span></div></div></li>
           <li><div><a class="t" href="https://eprint.iacr.org/2026/2706" target="_blank" rel="noreferrer">Anamorphic Proofs of Knowledge from Prover Randomness</a><div class="m"><span class="en">Brings anamorphic cryptography to ZKP: a hidden channel carried by the prover's randomness.</span><span class="zh">将 anamorphic 密码学引入零知识证明，借证明者的随机性传递隐蔽信息。</span></div></div></li>
           <li><div><span class="t">VeilCall: Private Regex Enforcement for Web Agent Tool Calls</span><div class="m"><span class="en">Checks that an agent's encrypted tool-call inputs are legitimate, without seeing them.</span><span class="zh">对 Agent 工具调用的密文输入做合法性检查，全程不看明文。</span></div></div></li>
-          <li><div><a class="t" href="zkrule/">zkRule: Inspecting Encrypted Web Files without Seeing Them</a><div class="m"><span class="en">Audits data in encrypted file systems without decrypting it.</span><span class="zh">对加密文件系统中的数据进行合规审查，无需解密。</span></div>
-            <a class="demo-cta" href="zkrule/">
-              <svg class="demo-anim" viewBox="0 0 150 64" aria-hidden="true">
-                <g class="da-tiles"><rect x="4" y="12" width="15" height="18" rx="3"/><rect class="hot" x="22" y="12" width="15" height="18" rx="3"/><rect class="hot" x="40" y="12" width="15" height="18" rx="3"/><rect x="58" y="12" width="15" height="18" rx="3"/></g>
-                <text class="da-cipher" x="4" y="46">9f3a·c1e0·77b2</text>
-                <g class="da-env"><rect x="84" y="14" width="24" height="17" rx="3"/><path d="M84 14 L96 24 L108 14"/></g>
-                <circle class="da-ring" cx="96" cy="22" r="17"/>
-                <g class="da-stamp"><rect x="114" y="12" width="32" height="20" rx="4"/><text x="130" y="23"><tspan class="en">HIT</tspan><tspan class="zh">命中</tspan></text></g>
-              </svg>
-              <span class="demo-txt"><span class="demo-tag"><span class="en">Interactive demo</span><span class="zh">互动演示</span></span><b><span class="en">Audit a message you can't read</span><span class="zh">不看明文，也能查出违禁词</span></b><span class="demo-sub"><span class="en">Type a sentence, then watch it get encrypted, proved in zero knowledge, and caught.</span><span class="zh">输入一句话，看它被加密、被零知识证明，再被审核机构查出来。</span></span></span>
-              <span class="demo-go" aria-hidden="true">→</span>
-            </a>
-          </div></li>
+          <li><div><a class="t" href="zkrule/">zkRule: Inspecting Encrypted Web Files without Seeing Them</a><div class="m"><span class="en">Audits data in encrypted file systems without decrypting it.</span><span class="zh">对加密文件系统中的数据进行合规审查，无需解密。</span> <a href="zkrule/"><span class="en">Try the demo →</span><span class="zh">互动演示 →</span></a></div></div></li>
         </ol>
+      </div>
+      <div>
+        <h4 style="margin-top:0"><span class="en">Recently</span><span class="zh">近期</span></h4>
+        <ul class="recent">
+          <li><time>2026</time><span><span class="en">Joined the Program Committee of USENIX Security 2027.</span><span class="zh">担任 USENIX Security 2027 程序委员会委员。</span></span></li>
+          <li><time>2026</time><span><span class="en">A3DKG accepted to NDSS 2027.</span><span class="zh">A3DKG 被 NDSS 2027 录用。</span></span></li>
+          <li><time>2026</time><span><span class="en">Joined NUS School of Computing as a Research Fellow.</span><span class="zh">加入新加坡国立大学计算机学院任博士后研究员。</span></span></li>
+          <li><time>2025</time><span><span class="en">Selected for the CAST Young Talent Support Program (Ph.D. track, first cohort).</span><span class="zh">入选首届中国科协青年人才托举工程博士生专项计划。</span></span></li>
+        </ul>
 
         <details class="more">
           <summary><span class="en">All papers under review</span><span class="zh">其余在投论文</span> <span class="n">17</span></summary>
@@ -425,28 +500,6 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
             <li><div><span class="t">Coherent Semantic Watermarking: Model-Auditable Geometric Ownership Verification for Multimodal Large Language Models</span></div><div class="r"><span class="yr"><span class="en">Author</span><span class="zh">作者</span></span></div></li>
           </ul>
         </details>
-      </div>
-      <div>
-        <h4 style="margin-top:0"><span class="en">Working on now</span><span class="zh">正在进行</span></h4>
-        <div class="wip">
-          <article class="card">
-            <span class="dot"></span>
-            <div>
-              <div class="status"><span class="en">WRITING</span><span class="zh">撰写中</span></div>
-              <h3><span class="en">A book on zero-knowledge proofs</span><span class="zh">零知识证明专著</span></h3>
-              <p><span class="en">A systematic treatment of ZKP — from foundations to constructions and applications.</span><span class="zh">系统介绍零知识证明，从基础理论到构造与应用。</span></p>
-              <a class="btn primary learn" href="zkp/"><span class="en">An illustrated ZKP primer →</span><span class="zh">图解零知识证明：入门讲义 →</span></a>
-            </div>
-          </article>
-        </div>
-
-        <h4><span class="en">Recently</span><span class="zh">近期</span></h4>
-        <ul class="recent">
-          <li><time>2026</time><span><span class="en">Joined the Program Committee of USENIX Security 2027.</span><span class="zh">担任 USENIX Security 2027 程序委员会委员。</span></span></li>
-          <li><time>2026</time><span><span class="en">A3DKG accepted to NDSS 2027.</span><span class="zh">A3DKG 被 NDSS 2027 录用。</span></span></li>
-          <li><time>2026</time><span><span class="en">Joined NUS School of Computing as a Research Fellow.</span><span class="zh">加入新加坡国立大学计算机学院任博士后研究员。</span></span></li>
-          <li><time>2025</time><span><span class="en">Selected for the CAST Young Talent Support Program (Ph.D. track, first cohort).</span><span class="zh">入选首届中国科协青年人才托举工程博士生专项计划。</span></span></li>
-        </ul>
       </div>
     </div>
   </section>
@@ -671,7 +724,16 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
   });
 
   // Reveal blocks as they scroll into view, siblings slightly staggered
-  var pending=[].slice.call(document.querySelectorAll(".stats,.motto,.sec-head,.about>div,.value,.news>div,.pub,.grid>.card,.honor,section>.more"));
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Stats count up from 0 the first time they appear (final value is also set by timeout, in case frames are throttled)
+  function countUp(box){
+    if(reduce)return;
+    [].forEach.call(box.querySelectorAll(".stat b"),function(b){
+      var n=parseInt(b.textContent,10);if(!(n>1))return;
+      var t0=null;b.textContent="0";
+      function step(t){t0=t0||t;var p=Math.min((t-t0)/1200,1);b.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)}
+      requestAnimationFrame(step);setTimeout(function(){b.textContent=n},1500)})}
+  var pending=[].slice.call(document.querySelectorAll(".stats,.motto,.zk-show>.show,.sec-head,.about>div,.value,.news>div,.pub,.grid>.card,.honor,section>.more"));
   pending.forEach(function(b){
     var i=[].indexOf.call(b.parentNode.children,b);
     b.style.transitionDelay=Math.min(i,4)*70+"ms";
@@ -681,7 +743,7 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
     var lim=innerHeight*.94;
     pending=pending.filter(function(b){
       var r=b.getBoundingClientRect();
-      if(r.top<lim||r.bottom<0){b.classList.add("in");return false}
+      if(r.top<lim||r.bottom<0){b.classList.add("in");if(b.classList.contains("stats")&&r.bottom>0)countUp(b);return false}
       return true})}
   addEventListener("scroll",reveal,{passive:true});
   addEventListener("resize",reveal);
