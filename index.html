@@ -170,6 +170,33 @@ body[data-lang=zh] .book-line{font-style:normal}
 .list.feat li{grid-template-columns:28px 1fr;gap:12px;counter-increment:f}
 .list.feat li::before{content:counter(f,decimal-leading-zero);font:500 13px/1.9 var(--mono);color:var(--accent)}
 .list.feat li:first-child{border-top:0;padding-top:4px}
+/* zkRule interactive demo teaser */
+.demo-cta{display:grid;grid-template-columns:170px minmax(0,1fr) auto;gap:16px;align-items:center;margin-top:12px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,var(--accent-soft),var(--surface) 70%);text-decoration:none;color:var(--ink);transition:border-color .2s,transform .2s,box-shadow .2s}
+.demo-cta:hover{border-color:var(--accent);color:var(--ink);transform:translateY(-1px);box-shadow:0 12px 26px -18px rgba(40,30,20,.45)}
+.demo-tag{display:block;font:600 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.demo-txt b{display:block;font-size:15.5px;line-height:1.45;margin:2px 0}
+.demo-sub{display:block;font-size:13.5px;line-height:1.5;color:var(--muted)}
+.demo-go{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;transition:transform .2s}
+.demo-cta:hover .demo-go{transform:translateX(3px)}
+.demo-anim{width:170px;height:72px;overflow:visible}
+.demo-anim *{transform-box:fill-box;transform-origin:center}
+.da-tiles rect{fill:var(--surface);stroke:var(--line);stroke-width:1.2;animation:daTiles 5s infinite}
+.da-tiles rect.hot{fill:var(--accent-soft);stroke:var(--accent)}
+.da-cipher{font:600 9px var(--mono);fill:var(--muted);animation:daCipher 5s infinite}
+.da-env rect{fill:#ead9ae;stroke:#b39457;stroke-width:1.2}
+.da-env path{fill:none;stroke:#b39457;stroke-width:1.2}
+.da-env{animation:daEnv 5s infinite}
+.da-ring{fill:none;stroke:#3d6f8f;stroke-width:2;stroke-dasharray:4 3;animation:daRing 5s infinite}
+.da-stamp rect{fill:none;stroke:#b4483f;stroke-width:2}
+.da-stamp text{font:700 9.5px var(--sans);fill:#b4483f;text-anchor:middle;dominant-baseline:central}
+.da-stamp{animation:daStamp 5s infinite}
+@keyframes daTiles{0%,18%{opacity:1}32%,92%{opacity:.25}100%{opacity:1}}
+@keyframes daCipher{0%,18%{opacity:0}32%,92%{opacity:1}100%{opacity:0}}
+@keyframes daEnv{0%,30%{opacity:0;transform:translateX(-24px)}46%,92%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes daRing{0%,50%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1)}72%,100%{opacity:0;transform:scale(1.3)}}
+@keyframes daStamp{0%,68%{opacity:0;transform:scale(1.7) rotate(-8deg)}76%,92%{opacity:1;transform:scale(1) rotate(-8deg)}100%{opacity:0;transform:scale(1) rotate(-8deg)}}
+@media (prefers-reduced-motion:reduce){.demo-anim *{animation:none!important}.da-tiles rect{opacity:.25}.da-ring{opacity:0}}
+@media (max-width:640px){.demo-cta{grid-template-columns:minmax(0,1fr) auto}.demo-anim{grid-column:1/-1;width:100%;max-width:220px}}
 
 /* cards */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
@@ -355,26 +382,25 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
     <div class="sec-head"><span class="sec-num">02</span><h2><span class="en">News</span><span class="zh">动态</span></h2></div>
     <div class="news">
       <div>
-        <h4 style="margin-top:0"><span class="en">Working on now</span><span class="zh">正在进行</span></h4>
-        <div class="wip">
-          <article class="card">
-            <span class="dot"></span>
-            <div>
-              <div class="status"><span class="en">WRITING</span><span class="zh">撰写中</span></div>
-              <h3><span class="en">A book on zero-knowledge proofs</span><span class="zh">零知识证明专著</span></h3>
-              <p><span class="en">A systematic treatment of ZKP — from foundations to constructions and applications.</span><span class="zh">系统介绍零知识证明，从基础理论到构造与应用。</span></p>
-              <a class="btn primary learn" href="zkp/"><span class="en">An illustrated ZKP primer (in Chinese) →</span><span class="zh">图解零知识证明：入门讲义 →</span></a>
-            </div>
-          </article>
-        </div>
-
-        <h4><span class="en">Featured work under review</span><span class="zh">在投代表作</span> <span class="h4-note"><span class="en">· all first-authored, all built on ZKP</span><span class="zh">· 均为第一作者，均基于零知识证明</span></span></h4>
+        <h4 style="margin-top:0"><span class="en">Featured work under review</span><span class="zh">在投代表作</span> <span class="h4-note"><span class="en">· all first-authored, all built on ZKP</span><span class="zh">· 均为第一作者，均基于零知识证明</span></span></h4>
         <ol class="list feat">
           <li><div><span class="t">ProofOut: Did Your Data Really Stay Out of LLM Training?</span><div class="m"><span class="en">Proves that an LLM's opt-out really took effect — your data stayed out of training.</span><span class="zh">证明大模型的 Opt-Out 确实生效：你的数据真的没有被拿去训练。</span></div></div></li>
           <li><div><span class="t">ZeroM: Verifying Memory-Off in LLMs with Zero-Knowledge Proofs</span><div class="m"><span class="en">Proves that an LLM's memory really is switched off.</span><span class="zh">证明大模型的记忆（Memory）功能确实已经关闭。</span></div></div></li>
           <li><div><a class="t" href="https://eprint.iacr.org/2026/2706" target="_blank" rel="noreferrer">Anamorphic Proofs of Knowledge from Prover Randomness</a><div class="m"><span class="en">Brings anamorphic cryptography to ZKP: a hidden channel carried by the prover's randomness.</span><span class="zh">将 anamorphic 密码学引入零知识证明，借证明者的随机性传递隐蔽信息。</span></div></div></li>
           <li><div><span class="t">VeilCall: Private Regex Enforcement for Web Agent Tool Calls</span><div class="m"><span class="en">Checks that an agent's encrypted tool-call inputs are legitimate, without seeing them.</span><span class="zh">对 Agent 工具调用的密文输入做合法性检查，全程不看明文。</span></div></div></li>
-          <li><div><span class="t">zkRule: Inspecting Encrypted Web Files without Seeing Them</span><div class="m"><span class="en">Audits data in encrypted file systems without decrypting it.</span><span class="zh">对加密文件系统中的数据进行合规审查，无需解密。</span></div></div></li>
+          <li><div><a class="t" href="zkrule/">zkRule: Inspecting Encrypted Web Files without Seeing Them</a><div class="m"><span class="en">Audits data in encrypted file systems without decrypting it.</span><span class="zh">对加密文件系统中的数据进行合规审查，无需解密。</span></div>
+            <a class="demo-cta" href="zkrule/">
+              <svg class="demo-anim" viewBox="0 0 150 64" aria-hidden="true">
+                <g class="da-tiles"><rect x="4" y="12" width="15" height="18" rx="3"/><rect class="hot" x="22" y="12" width="15" height="18" rx="3"/><rect class="hot" x="40" y="12" width="15" height="18" rx="3"/><rect x="58" y="12" width="15" height="18" rx="3"/></g>
+                <text class="da-cipher" x="4" y="46">9f3a·c1e0·77b2</text>
+                <g class="da-env"><rect x="84" y="14" width="24" height="17" rx="3"/><path d="M84 14 L96 24 L108 14"/></g>
+                <circle class="da-ring" cx="96" cy="22" r="17"/>
+                <g class="da-stamp"><rect x="114" y="12" width="32" height="20" rx="4"/><text x="130" y="23"><tspan class="en">HIT</tspan><tspan class="zh">命中</tspan></text></g>
+              </svg>
+              <span class="demo-txt"><span class="demo-tag"><span class="en">Interactive demo</span><span class="zh">互动演示</span></span><b><span class="en">Audit a message you can't read</span><span class="zh">不看明文，也能查出违禁词</span></b><span class="demo-sub"><span class="en">Type a sentence, then watch it get encrypted, proved in zero knowledge, and caught.</span><span class="zh">输入一句话，看它被加密、被零知识证明，再被审核机构查出来。</span></span></span>
+              <span class="demo-go" aria-hidden="true">→</span>
+            </a>
+          </div></li>
         </ol>
 
         <details class="more">
@@ -401,7 +427,20 @@ footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
         </details>
       </div>
       <div>
-        <h4 style="margin-top:0"><span class="en">Recently</span><span class="zh">近期</span></h4>
+        <h4 style="margin-top:0"><span class="en">Working on now</span><span class="zh">正在进行</span></h4>
+        <div class="wip">
+          <article class="card">
+            <span class="dot"></span>
+            <div>
+              <div class="status"><span class="en">WRITING</span><span class="zh">撰写中</span></div>
+              <h3><span class="en">A book on zero-knowledge proofs</span><span class="zh">零知识证明专著</span></h3>
+              <p><span class="en">A systematic treatment of ZKP — from foundations to constructions and applications.</span><span class="zh">系统介绍零知识证明，从基础理论到构造与应用。</span></p>
+              <a class="btn primary learn" href="zkp/"><span class="en">An illustrated ZKP primer →</span><span class="zh">图解零知识证明：入门讲义 →</span></a>
+            </div>
+          </article>
+        </div>
+
+        <h4><span class="en">Recently</span><span class="zh">近期</span></h4>
         <ul class="recent">
           <li><time>2026</time><span><span class="en">Joined the Program Committee of USENIX Security 2027.</span><span class="zh">担任 USENIX Security 2027 程序委员会委员。</span></span></li>
           <li><time>2026</time><span><span class="en">A3DKG accepted to NDSS 2027.</span><span class="zh">A3DKG 被 NDSS 2027 录用。</span></span></li>

@@ -2,6 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<script>
+(function(){var L="zh",T="en/",q=/[?&]lang=(en|zh)\b/.exec(location.search),s=null;
+if(q){s=q[1];try{localStorage.setItem("site-language",s)}catch(e){}}
+else{try{s=localStorage.getItem("site-language")}catch(e){}if(s!=="en"&&s!=="zh")s=/^zh/i.test(navigator.language||"")?"zh":"en"}
+if(s!==L)location.replace(T+(q?"?lang="+s:"")+location.hash);})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>图解零知识证明 · 入门讲义 — 路直</title>
 <meta name="description" content="零知识证明入门讲义：陈述与见证、交互式证明、承诺方案、Schnorr 协议、模拟器与 Fiat–Shamir 变换。改编自《零知识证明：协议、构造与应用》。">
@@ -51,6 +57,9 @@ button{font:inherit;color:inherit}
 .brand{font:600 17px/1.2 var(--serif-h);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.02em}
 .brand i{font-style:normal;color:var(--muted);font-weight:500;margin-left:8px;font-size:14px}
 .pos{margin-left:auto;font:500 13px var(--mono);color:var(--muted);white-space:nowrap}
+.lang{display:flex;flex:none;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--surface)}
+.lang button{border:0;background:none;color:var(--muted);font:600 12px var(--sans);padding:5px 10px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
 .prog{height:2px;background:var(--line)}
 .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--p),color-mix(in srgb,var(--p) 60%,var(--v)));transition:width .45s cubic-bezier(.2,.7,.2,1)}
 
@@ -261,6 +270,10 @@ table.num th:first-child{border-left:0;font-family:var(--sans);font-size:13px}
     <a class="back" href="../"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 5 8l5 5"/></svg>返回主页</a>
     <span class="brand">图解零知识证明<i>入门讲义</i></span>
     <span class="pos" id="pos"></span>
+    <div class="lang" role="group" aria-label="语言">
+      <button type="button" data-set-lang="en" aria-pressed="false" lang="en" title="English edition">EN</button>
+      <button type="button" data-set-lang="zh" aria-pressed="true">中</button>
+    </div>
   </div>
   <div class="prog"><i id="bar"></i></div>
 </header>
@@ -480,6 +493,13 @@ table.num th:first-child{border-left:0;font-family:var(--sans);font-size:13px}
   if(k===null||k>=secs.length){var s=parseInt(store("zkp-lec"),10);k=isNaN(s)?0:s}
   go(k,true);
 })();
+</script>
+<script>
+(function(){var L="zh",T="en/";
+[].forEach.call(document.querySelectorAll("[data-set-lang]"),function(b){b.addEventListener("click",function(){
+var l=b.getAttribute("data-set-lang"),ok=false;if(l===L)return;
+try{localStorage.setItem("site-language",l);ok=localStorage.getItem("site-language")===l}catch(e){}
+location.href=T+(ok?"":"?lang="+l)+location.hash})});})();
 </script>
 </body>
 </html>

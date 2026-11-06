@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Audit a message you can't read · zkRule demo — Zhi Lu</title>
+<meta name="description" content="Type a sentence and watch it get encrypted, checked inside a zero-knowledge circuit, and audited from the ciphertext and proof alone. 输入一句话，看审核机构如何只凭密文和证明查出违禁词。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b85c3c'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' font-weight='600' fill='%23faf9f5' text-anchor='middle'%3EZL%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&display=swap">
+<style>
+/* Tokens identical to lu-zhi.com/zkp: terracotta = prover (Alice), steel blue = verifier (auditor). */
+:root{
+  --bg:#faf9f5;--surface:#ffffff;--sunk:#f3f0e8;--panel:#f6f3ec;--ink:#1f1e1c;--ink-2:#3a3732;--muted:#6f6a61;
+  --line:#e7e2d6;--line-2:#d3ccbc;
+  --p:#b85c3c;--p-soft:#f7e7de;--p-ink:#8f3f22;
+  --v:#3d6f8f;--v-soft:#e2edf4;--v-ink:#264e68;
+  --ok:#3f7d55;--ok-soft:#e3f0e6;--ok-ink:#2a5c3c;
+  --bad:#b4483f;--bad-soft:#f8e3e0;--bad-ink:#8c2f28;
+  --env:#ead9ae;--env-line:#b39457;
+  --serif-h:"Noto Serif SC","Songti SC","STSong","Source Han Serif SC",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#191816;--surface:#22211e;--sunk:#2a2925;--panel:#211f1c;--ink:#f1eee6;--ink-2:#d9d5cb;--muted:#a9a397;
+  --line:#34322d;--line-2:#4a463f;
+  --p:#e38c6b;--p-soft:#3a2a22;--p-ink:#f2b39b;
+  --v:#78a9c9;--v-soft:#22303a;--v-ink:#a9cde4;
+  --ok:#7cc093;--ok-soft:#21302a;--ok-ink:#a8dcb8;
+  --bad:#e5877e;--bad-soft:#3a2523;--bad-ink:#f2b0a9;
+  --env:#6b5a35;--env-line:#a8905a;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 var(--sans);-webkit-font-smoothing:antialiased}
+body[data-lang=zh]{line-height:1.85}
+body[data-lang=en]{--serif-h:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Noto Serif SC",serif}
+body[data-lang=en] .zh,body[data-lang=zh] .en{display:none!important}
+a{color:inherit;text-underline-offset:3px} a:hover{color:var(--p)}
+button,input{font:inherit;color:inherit}
+.m{font-family:var(--mono);font-size:13px}
+
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid var(--line)}
+.bar{max-width:1120px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:18px}
+.back{display:inline-flex;align-items:center;gap:8px;padding:8px 15px 8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap}
+.back:hover{border-color:var(--p)} .back svg{width:15px;height:15px}
+.brand{font:600 17px/1.2 var(--serif-h);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand i{font-style:normal;color:var(--muted);font-weight:500;margin-left:8px;font-size:14px}
+.lang{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:999px;padding:2px;flex:none}
+.lang button{border:0;background:none;color:var(--muted);font:600 12px var(--sans);padding:5px 10px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+
+.wrap{max-width:1120px;margin:0 auto;padding:40px 28px 80px}
+.kicker{font:600 13px/1 var(--sans);letter-spacing:.08em;color:var(--p);margin:0 0 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.chip{font:500 12.5px/1 var(--sans);letter-spacing:0;color:var(--muted);padding:5px 10px;border-radius:999px;background:var(--sunk)}
+h1{font:600 clamp(28px,4vw,40px)/1.3 var(--serif-h);margin:0 0 14px}
+.lead{max-width:800px;color:var(--ink-2);font-size:17px;line-height:1.85;margin:0 0 28px}
+.lead b{color:var(--ink)}
+
+/* controls */
+.ctl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) auto;gap:16px;align-items:end;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;margin:0 0 14px}
+.fld label{display:block;font-size:12.5px;color:var(--muted);letter-spacing:.04em;margin:0 0 6px}
+.fld input{width:100%;border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;background:var(--bg);font-size:17px}
+.fld input:focus{outline:2px solid color-mix(in srgb,var(--p) 45%,transparent);border-color:var(--p)}
+.rule input{font-weight:600;color:var(--bad-ink)}
+.btn{border:0;border-radius:999px;padding:11px 24px;background:var(--p);color:#fff;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--p-ink)} .btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)} .btn.ghost:hover{border-color:var(--p);color:var(--p)}
+.opts{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:0 0 30px;font-size:14px;color:var(--ink-2)}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 14px;cursor:pointer;font-size:13.5px}
+.seg button.on{background:var(--ink);color:var(--bg)}
+.examples{display:flex;gap:6px;flex-wrap:wrap}
+.ex{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 11px;font-size:13px;cursor:pointer}
+.ex:hover{border-color:var(--p);color:var(--p)}
+
+/* steps rail */
+.rail{display:flex;gap:6px;margin:0 0 18px;flex-wrap:wrap}
+.rail span{flex:1 1 0;min-width:120px;padding:8px 10px;border-radius:10px;background:var(--sunk);font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center;transition:all .3s}
+.rail span b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--line-2);font:600 11px var(--mono);flex:none}
+.rail span.done{color:var(--ink-2)} .rail span.done b{border-color:var(--p);color:var(--p)}
+.rail span.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(40,30,20,.06),0 6px 18px -10px rgba(40,30,20,.3)}
+.rail span.on b{background:var(--p);border-color:var(--p);color:#fff}
+
+/* scene */
+.scene{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px 20px 16px;box-shadow:0 1px 2px rgba(40,30,20,.04),0 24px 48px -36px rgba(40,30,20,.4);margin:0 0 16px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.scene svg{display:block;width:100%;min-width:720px;height:auto}
+svg text{fill:var(--ink);font-family:var(--sans)}
+svg .mono-s{font:11px var(--mono);fill:var(--ink-2)}
+.cap{min-height:3.6em;margin:12px 4px 0;font-size:15.5px;line-height:1.8;color:var(--ink-2)}
+.cap b{color:var(--ink)}
+.nav{display:flex;gap:10px;justify-content:flex-end;align-items:center;margin:0 0 30px}
+.nav .hint{margin-right:auto;font-size:13px;color:var(--muted)}
+
+/* svg pieces */
+.actor rect.body{fill:var(--sunk);stroke:var(--line-2);stroke-width:1.2}
+.actor.a rect.body{fill:var(--p-soft);stroke:var(--p)}
+.actor.b rect.body{fill:var(--ok-soft);stroke:var(--ok)}
+.actor.v rect.body{fill:var(--v-soft);stroke:var(--v)}
+.actor .nm{font:600 15px var(--serif-h)}
+.actor .sub{font-size:11.5px;fill:var(--muted)}
+.tile rect{fill:var(--surface);stroke:var(--line-2);stroke-width:1.2;transition:fill .3s,stroke .3s}
+.tile text{font-weight:600;text-anchor:middle;dominant-baseline:central;transition:opacity .25s}
+.tile.hit rect{fill:var(--bad-soft);stroke:var(--bad)}
+.tile.hidden text{opacity:0}
+.tile.hidden rect{fill:var(--sunk);stroke-dasharray:3 3}
+.wire{stroke:var(--line-2);stroke-width:1.4;fill:none;transition:stroke .25s}
+.wire.on{stroke:var(--p);stroke-width:2}
+.wire.hot{stroke:var(--bad);stroke-width:2.4}
+.wire.ok{stroke:var(--ok);stroke-width:2.2}
+.gate rect,.gate path.g{fill:var(--surface);stroke:var(--ink-2);stroke-width:1.3;transition:fill .25s,stroke .25s}
+.gate text{font:600 11px var(--mono);text-anchor:middle;dominant-baseline:central}
+.gate.on rect,.gate.on path.g{fill:var(--p-soft);stroke:var(--p)}
+.gate.hot rect,.gate.hot path.g{fill:var(--bad-soft);stroke:var(--bad)}
+.gate.ok rect,.gate.ok path.g{fill:var(--ok-soft);stroke:var(--ok)}
+.window{fill:none;stroke:var(--v);stroke-width:2;stroke-dasharray:6 4;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.check .mk{font-weight:700}
+.stamp rect{fill:none;stroke-width:3}
+.stamp text{font:700 17px var(--serif-h);text-anchor:middle;dominant-baseline:central;letter-spacing:.04em}
+.stamp.bad rect{stroke:var(--bad)} .stamp.bad text{fill:var(--bad)}
+.stamp.ok rect{stroke:var(--ok)} .stamp.ok text{fill:var(--ok)}
+/* proof: sealed wire values (envelopes), challenge rings, soundness meter */
+.env{transition:opacity .35s,transform .45s cubic-bezier(.2,.7,.2,1);opacity:0;pointer-events:none}
+.env.in{opacity:1}
+.env.open{opacity:0;transform:translateY(-10px)}
+.env rect{fill:var(--env);stroke:var(--env-line);stroke-width:1.2}
+.env path{fill:none;stroke:var(--env-line);stroke-width:1.2}
+.masked{font:600 12px var(--mono);fill:var(--env-line);text-anchor:middle;opacity:0;transition:opacity .3s}
+.masked.in{opacity:1}
+.ring{fill:none;stroke:var(--v);stroke-width:2.4;opacity:0;transition:opacity .25s}
+.ring.in{opacity:1}
+.verdict{font:700 18px var(--sans);text-anchor:middle;dominant-baseline:central;opacity:0;transition:opacity .3s}
+.verdict.in{opacity:1}
+.meter .track{fill:var(--sunk);stroke:var(--line-2)}
+.meter .fill{fill:var(--bad);transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.fade{opacity:0;transition:opacity .45s}
+.fade.in{opacity:1}
+
+/* details */
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 28px}
+.fact{padding:14px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:14px;line-height:1.75;color:var(--ink-2)}
+.fact .h{font:600 12.5px var(--sans);letter-spacing:.06em;margin:0 0 6px}
+.fact.a{box-shadow:inset 4px 0 0 var(--p)} .fact.a .h{color:var(--p-ink)}
+.fact.b{box-shadow:inset 4px 0 0 var(--ok)} .fact.b .h{color:var(--ok-ink)}
+.fact.v{box-shadow:inset 4px 0 0 var(--v)} .fact.v .h{color:var(--v-ink)}
+.fact .hex{font:11.5px/1.6 var(--mono);word-break:break-all;color:var(--ink-2);background:var(--sunk);border-radius:8px;padding:6px 8px;margin:4px 0 8px;max-height:96px;overflow:auto}
+.note{padding:16px 20px;border-radius:12px;background:var(--sunk);font-size:14.5px;line-height:1.85;color:var(--ink-2)}
+.note b{color:var(--ink)}
+.note ul{margin:6px 0 0;padding-left:20px}
+footer{max-width:1120px;margin:0 auto;padding:0 28px 48px;color:var(--muted);font-size:13px}
+
+@media (max-width:860px){
+  .ctl,.facts{grid-template-columns:minmax(0,1fr)}
+  .bar,.wrap,footer{padding-left:16px;padding-right:16px}
+  .brand i{display:none}
+  .rail span{min-width:calc(50% - 6px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body data-lang="en">
+<header class="top"><div class="bar">
+  <a class="back" href="../#news"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3 5 8l5 5"/></svg><span class="en">Home</span><span class="zh">返回主页</span></a>
+  <span class="brand"><span class="en">Audit a message you can't read<i>zkRule · interactive demo</i></span><span class="zh">审查一条看不见的消息<i>zkRule · 互动演示</i></span></span>
+  <div class="lang" role="group" aria-label="Language"><button type="button" data-set-lang="en" aria-pressed="true">EN</button><button type="button" data-set-lang="zh" aria-pressed="false">中</button></div>
+</div></header>
+
+<main class="wrap">
+  <p class="kicker"><span class="en">Interactive demo</span><span class="zh">互动演示</span><span class="chip"><span class="en">commit · challenge · respond</span><span class="zh">承诺 · 挑战 · 应答</span></span></p>
+  <h1><span class="en">The auditor can't read the message. How does it know whether it mentions “Ming”?</span><span class="zh">审核机构看不到消息内容，怎样知道里面有没有“小明”？</span></h1>
+  <p class="lead"><span class="en">Alice sends Bob an <b>end-to-end encrypted</b> message. A public rule says one word must not appear in it. The auditor holds only the <b>ciphertext</b> and a <b>zero-knowledge proof</b> from Alice — no key, no plaintext. Step through how the message is encrypted, how the proof ties “does the text contain the word?” to that exact ciphertext, and how the auditor, from ciphertext and proof alone, <b>becomes certain the word is there</b> while learning nothing else.</span><span class="zh">Alice 给 Bob 发了一条<b>端到端加密</b>的消息。按规定，消息里不能出现某个词。审核机构手里只有<b>密文</b>和 Alice 附上的<b>零知识证明</b>，没有密钥，也看不到原文。下面一步步演示：消息怎样被加密，证明怎样把“原文是否含有违禁词”这一件事绑定到密文上，审核机构又怎样只凭密文和证明，<b>确认里面确实有这个词</b>，而对其余内容一无所知。</span></p>
+
+  <div class="ctl">
+    <div class="fld rule"><label for="rule"><span class="en">Public rule: the message must not contain</span><span class="zh">公开规则：消息中不得出现</span></label><input id="rule" maxlength="8" autocomplete="off"></div>
+    <div class="fld"><label for="msg"><span class="en">Alice's message to Bob</span><span class="zh">Alice 要发给 Bob 的消息</span></label><input id="msg" maxlength="18" autocomplete="off"></div>
+    <button class="btn" id="go"><span class="en">Encrypt &amp; send</span><span class="zh">加密并发送</span></button>
+  </div>
+  <div class="opts">
+    <span><span class="en">Is Alice honest?</span><span class="zh">Alice 是否诚实：</span></span>
+    <span class="seg" id="honesty"><button class="on" data-v="honest" type="button"><span class="en">Tells the truth</span><span class="zh">如实声明</span></button><button data-v="liar" type="button"><span class="en">Claims “no forbidden word”</span><span class="zh">谎称“没有违禁词”</span></button></span>
+    <span style="margin-left:6px"><span class="en">Try:</span><span class="zh">试试：</span></span>
+    <span class="examples" id="examples"></span>
+  </div>
+
+  <div class="rail" id="rail"></div>
+  <div class="scene">
+    <div class="scroll"><svg id="svg" viewBox="0 0 1000 620" role="img" aria-label="encryption, proof, delivery and audit"></svg></div>
+    <p class="cap" id="cap"></p>
+  </div>
+  <div class="nav">
+    <span class="hint" id="navHint"></span>
+    <button class="btn ghost" id="prev" type="button" disabled><span class="en">Back</span><span class="zh">上一步</span></button>
+    <button class="btn ghost" id="next" type="button" disabled><span class="en">Next</span><span class="zh">下一步</span></button>
+    <button class="btn ghost" id="auto" type="button" disabled></button>
+  </div>
+
+  <div class="facts" id="facts" hidden>
+    <div class="fact a"><p class="h"><span class="en">ON ALICE'S DEVICE ONLY</span><span class="zh">ALICE 的设备上（只有她有）</span></p><div id="fA"></div></div>
+    <div class="fact b"><p class="h"><span class="en">WHAT BOB RECEIVES</span><span class="zh">BOB 收到的</span></p><div id="fB"></div></div>
+    <div class="fact v"><p class="h"><span class="en">WHAT THE AUDITOR HOLDS</span><span class="zh">审核机构拿到的</span></p><div id="fV"></div></div>
+  </div>
+
+  <div class="note">
+    <b><span class="en">What the auditor ends up knowing</span><span class="zh">审核机构最终知道了什么</span></b>
+    <ul>
+      <li><span class="en">One bit — hit or no hit — plus the message length. Not where the word appears, not how often, and none of the other text.</span><span class="zh">只有“命中 / 未命中”这一位，以及消息长度。它不知道违禁词出现在哪里、出现了几次，也看不到其余文字。</span></li>
+      <li><span class="en">Every wire value it opens during a spot check is masked with fresh randomness, so on its own it is just a random number. Each round in which every checked gate holds halves a cheater's chance of slipping through.</span><span class="zh">它抽查时打开的每个线值都事先加了随机遮掩，单独看只是随机数；而每一轮被抽查的门都对得上，作弊者漏网的概率就会减半。</span></li>
+      <li><span class="en">The full system covers AES-256-GCM encryption, salted commitments, text-format checks and a full-text rule scan in one proof — about 0.05 s per short message.</span><span class="zh">完整的系统在同一个证明里覆盖 AES-256-GCM 加密、带盐承诺、文本格式检查和全文规则扫描，每条短消息约 0.05 秒。</span></li>
+    </ul>
+  </div>
+</main>
+<footer><span class="en">Zhi Lu · zkRule: Inspecting Encrypted Web Files without Seeing Them · <a href="../zkp/">Illustrated ZKP primer</a></span><span class="zh">路直 · zkRule：不看明文的加密文件审查 · <a href="../zkp/">图解零知识证明</a></span></footer>
+
+<script>
+(function () {
+  'use strict';
+  var NS = 'http://www.w3.org/2000/svg';
+  var $ = function (id) { return document.getElementById(id); };
+  var svg = $('svg');
+  var enc = new TextEncoder();
+  var hex = function (buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''); };
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var rnd = function (n) { var a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; };
+  var ROUND_MS = 1500;
+
+  // ---------------- language ----------------
+  var lang = 'en';
+  var Q = function (s) { return lang === 'zh' ? '「' + s + '」' : '“' + s + '”'; };
+  var L = {
+    en: {
+      steps: ['Encrypt & commit', 'Evaluate circuit', 'Seal the wires', 'Spot checks', 'Send', 'Verdict'],
+      rule: 'Ming', msg: 'Lunch with Ming?',
+      examples: ['Lunch with Ming?', 'See you at noon', 'Ming turns 30 soon', 'Lunch with Mi ng?'],
+      autoOn: 'Pause', autoOff: 'Play',
+      hint: function (s, n) { return 'Step ' + s + ' / ' + n; },
+      start: 'Type a sentence and press “Encrypt & send”.', empty: 'Both the rule and the message are needed.',
+      noCrypto: 'This browser has no WebCrypto (it needs https or localhost).',
+      alice: 'Alice', aliceSub: 'sender · prover', only: "Only on Alice's device:", keyL: 'Key K (AES-256, random)',
+      saltL: 'Salt r for the commitment', seal1: 'Wire values and their masks', seal2: 'stay here too',
+      circuit: 'ZK circuit', circuitPriv: 'ZK circuit · only Alice sees this',
+      inPriv: 'Plaintext · private input', inSealed: 'Inputs · sealed',
+      hitQ: 'hit = ?', hit: function (v) { return 'hit = ' + v; }, claimOut: function (v) { return 'claim: hit = ' + v; },
+      eqBad: '✗ disagrees with the claim (0) she will send', eqOk: '✓ matches the claim she will send',
+      aes: 'redo AES-GCM', aesOk: '✓ result = ciphertext C', comOk: '✓ commitment D matches',
+      ctL: function (n) { return 'Ciphertext C (public, ' + n + ' bytes)'; }, comL: 'Commitment D = SHA-256(r ‖ text) (public)',
+      claimBox: function (v) { return 'Public claim: hit = ' + v; },
+      bob: 'Bob', bobSub: 'recipient', bobIn: 'Got: C + a key envelope', bobDec: 'Decrypts to:', bobBlocked: 'Blocked — never delivered',
+      aud: 'Auditor', audSub: 'verifier · holds no keys',
+      audIn1: function (n) { return 'Got: ' + n + ' sealed wire values'; }, audIn2: function (n) { return 'Got: ' + n + ' commitments, openings, C'; },
+      audView: function (m) { return 'Its view of the text: ' + m; },
+      chk: function (d) { return ['Every wire is sealed (committed)', 'Every spot-checked gate holds', 'Claim “' + (d.claim ? 'contains ' : 'no ') + d.rule.join('') + '” holds']; },
+      round: function (k, m) { return 'Round ' + k + ': check ' + m + ' random gate' + (m > 1 ? 's' : ''); },
+      challenge: 'challenge → Alice', opening: 'Alice opens those envelopes (masked)',
+      orBad: function (k) { return 'Round ' + k + ': the OR gate fails ✗'; }, caught: 'cheating exposed — proof rejected',
+      meterCaught: 'cheater caught',
+      meter: function (k, pct) { return 'chance a cheat survives ≤ 1/' + Math.pow(2, k) + ' (' + pct + '%)'; },
+      allOk: function (n) { return 'all ' + n + ' rounds hold'; }, accept: 'the auditor accepts the proof',
+      stampLie: 'PROOF REJECTED', stampHit: function (w) { return 'VIOLATION · “' + w + '”'; }, stampOk: 'CLEAN · DELIVERED',
+      cap: [
+        function (d) { return '<b>① Encrypt and commit.</b> Alice\'s device draws a fresh random key K and encrypts “' + esc(d.text) + '” with AES-256-GCM into the ciphertext C, then uses a random salt r to compute a commitment D. Both C and D can be made public: without K nobody can read C, and D pins the text down without revealing it.'; },
+        function (d) { return '<b>② Alice runs the circuit.</b> This happens only on Alice\'s own device. The circuit redoes the encryption to confirm “this text encrypts to exactly C” and that D matches; meanwhile a window slides across the text, comparing every position with ' + Q(esc(d.rule.join(''))) + ', and an <b>OR</b> of all the comparisons gives the “hit” bit: <b>' + (d.actual ? 1 : 0) + '</b>.' + (d.liar ? ' But the claim Alice is about to send says 0.' : ''); },
+        function (d) { return '<b>③ Seal every wire.</b> Alice masks the value on every wire of the circuit — every input character included — with fresh randomness and seals it in an “envelope”, i.e. a commitment, then hands all ' + (d.chars.length + d.gates.length) + ' commitments to the auditor. Once sealed, Alice can no longer change them, and the auditor cannot see inside.' + (d.liar ? ' To match her claim “hit = 0”, Alice has to seal 0 at the OR gate\'s output — even though one of its inputs is 1.' : ''); },
+        function (d) {
+          var base = '<b>④ Random spot checks.</b> In each round the auditor picks a random set of gates (blue frames) and Alice opens only those envelopes. The opened values are masked and look random, yet they suffice to check that the gate\'s output really is that operation applied to its inputs. ';
+          if (d.liar) return base + (d.caught >= 0 ? 'In round ' + (d.caught + 1) + ' the OR gate is picked: an input is 1 but the sealed output is 0. <b>It doesn\'t add up — the cheat is exposed.</b>' : 'This time she was lucky and dodged every check — but each extra round halves her odds again.');
+          return base + 'Each gate is picked with probability ½, so every round at least halves a cheater\'s chance; after ' + d.rounds.length + ' rounds it is at most 1/' + Math.pow(2, d.rounds.length) + '. A real system pushes this below 2<sup>−40</sup>.';
+        },
+        function () { return '<b>⑤ Send.</b> The ciphertext C goes to Bob, with the decryption key inside an envelope only he can open. The same C goes to the auditor so it can be matched against the proof. The auditor never receives any key.'; },
+        function (d) {
+          if (d.liar) return '<b>⑥ Verdict: cheating caught.</b> Alice claimed “no forbidden word” but could not produce a proof that survives the spot checks. The auditor still has no idea what the message says — only that this proof is fake.';
+          if (d.actual) return '<b>⑥ Verdict: it contains ' + Q(esc(d.rule.join(''))) + '.</b> The proof checks out, so the auditor is certain the claim is true: the message violates the rule, it is stopped, and the sender is on record. Yet the auditor <b>does not learn where the word appears, how often, or anything else in the text</b>.';
+          return '<b>⑥ Verdict: no forbidden word — delivered.</b> Bob receives and decrypts the message. The auditor has confirmed compliance without ever learning what the message says.' + dodgeNote(d);
+        }
+      ],
+      dodge: function (w) { return '<br><b>Note:</b> with spaces removed, this message does contain “' + w + '”. The rule only looks for “' + w + '” written out exactly, so it was dodged. Zero-knowledge proofs guarantee the rule ran honestly; designing a robust rule is a separate job.'; },
+      fA: function (d) { return 'Plaintext: <b>' + esc(d.text) + '</b><br>Key K (AES-256, random):<div class="hex">' + d.keyHex + '</div>Commitment salt r:<div class="hex">' + d.saltHex + '</div>'; },
+      fB: function (d) { return 'The ciphertext C, plus a key envelope only Bob can open.' + ((d.actual || d.liar) ? '<br><b>This message was stopped; Bob never receives it.</b>' : '<br>Decrypts to: <b>' + esc(d.back) + '</b>'); },
+      fV: function (d) { return 'Ciphertext C (' + d.ctHex.length / 2 + ' bytes incl. 16-byte tag):<div class="hex">' + d.ctHex + '</div>Commitment D:<div class="hex">' + d.commitHex + '</div>' + d.commits.length + ' wire commitments, e.g.:<div class="hex">' + d.commits.slice(0, 3).join('<br>') + '</div>' + d.rounds.length + ' rounds of spot checks · public claim: hit = ' + (d.claim ? 1 : 0) + ' · rule: no “' + esc(d.rule.join('')) + '”'; }
+    },
+    zh: {
+      steps: ['加密与承诺', '电路计算', '封存导线', '随机抽查', '发送', '结论'],
+      rule: '小明', msg: '明天约小明打球',
+      examples: ['明天约小明打球', '今天天气不错', '小明的生日快到了', '明天约小 明打球'],
+      autoOn: '暂停', autoOff: '自动播放',
+      hint: function (s, n) { return '第 ' + s + ' / ' + n + ' 步'; },
+      start: '输入一句话，点“加密并发送”。', empty: '规则和消息都不能为空。',
+      noCrypto: '当前浏览器不支持 WebCrypto（需要 https 或 localhost）。',
+      alice: 'Alice', aliceSub: '发送者 · 证明者', only: '只在 Alice 设备上：', keyL: '密钥 K（AES-256，随机）',
+      saltL: '承诺用的随机盐 r', seal1: '每根导线的值和遮掩随机数', seal2: '也只在这里',
+      circuit: '零知识电路', circuitPriv: '零知识电路 · 只有 Alice 看得到',
+      inPriv: '明文 · 私有输入', inSealed: '输入 · 已封存',
+      hitQ: '命中 = ?', hit: function (v) { return '命中 = ' + v; }, claimOut: function (v) { return '声明：命中 = ' + v; },
+      eqBad: '✗ 与要发出的声明（0）不符', eqOk: '✓ 与要发出的声明一致',
+      aes: '重做 AES-GCM', aesOk: '✓ 结果 = 密文 C', comOk: '✓ 承诺 D 匹配',
+      ctL: function (n) { return '密文 C（公开，' + n + ' 字节）'; }, comL: '承诺 D = SHA-256(r ‖ 明文)（公开）',
+      claimBox: function (v) { return '公开声明：命中 = ' + v; },
+      bob: 'Bob', bobSub: '接收者', bobIn: '收到：密文 C + 密钥信封', bobDec: '解密得到：', bobBlocked: '消息被拦截，没有送达',
+      aud: '审核机构', audSub: '验证者 · 没有任何密钥',
+      audIn1: function (n) { return '收到：' + n + ' 个封存的线值'; }, audIn2: function (n) { return '收到：' + n + ' 个承诺、抽查应答、密文 C'; },
+      audView: function (m) { return '它眼中的原文：' + m; },
+      chk: function (d) { return ['每个线值都已封存（承诺）', '抽查到的门全部对得上', '声明“' + (d.claim ? '含有' : '不含') + '「' + d.rule.join('') + '」”成立']; },
+      round: function (k, m) { return '第 ' + k + ' 轮：随机抽查 ' + m + ' 个门'; },
+      challenge: '挑战 → Alice', opening: 'Alice 打开这几个信封（带遮掩）',
+      orBad: function (k) { return '第 ' + k + ' 轮：OR 门对不上 ✗'; }, caught: '作弊被发现，证明无效',
+      meterCaught: '作弊已被抓到',
+      meter: function (k, pct) { return '作弊漏网概率 ≤ 1/' + Math.pow(2, k) + '（' + pct + '%）'; },
+      allOk: function (n) { return n + ' 轮抽查全部对得上'; }, accept: '审核机构接受这个证明',
+      stampLie: '证明无效 · 作弊', stampHit: function (w) { return '违规 · 含「' + w + '」'; }, stampOk: '合规 · 放行',
+      cap: [
+        function (d) { return '<b>① 加密与承诺。</b>Alice 的设备为这条消息随机生成密钥 K，用 AES-256-GCM 把 “' + esc(d.text) + '” 加密成密文 C，再用随机盐 r 算出承诺 D。C 和 D 都可以公开：没有 K，谁也读不出内容；D 锁定了原文，却不泄露它。'; },
+        function (d) { return '<b>② Alice 在电路里算一遍。</b>这一步只在 Alice 自己的设备上进行。电路重做一次加密，确认“这段明文加密后正是 C”、承诺 D 也对得上；同时让一个窗口逐字滑过全文，在每个位置比较是否等于' + Q(esc(d.rule.join(''))) + '，再把所有比较结果 <b>OR</b> 起来，得到“命中”这一位：<b>' + (d.actual ? 1 : 0) + '</b>。' + (d.liar ? '可是 Alice 准备对外声明的是 0。' : ''); },
+        function (d) { return '<b>③ 封存每一根导线。</b>Alice 把电路里每根导线的值（包括每个输入字）都加上随机遮掩，封进一个“信封”，也就是承诺，然后把这 ' + (d.chars.length + d.gates.length) + ' 个承诺交给审核机构。信封已经封好，Alice 之后不能再改里面的值；审核机构也看不到里面是什么。' + (d.liar ? '为了和“命中 = 0”的声明一致，Alice 只能在 OR 门的输出处封进 0，可它的输入里明明有 1。' : ''); },
+        function (d) {
+          var base = '<b>④ 随机抽查。</b>每一轮，审核机构随机挑一批门（蓝框），Alice 只打开这几个门的信封。打开的值带着遮掩，看上去只是随机数，但足以核对“这个门的输入和输出是否满足它的运算”。';
+          if (d.liar) return base + (d.caught >= 0 ? '第 ' + (d.caught + 1) + ' 轮抽到了 OR 门：输入有 1，封进去的输出却是 0，<b>对不上，作弊当场暴露</b>。' : '这一次她运气好，暂时没被抽到，但每多一轮，漏网的概率就再减半。');
+          return base + '每个门被抽中的概率是一半，作弊者每轮漏网的概率至少减半；' + d.rounds.length + ' 轮之后已不超过 1/' + Math.pow(2, d.rounds.length) + '。真实系统会做到 2<sup>−40</sup> 以下。';
+        },
+        function () { return '<b>⑤ 发送。</b>密文 C 发给 Bob，解密密钥装在只有他能打开的信封里。同一份密文 C 也交给审核机构，用来对上刚才的证明。审核机构自始至终没有拿到任何密钥。'; },
+        function (d) {
+          if (d.liar) return '<b>⑥ 结论：作弊被抓。</b>Alice 谎称“没有违禁词”，但她交不出能通过抽查的证明。审核机构仍然不知道消息写了什么，只知道这份证明是假的。';
+          if (d.actual) return '<b>⑥ 结论：确认含有' + Q(esc(d.rule.join(''))) + '。</b>证明通过，审核机构确信声明为真，于是判定违规，拦下消息并记录发送者。但它<b>不知道这个词出现在哪里、出现了几次，也看不到其余文字</b>。';
+          return '<b>⑥ 结论：不含违禁词，放行。</b>Bob 收到并解密了消息。审核机构确认了合规，却始终不知道消息说了什么。' + dodgeNote(d);
+        }
+      ],
+      dodge: function (w) { return '<br><b>注意：</b>这条消息去掉空格后其实含有「' + w + '」。规则只查逐字出现的「' + w + '」，所以被绕过了。零知识证明保证的是“规则如实运行”，规则本身要设计得足够周全。'; },
+      fA: function (d) { return '明文：<b>' + esc(d.text) + '</b><br>密钥 K（AES-256，随机）：<div class="hex">' + d.keyHex + '</div>承诺用的随机盐 r：<div class="hex">' + d.saltHex + '</div>'; },
+      fB: function (d) { return '密文 C，以及只有 Bob 能打开的密钥信封。' + ((d.actual || d.liar) ? '<br><b>这条消息被拦截，Bob 实际收不到。</b>' : '<br>解密得到：<b>' + esc(d.back) + '</b>'); },
+      fV: function (d) { return '密文 C（' + d.ctHex.length / 2 + ' 字节，含 16 字节认证标签）：<div class="hex">' + d.ctHex + '</div>承诺 D：<div class="hex">' + d.commitHex + '</div>' + d.commits.length + ' 个线值承诺，例如：<div class="hex">' + d.commits.slice(0, 3).join('<br>') + '</div>抽查 ' + d.rounds.length + ' 轮　公开声明：命中 = ' + (d.claim ? 1 : 0) + '　规则：不得出现「' + esc(d.rule.join('')) + '」'; }
+    }
+  };
+  var T = function () { return L[lang]; };
+  function dodgeNote(d) {
+    var squeezed = d.chars.filter(function (c) { return !/\s/.test(c); }).join('');
+    return squeezed.indexOf(d.rule.join('')) >= 0 ? T().dodge(esc(d.rule.join(''))) : '';
+  }
+
+  var honesty = 'honest';
+  var run = null, step = -1, timer = null, timers = [];
+
+  function isDefaultish() {
+    var r = $('rule').value.trim(), m = $('msg').value.trim();
+    return ['en', 'zh'].some(function (l) { return (r === L[l].rule || !r) && (L[l].examples.indexOf(m) >= 0 || !m); });
+  }
+
+  function setLang(l, initial) {
+    var swapInputs = initial || isDefaultish();
+    lang = l === 'zh' ? 'zh' : 'en';
+    document.body.dataset.lang = lang;
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = lang === 'zh' ? '审查一条看不见的消息 · zkRule 演示 — 路直' : "Audit a message you can't read · zkRule demo — Zhi Lu";
+    [].forEach.call(document.querySelectorAll('[data-set-lang]'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.setLang === lang)); });
+    try { localStorage.setItem('site-language', lang); } catch (e) {}
+    renderStatic();
+    if (swapInputs) {
+      $('rule').value = T().rule; $('msg').value = T().msg;
+      if (!initial) start();
+    } else if (run) {
+      build(); renderFacts(); show(step < 0 ? 0 : step);
+    }
+  }
+  [].forEach.call(document.querySelectorAll('[data-set-lang]'), function (b) { b.onclick = function () { setLang(b.dataset.setLang); }; });
+
+  function renderStatic() {
+    var t = T();
+    $('rail').innerHTML = t.steps.map(function (s, i) { return '<span><b>' + (i + 1) + '</b>' + s + '</span>'; }).join('');
+    $('examples').innerHTML = '';
+    t.examples.forEach(function (x) {
+      var b = document.createElement('button'); b.className = 'ex'; b.type = 'button'; b.textContent = x;
+      b.onclick = function () { $('msg').value = x; $('rule').value = t.rule; start(); };
+      $('examples').appendChild(b);
+    });
+    $('auto').textContent = timer ? t.autoOn : t.autoOff;
+    if (!run) $('cap').textContent = t.start;
+  }
+
+  // ---------------- controls ----------------
+  [].forEach.call(document.querySelectorAll('#honesty button'), function (b) {
+    b.onclick = function () {
+      honesty = b.getAttribute('data-v');
+      [].forEach.call(document.querySelectorAll('#honesty button'), function (x) { x.classList.toggle('on', x === b); });
+      if (run) start();
+    };
+  });
+  $('go').onclick = start;
+  $('msg').addEventListener('keydown', function (e) { if (e.key === 'Enter') start(); });
+  $('rule').addEventListener('keydown', function (e) { if (e.key === 'Enter') start(); });
+  $('next').onclick = function () { stopAuto(); show(step + 1); };
+  $('prev').onclick = function () { stopAuto(); show(step - 1); };
+  $('auto').onclick = function () { timer ? stopAuto() : autoPlay(); };
+
+  function duration(s) { return [3000, 5400, 3400, run.rounds.length * ROUND_MS + 900, 3000, 3200][s] || 3000; }
+  function stopAuto() { if (timer) { clearTimeout(timer); timer = null; } $('auto').textContent = T().autoOff; }
+  function autoPlay() {
+    if (step >= 5) show(0);
+    $('auto').textContent = T().autoOn;
+    var tick = function () {
+      if (step >= 5) { stopAuto(); return; }
+      show(step + 1);
+      timer = setTimeout(tick, duration(step));
+    };
+    timer = setTimeout(tick, duration(Math.max(step, 0)));
+  }
+
+  // ---------------- data: real AES-GCM, real commitments, fixed random challenges ----------------
+  async function sha(bytes) { return new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)); }
+  function cat() { var out = []; for (var i = 0; i < arguments.length; i++) out = out.concat(Array.from(arguments[i])); return new Uint8Array(out); }
+
+  async function prepare(text, rule) {
+    var chars = Array.from(text), r = Array.from(rule);
+    var hits = [];
+    for (var i = 0; i + r.length <= chars.length; i++) {
+      var ok = true;
+      for (var j = 0; j < r.length; j++) if (chars[i + j] !== r[j]) { ok = false; break; }
+      if (ok) hits.push(i);
+    }
+    var actual = hits.length > 0;
+    var claim = honesty === 'liar' ? false : actual;
+    var key = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    var ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, enc.encode(text));
+    var rawKey = await crypto.subtle.exportKey('raw', key);
+    var salt = crypto.getRandomValues(new Uint8Array(32));
+    var commit = await sha(cat(enc.encode('ZK-COMMIT|'), salt, enc.encode(text)));
+    var back = new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, ct));
+    var pos = Math.max(0, chars.length - r.length + 1);
+    var gates = [];
+    for (var p = 0; p < pos; p++) gates.push({ kind: 'cmp', at: p, value: hits.indexOf(p) >= 0 ? 1 : 0 });
+    // A lying Alice must seal OR = 0 to match her claim; that gate's relation then fails.
+    gates.push({ kind: 'or', value: claim ? 1 : 0, bad: claim !== actual });
+    gates.push({ kind: 'aes', value: 1 });
+    var commits = [];
+    for (var c = 0; c < chars.length + gates.length; c++) {
+      var v = c < chars.length ? enc.encode(chars[c]) : new Uint8Array([gates[c - chars.length].value]);
+      commits.push(hex(await sha(cat(crypto.getRandomValues(new Uint8Array(16)), v))));
+    }
+    var rounds = [], caught = -1, maxRounds = claim !== actual ? 10 : 5;
+    for (var k = 0; k < maxRounds && caught < 0; k++) {
+      var pick = [];
+      gates.forEach(function (g, gi) { if (rnd(2)) pick.push(gi); });
+      if (!pick.length) pick.push(rnd(gates.length));
+      var masks = pick.map(function () { return ('0' + rnd(256).toString(16)).slice(-2); });
+      if (pick.some(function (gi) { return gates[gi].bad; })) caught = k;
+      rounds.push({ pick: pick, masks: masks });
+    }
+    return { text: text, chars: chars, rule: r, hits: hits, actual: actual, claim: claim, liar: claim !== actual,
+      keyHex: hex(rawKey), saltHex: hex(salt), ctHex: hex(ct), commitHex: hex(commit), back: back,
+      gates: gates, commits: commits, rounds: rounds, caught: caught };
+  }
+
+  async function start() {
+    stopAuto();
+    var text = $('msg').value.trim(), rule = $('rule').value.trim();
+    if (!text || !rule) { $('cap').textContent = T().empty; return; }
+    if (!window.crypto || !crypto.subtle) { $('cap').textContent = T().noCrypto; return; }
+    $('go').disabled = true;
+    try { run = await prepare(text, rule); } finally { $('go').disabled = false; }
+    build(); renderFacts();
+    step = -1; show(0); autoPlay();
+  }
+
+  // ---------------- svg helpers ----------------
+  function el(tag, attrs, parent, text) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    (parent || svg).appendChild(e);
+    return e;
+  }
+  function g(cls, parent) { return el('g', { 'class': cls || '' }, parent); }
+  function on(e, c, v) { if (e) e.classList.toggle(c, v !== false); }
+  function txt(parent, x, y, s, attrs) { var a = { x: x, y: y }; for (var k in (attrs || {})) a[k] = attrs[k]; return el('text', a, parent, s); }
+  function envelope(parent, cx, cy, w, h) {
+    var e = g('env', parent), x = cx - w / 2, y = cy - h / 2;
+    el('rect', { x: x, y: y, width: w, height: h, rx: 5 }, e);
+    el('path', { d: 'M' + x + ' ' + y + ' L' + cx + ' ' + (y + h * 0.55) + ' L' + (x + w) + ' ' + y }, e);
+    return e;
+  }
+
+  var R = {};
+  /* viewBox 1000 x 620: left x 20..220 Alice; middle x 240..710 circuit (y 30..392) and public outputs below;
+     right x 770..980 Bob (top) and the auditor (y 300..). */
+  function build() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var d = run, t = T();
+    R = { tiles: [], tileEnv: [], cmp: [], gateUI: [] };
+    var defs = el('defs', {});
+    var mk = el('marker', { id: 'arw', viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto' }, defs);
+    el('path', { d: 'M0 0 10 5 0 10z', fill: 'var(--ink-2)' }, mk);
+
+    actor('a', 20, 30, 200, 66, t.alice, t.aliceSub);
+    var priv = g('fade', svg); R.priv = priv;
+    txt(priv, 24, 124, t.only, { 'font-size': 12, fill: 'var(--muted)' });
+    txt(priv, 24, 146, t.keyL, { 'font-size': 12, 'font-weight': 600, fill: 'var(--p-ink)' });
+    [0, 1, 2, 3].forEach(function (i) { txt(priv, 24, 164 + i * 15, d.keyHex.slice(i * 16, i * 16 + 16), { 'class': 'mono-s' }); });
+    txt(priv, 24, 244, t.saltL, { 'font-size': 12, 'font-weight': 600, fill: 'var(--p-ink)' });
+    [0, 1].forEach(function (i) { txt(priv, 24, 262 + i * 15, d.saltHex.slice(i * 16, i * 16 + 16) + (i === 1 ? '…' : ''), { 'class': 'mono-s' }); });
+    R.sealNote = txt(svg, 24, 314, t.seal1, { 'font-size': 12, 'font-weight': 600, fill: 'var(--p-ink)', 'class': 'fade' });
+    R.sealNote2 = txt(svg, 24, 332, t.seal2, { 'font-size': 12, 'font-weight': 600, fill: 'var(--p-ink)', 'class': 'fade' });
+
+    var cc = g('', svg);
+    R.frame = el('rect', { x: 240, y: 30, width: 470, height: 362, rx: 14, fill: 'none', stroke: 'var(--line-2)', 'stroke-dasharray': '4 4' }, cc);
+    R.frameLbl = txt(cc, 700, 50, t.circuit, { 'text-anchor': 'end', 'font-size': 12, 'font-weight': 600, fill: 'var(--muted)' });
+    R.ptLabel = txt(cc, 256, 52, t.inPriv, { 'font-size': 12, fill: 'var(--muted)' });
+
+    // input tiles (shrink for long Latin strings)
+    var n = d.chars.length, gap = n > 12 ? 3 : 6, avail = 430;
+    var tw = Math.max(18, Math.min(44, Math.floor((avail - gap * (n - 1)) / Math.max(n, 1))));
+    var x0 = 252, y0 = 62, stp = tw + gap, rl = d.rule.length, cw = tw * rl + gap * (rl - 1);
+    var fs = Math.min(17, Math.round(tw * 0.72));
+    R.stp = stp;
+    d.chars.forEach(function (c, i) {
+      var tl = g('tile', cc);
+      tl.setAttribute('transform', 'translate(' + (x0 + i * stp) + ',' + y0 + ')');
+      el('rect', { width: tw, height: 38, rx: tw < 26 ? 5 : 8 }, tl);
+      txt(tl, tw / 2, 19, c === ' ' ? '␣' : c, { 'font-size': fs });
+      R.tiles.push(tl);
+    });
+    R.win = el('rect', { 'class': 'window', x: x0 - 4, y: y0 - 4, width: cw + 8, height: 46, rx: 10, opacity: 0 }, cc);
+    R.winLbl = txt(cc, x0 + cw / 2, y0 + 58, '= ' + Q(d.rule.join('')) + ' ?', { 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 600, fill: 'var(--v)', opacity: 0 });
+
+    var gy = 132, busY = 186, orX = 475, minX = orX, maxX = orX, gw = Math.min(28, stp - 3);
+    d.gates.forEach(function (gt, gi) {
+      if (gt.kind !== 'cmp') return;
+      var cx = x0 + gt.at * stp + cw / 2;
+      minX = Math.min(minX, cx); maxX = Math.max(maxX, cx);
+      var wIn = el('path', { 'class': 'wire', d: 'M' + cx + ' ' + (y0 + 38) + ' V ' + gy }, cc);
+      var gg = g('gate', cc);
+      el('rect', { x: cx - gw / 2, y: gy, width: gw, height: 24, rx: 6 }, gg);
+      txt(gg, cx, gy + 12, '=');
+      var wOut = el('path', { 'class': 'wire', d: 'M' + cx + ' ' + (gy + 24) + ' V ' + busY }, cc);
+      R.cmp.push({ gate: gg, wIn: wIn, wOut: wOut, at: gt.at });
+      R.gateUI[gi] = gateUI(cc, cx, gy + 12, gw + 6, 30, stp < 32);
+    });
+    R.bus = el('path', { 'class': 'wire', d: 'M' + minX + ' ' + busY + ' H ' + maxX + ' M' + orX + ' ' + busY + ' V 204' }, cc);
+    R.or = g('gate', cc);
+    el('path', { 'class': 'g', d: 'M455 204 Q475 212 495 204 Q495 236 475 250 Q455 236 455 204 Z' }, R.or);
+    txt(R.or, 475, 223, 'OR');
+    R.gateUI[d.gates.length - 2] = gateUI(cc, 475, 226, 50, 52);
+    R.outWire = el('path', { 'class': 'wire', d: 'M475 250 V 266' }, cc);
+    R.outBox = g('gate', cc);
+    el('rect', { x: 385, y: 266, width: 180, height: 30, rx: 8 }, R.outBox);
+    R.outTxt = txt(R.outBox, 475, 281, t.hitQ);
+    R.eqTxt = txt(cc, 475, 318, '', { 'text-anchor': 'middle', 'font-size': 12.5, 'font-weight': 600, 'class': 'fade' });
+
+    R.aes = g('gate', cc);
+    el('rect', { x: 252, y: 352, width: 130, height: 28, rx: 8 }, R.aes);
+    txt(R.aes, 317, 366, t.aes);
+    R.gateUI[d.gates.length - 1] = gateUI(cc, 317, 366, 138, 36);
+    R.aesCheck = txt(cc, 392, 370, t.aesOk, { 'font-size': 12, 'font-weight': 600, fill: 'var(--ok)', 'class': 'fade' });
+    R.comCheck = txt(cc, 548, 370, t.comOk, { 'font-size': 12, 'font-weight': 600, fill: 'var(--ok)', 'class': 'fade' });
+    d.chars.forEach(function (c, i) { R.tileEnv.push(envelope(cc, x0 + i * stp + tw / 2, y0 + 19, tw + 2, 40)); });
+
+    R.cipher = g('fade', svg);
+    txt(R.cipher, 250, 424, t.ctL(d.ctHex.length / 2), { 'font-size': 12, 'font-weight': 600, fill: 'var(--ink-2)' });
+    [0, 1].forEach(function (k) { var s = d.ctHex.slice(k * 56, k * 56 + 56); if (s) txt(R.cipher, 250, 444 + k * 16, s + (k === 1 && d.ctHex.length > 112 ? '…' : ''), { 'class': 'mono-s' }); });
+    R.commit = g('fade', svg);
+    txt(R.commit, 250, 492, t.comL, { 'font-size': 12, 'font-weight': 600, fill: 'var(--ink-2)' });
+    txt(R.commit, 250, 510, d.commitHex.slice(0, 56) + '…', { 'class': 'mono-s' });
+    R.claim = g('fade', svg);
+    el('rect', { x: 250, y: 528, width: 200, height: 28, rx: 7, fill: 'var(--sunk)', stroke: 'var(--line-2)' }, R.claim);
+    txt(R.claim, 350, 542, t.claimBox(d.claim ? 1 : 0), { 'text-anchor': 'middle', 'dominant-baseline': 'central', 'font-size': 12.5, 'font-weight': 600 });
+
+    actor('b', 770, 30, 210, 66, t.bob, t.bobSub);
+    R.bobIn = txt(svg, 774, 122, t.bobIn, { 'font-size': 12, fill: 'var(--muted)', 'class': 'fade' });
+    R.bobOk = g('fade', svg);
+    txt(R.bobOk, 774, 146, t.bobDec, { 'font-size': 12, fill: 'var(--muted)' });
+    txt(R.bobOk, 774, 172, d.back.length > 18 ? d.back.slice(0, 18) + '…' : d.back, { 'font-size': d.back.length > 11 ? 14 : 17, 'font-weight': 600 });
+    R.bobBlocked = txt(svg, 774, 150, t.bobBlocked, { 'font-size': 13, 'font-weight': 600, fill: 'var(--bad)', 'class': 'fade' });
+
+    actor('v', 770, 300, 210, 66, t.aud, t.audSub);
+    R.audIn = txt(svg, 774, 390, '', { 'font-size': 12, fill: 'var(--muted)', 'class': 'fade' });
+    R.audView = g('fade', svg);
+    var mask = d.chars.map(function () { return '■'; }).join('');
+    txt(R.audView, 774, 412, t.audView(mask.length > 10 ? mask.slice(0, 10) + '…' : mask), { 'font-size': 12, fill: 'var(--muted)' });
+    R.log1 = txt(svg, 774, 438, '', { 'font-size': 12.5, 'font-weight': 600, 'class': 'fade' });
+    R.log2 = txt(svg, 774, 456, '', { 'font-size': 12, fill: 'var(--muted)', 'class': 'fade' });
+    R.meter = g('meter fade', svg);
+    el('rect', { 'class': 'track', x: 774, y: 468, width: 200, height: 10, rx: 5 }, R.meter);
+    R.meterFill = el('rect', { 'class': 'fill', x: 774, y: 468, width: 200, height: 10, rx: 5 }, R.meter);
+    R.meterTxt = txt(R.meter, 774, 496, '', { 'font-size': 12 });
+    R.checks = t.chk(d).map(function (label, i) { return check(774, 522 + i * 19, label); });
+    R.stamp = g('stamp fade', svg);
+    el('rect', { x: 772, y: 576, width: 206, height: 38, rx: 10 }, R.stamp);
+    R.stampTxt = txt(R.stamp, 875, 595, '');
+
+    R.chan = el('path', { id: 'pChan', 'class': 'wire fade', d: 'M712 220 C 744 220, 742 318, 766 318', 'marker-end': 'url(#arw)' }, svg);
+    R.toBob = el('path', { id: 'pBob', 'class': 'wire fade', d: 'M712 440 C 742 440, 740 64, 766 64', 'marker-end': 'url(#arw)' }, svg);
+    R.toAud = el('path', { id: 'pAud', 'class': 'wire fade', d: 'M712 470 C 742 470, 740 352, 766 352', 'marker-end': 'url(#arw)' }, svg);
+    R.dots = g('', svg);
+  }
+  // compact: gates packed tightly (long Latin messages) -> one mark above the gate, no masked label
+  function gateUI(parent, cx, cy, w, h, compact) {
+    var pad = compact ? 2 : 5;
+    return {
+      env: envelope(parent, cx, cy, w, h),
+      ring: el('rect', { 'class': 'ring', x: cx - w / 2 - pad, y: cy - h / 2 - pad, width: w + 2 * pad, height: h + 2 * pad, rx: compact ? 6 : 8 }, parent),
+      masked: compact ? null : txt(parent, cx, cy - h / 2 - 9, '', { 'class': 'masked' }),
+      verdict: compact ? txt(parent, cx, cy - h / 2 - 11, '', { 'class': 'verdict', 'font-size': 14 })
+                       : txt(parent, cx + w / 2 + 2, cy - h / 2 + 2, '', { 'class': 'verdict' })
+    };
+  }
+  function actor(cls, x, y, w, h, name, sub) {
+    var a = g('actor ' + cls, svg);
+    el('rect', { 'class': 'body', x: x, y: y, width: w, height: h, rx: 14 }, a);
+    txt(a, x + 16, y + 28, name, { 'class': 'nm' });
+    txt(a, x + 16, y + 50, sub, { 'class': 'sub' });
+  }
+  function check(x, y, label) {
+    var c = g('check fade', svg);
+    var m = txt(c, x, y, '✓', { 'class': 'mk', fill: 'var(--ok)', 'font-size': 13 });
+    txt(c, x + 18, y, label, { 'font-size': 12.5 });
+    return { g: c, mk: m };
+  }
+  function dot(path, color, delay, reverse) {
+    var c = el('circle', { r: 5, fill: color, opacity: 0 }, R.dots);
+    var attrs = { dur: '0.9s', begin: 'indefinite', fill: 'freeze' };
+    if (reverse) { attrs.keyPoints = '1;0'; attrs.keyTimes = '0;1'; attrs.calcMode = 'linear'; }
+    var am = el('animateMotion', attrs, c);
+    var mp = el('mpath', { href: '#' + path }, am);
+    mp.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#' + path);
+    later(delay, function () { c.setAttribute('opacity', 1); try { am.beginElement(); } catch (e) {} });
+    later(delay + 1000, function () { c.setAttribute('opacity', 0); });
+  }
+
+  // ---------------- render a step (deterministic: back/next replay the same) ----------------
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+  function later(ms, f) { timers.push(setTimeout(f, ms)); }
+
+  function show(s) {
+    if (!run) return;
+    clearTimers();
+    s = Math.max(0, Math.min(5, s));
+    step = s;
+    var d = run, t = T(), A = function (x, v) { on(x, 'in', v); };
+    [].forEach.call($('rail').children, function (e, i) { e.className = i < s ? 'done' : i === s ? 'on' : ''; });
+    $('cap').innerHTML = t.cap[s](d);
+    $('prev').disabled = s === 0; $('next').disabled = s === 5; $('auto').disabled = false;
+    $('navHint').textContent = t.hint(s + 1, 6);
+    while (R.dots.firstChild) R.dots.removeChild(R.dots.firstChild);
+
+    A(R.priv, true); A(R.cipher, true); A(R.commit, true);
+    A(R.sealNote, s >= 2); A(R.sealNote2, s >= 2);
+    A(R.claim, s >= 2); A(R.chan, s >= 2 && s <= 3);
+    A(R.toBob, s >= 4); A(R.toAud, s >= 4); A(R.bobIn, s >= 4);
+    A(R.bobOk, s >= 5 && !d.actual && !d.liar); A(R.bobBlocked, s >= 5 && (d.actual || d.liar));
+    A(R.audIn, s >= 2); A(R.audView, s >= 2); A(R.log1, s >= 3); A(R.log2, s >= 3); A(R.meter, s >= 3);
+    var nc = d.chars.length + d.gates.length;
+    R.audIn.textContent = s >= 4 ? t.audIn2(nc) : t.audIn1(nc);
+    R.checks.forEach(function (c) { A(c.g, s >= 5); });
+    A(R.stamp, s >= 5);
+    R.frameLbl.textContent = s === 1 ? t.circuitPriv : t.circuit;
+    R.ptLabel.textContent = s >= 2 ? t.inSealed : t.inPriv;
+
+    resetCircuit();
+    sealAll(false);
+    R.gateUI.forEach(function (u) { A(u.ring, false); A(u.masked, false); A(u.verdict, false); on(u.env, 'open', false); u.ring.style.stroke = ''; });
+    R.tiles.forEach(function (tl, i) { on(tl, 'hit', s === 1 && d.hits.some(function (h) { return i >= h && i < h + d.rule.length; })); });
+
+    if (s === 0) scrambleCipher();
+    if (s === 1) evaluate(d);
+    if (s === 2) seal(d);
+    if (s >= 3) sealAll(true);
+    if (s === 3) challenge(d);
+    if (s >= 4) finalRounds(d);
+    if (s === 4) { dot('pBob', 'var(--ink-2)', 150); dot('pAud', 'var(--ink-2)', 350); }
+    if (s >= 5) { finishChecks(d); stampVerdict(d); }
+  }
+
+  function scrambleCipher() {
+    var lines = [].filter.call(R.cipher.querySelectorAll('text'), function (x) { return x.getAttribute('class') === 'mono-s'; });
+    var finals = lines.map(function (x) { return x.textContent; });
+    var hx = '0123456789abcdef', k = 0;
+    var tick = function () {
+      k++;
+      lines.forEach(function (x, i) {
+        var f = finals[i], keep = Math.floor(f.length * k / 14);
+        x.textContent = f.slice(0, keep) + f.slice(keep).replace(/[0-9a-f]/g, function () { return hx[Math.random() * 16 | 0]; });
+      });
+      if (k < 14) later(90, tick); else lines.forEach(function (x, i) { x.textContent = finals[i]; });
+    };
+    later(250, tick);
+  }
+  function resetCircuit() {
+    R.cmp.forEach(function (c) { ['on', 'hot', 'ok'].forEach(function (k) { on(c.gate, k, false); on(c.wIn, k, false); on(c.wOut, k, false); }); });
+    ['on', 'hot', 'ok'].forEach(function (k) { on(R.or, k, false); on(R.outWire, k, false); on(R.outBox, k, false); on(R.bus, k, false); on(R.aes, k, false); });
+    R.outTxt.textContent = T().hitQ;
+    R.win.setAttribute('opacity', 0); R.winLbl.setAttribute('opacity', 0);
+    on(R.aesCheck, 'in', false); on(R.comCheck, 'in', false); on(R.eqTxt, 'in', false);
+  }
+  function evaluate(d) {
+    var n = R.cmp.length, per = Math.min(420, 2600 / Math.max(n, 1));
+    later(150, function () { on(R.aes, 'on', true); });
+    later(700, function () { on(R.aes, 'on', false); on(R.aes, 'ok', true); on(R.aesCheck, 'in', true); });
+    later(1000, function () { on(R.comCheck, 'in', true); });
+    later(1200, function () { R.win.setAttribute('opacity', 1); R.winLbl.setAttribute('opacity', 1); });
+    R.cmp.forEach(function (c, k) {
+      later(1200 + k * per, function () {
+        var dx = R.stp * c.at;
+        R.win.setAttribute('transform', 'translate(' + dx + ',0)');
+        R.winLbl.setAttribute('transform', 'translate(' + dx + ',0)');
+        var hit = d.hits.indexOf(c.at) >= 0, k2 = hit ? 'hot' : 'on';
+        on(c.wIn, k2, true); on(c.gate, k2, true); on(c.wOut, k2, true);
+      });
+    });
+    later(1350 + n * per, function () {
+      R.win.setAttribute('opacity', 0); R.winLbl.setAttribute('opacity', 0);
+      var k = d.actual ? 'hot' : 'ok';
+      on(R.bus, k, true); on(R.or, k, true); on(R.outWire, k, true); on(R.outBox, k, true);
+      R.outTxt.textContent = T().hit(d.actual ? 1 : 0);
+      R.eqTxt.textContent = d.liar ? T().eqBad : T().eqOk;
+      R.eqTxt.setAttribute('fill', d.liar ? 'var(--bad)' : 'var(--ok)');
+      on(R.eqTxt, 'in', true);
+    });
+  }
+  function sealAll(v) {
+    R.tileEnv.forEach(function (e) { on(e, 'in', v); });
+    R.gateUI.forEach(function (u) { on(u.env, 'in', v); });
+    R.tiles.forEach(function (tl) { on(tl, 'hidden', v); });
+    if (v) R.outTxt.textContent = T().claimOut(run.claim ? 1 : 0);
+  }
+  function seal(d) {
+    var all = R.tileEnv.concat(R.gateUI.map(function (u) { return u.env; }));
+    var per = Math.min(110, 2200 / all.length);
+    all.forEach(function (e, i) { later(150 + i * per, function () { on(e, 'in', true); }); });
+    R.tiles.forEach(function (tl, i) { later(150 + i * per, function () { on(tl, 'hidden', true); }); });
+    later(150 + all.length * per, function () { R.outTxt.textContent = T().claimOut(d.claim ? 1 : 0); });
+    for (var k = 0; k < 3; k++) dot('pChan', 'var(--env-line)', 600 + k * 450);
+  }
+  function challenge(d) {
+    var t = T();
+    d.rounds.forEach(function (rd, k) {
+      var t0 = 200 + k * ROUND_MS, last = k === d.rounds.length - 1;
+      later(t0, function () {
+        R.log1.textContent = t.round(k + 1, rd.pick.length); R.log1.setAttribute('fill', 'var(--ink)');
+        R.log2.textContent = t.challenge;
+        dot('pChan', 'var(--v)', 0, true);
+        rd.pick.forEach(function (gi) { on(R.gateUI[gi].ring, 'in', true); });
+      });
+      later(t0 + 550, function () {
+        R.log2.textContent = t.opening;
+        dot('pChan', 'var(--env-line)', 0);
+        rd.pick.forEach(function (gi, j) {
+          var u = R.gateUI[gi], bad = d.gates[gi].bad;
+          on(u.env, 'open', true);
+          if (u.masked) { u.masked.textContent = rd.masks[j] + '…'; on(u.masked, 'in', true); }
+          u.verdict.textContent = bad ? '✗' : '✓'; u.verdict.setAttribute('fill', bad ? 'var(--bad)' : 'var(--ok)');
+          on(u.verdict, 'in', true);
+          if (bad) u.ring.style.stroke = 'var(--bad)';
+        });
+        meter(d, k);
+        if (k === d.caught) { R.log1.textContent = t.orBad(k + 1); R.log1.setAttribute('fill', 'var(--bad)'); R.log2.textContent = t.caught; }
+      });
+      if (k !== d.caught) {
+        later(t0 + ROUND_MS - 150, function () {
+          rd.pick.forEach(function (gi) { var u = R.gateUI[gi]; on(u.ring, 'in', false); on(u.masked, 'in', false); on(u.verdict, 'in', false); on(u.env, 'open', false); });
+          if (last) roundsDone(d);
+        });
+      }
+    });
+  }
+  function meter(d, k) {
+    var t = T();
+    if (d.liar && d.caught >= 0 && k >= d.caught) {
+      R.meterFill.setAttribute('width', 200); R.meterTxt.textContent = t.meterCaught; R.meterTxt.setAttribute('fill', 'var(--bad)');
+      return;
+    }
+    var p = Math.pow(2, -(k + 1));
+    R.meterFill.setAttribute('width', Math.max(4, 200 * p));
+    R.meterTxt.textContent = t.meter(k + 1, (p * 100).toFixed(p < 0.1 ? 1 : 0));
+    R.meterTxt.setAttribute('fill', 'var(--ink-2)');
+  }
+  function roundsDone(d) { R.log1.textContent = T().allOk(d.rounds.length); R.log1.setAttribute('fill', 'var(--ok)'); R.log2.textContent = T().accept; }
+  function finalRounds(d) {
+    meter(d, d.rounds.length - 1);
+    if (d.liar && d.caught >= 0) {
+      var u = R.gateUI[d.gates.length - 2];
+      on(u.env, 'open', true); u.verdict.textContent = '✗'; u.verdict.setAttribute('fill', 'var(--bad)'); on(u.verdict, 'in', true);
+      u.ring.style.stroke = 'var(--bad)'; on(u.ring, 'in', true);
+      R.log1.textContent = T().orBad(d.caught + 1); R.log1.setAttribute('fill', 'var(--bad)'); R.log2.textContent = T().caught;
+    } else roundsDone(d);
+  }
+  function finishChecks(d) {
+    R.checks.forEach(function (c, i) { var fail = d.liar && i >= 1; c.mk.textContent = fail ? '✗' : '✓'; c.mk.setAttribute('fill', fail ? 'var(--bad)' : 'var(--ok)'); });
+  }
+  function stampVerdict(d) {
+    var t = T(), bad = d.actual || d.liar;
+    R.stamp.setAttribute('class', 'stamp fade in ' + (bad ? 'bad' : 'ok'));
+    R.stampTxt.textContent = d.liar ? t.stampLie : d.actual ? t.stampHit(d.rule.join('')) : t.stampOk;
+  }
+  function renderFacts() {
+    var d = run, t = T();
+    $('facts').hidden = false;
+    $('fA').innerHTML = t.fA(d); $('fB').innerHTML = t.fB(d); $('fV').innerHTML = t.fV(d);
+  }
+
+  // ---------------- boot: same language preference as the homepage ----------------
+  var saved = null;
+  try { saved = localStorage.getItem('site-language'); } catch (e) {}
+  if (saved !== 'en' && saved !== 'zh') saved = /^zh/i.test(navigator.language || '') ? 'zh' : 'en';
+  setLang(saved, true);
+  start();
+})();
+</script>
+</body>
+</html>
