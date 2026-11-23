@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Zhi Lu — Research Fellow at the National University of Singapore, working on cryptography, privacy computing, and trustworthy AI.">
+<title>Zhi Lu · 路直</title>
+<link rel="canonical" href="https://www.lu-zhi.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b85c3c'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' font-weight='600' fill='%23faf9f5' text-anchor='middle'%3EZL%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#faf9f5">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.lu-zhi.com/">
+<meta property="og:title" content="Zhi Lu · 路直 — Cryptography &amp; Privacy Computing">
+<meta property="og:description" content="Research Fellow at NUS. Zero-knowledge proofs, secure aggregation, distributed key generation. 知者不言。">
+<meta property="og:image" content="https://www.lu-zhi.com/couple.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{
+  --bg:#faf9f5;--surface:#ffffff;--sunk:#f2efe6;--ink:#1f1e1c;--ink-2:#3a3732;--muted:#67625a;
+  --line:#e7e2d6;--accent:#b85c3c;--accent-soft:#f6e6dc;--max:1080px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#1b1a18;--surface:#242320;--sunk:#2b2a26;--ink:#f1eee6;--ink-2:#d9d5cb;--muted:#afaa9f;
+  --line:#35332e;--accent:#e2896a;--accent-soft:#3a2a23;
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+/* Chinese: CJK glyphs fall back to a clean sans instead of thin SimSun */
+body[data-lang=zh]{line-height:1.8;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+body[data-lang=zh] h2{font-weight:600}
+body[data-lang=zh] .lede{font-size:20px}
+a{color:inherit;text-decoration-color:var(--line);text-underline-offset:3px}
+a:hover{color:var(--accent);text-decoration-color:currentColor}
+img{display:block;max-width:100%}
+.wrap{width:min(var(--max),100%);margin:0 auto;padding:0 28px}
+
+/* language */
+body[data-lang=en] .zh,body[data-lang=zh] .en{display:none!important}
+
+/* nav */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border-bottom:1px solid transparent;transition:background .3s,border-color .3s,box-shadow .3s}
+.top.scrolled{background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom-color:color-mix(in srgb,var(--line) 70%,transparent);box-shadow:0 10px 30px -22px rgba(40,30,20,.45)}
+
+/* gentle reveal on scroll (JS adds .rv; disabled for reduced motion) */
+.rv.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.2,1),border-color .2s,box-shadow .2s}
+.rv.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv.rv{opacity:1;transform:none;transition:none}}
+.nav{display:flex;align-items:center;gap:24px;height:60px}
+.brand{font:600 17px/1 var(--serif);text-decoration:none;white-space:nowrap}
+.links{display:flex;gap:4px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.links::-webkit-scrollbar{display:none}
+.links a{padding:8px 13px;border-radius:999px;font-size:15px;color:var(--muted);text-decoration:none;white-space:nowrap;transition:background .15s,color .15s}
+.links a:hover{color:var(--ink)}
+.links a.on{background:var(--sunk);color:var(--ink)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:2px;flex:none}
+.lang button{border:0;background:none;color:var(--muted);font:600 12px var(--sans);padding:5px 10px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:64px;align-items:center;padding:72px 0 56px}
+.eyebrow{font:500 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 20px}
+h1{font:500 clamp(40px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;margin:0 0 6px}
+.cn-name{font:400 22px/1 var(--serif);color:var(--muted);margin:0 0 26px;display:flex;align-items:center;gap:12px}
+.pron{font:500 13px/1 var(--sans);padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.lede{font:400 21px/1.55 var(--serif);color:var(--ink-2);margin:0 0 28px;max-width:34em}
+.lede strong{font-weight:600;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px;padding:0;list-style:none}
+.chips li{font-size:14px;line-height:1;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);background:var(--surface)}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--surface)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.primary:hover{color:var(--bg);opacity:.88}
+.profiles{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:18px;font-size:15px}
+.profiles a{color:var(--muted);text-decoration:none;padding:4px 0}
+.profiles a:hover{color:var(--accent)}
+.photo{margin:0;width:100%;max-width:340px;justify-self:end;position:relative}
+.ph{border-radius:22px;overflow:hidden;background:var(--sunk);box-shadow:0 1px 2px rgba(40,30,20,.06),0 28px 56px -28px rgba(40,30,20,.45);transform:translateZ(0)}
+.photo img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center 50%;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.photo:hover img{transform:scale(1.035)}
+
+/* hero entrance: text lines rise in one after another, photo settles in */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+@keyframes settle{from{opacity:0;transform:scale(.965) translateY(10px)}}
+.hero>div:first-child>*{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+.hero>div:first-child>:nth-child(2){animation-delay:.08s}
+.hero>div:first-child>:nth-child(3){animation-delay:.16s}
+.hero>div:first-child>:nth-child(4){animation-delay:.24s}
+.hero>div:first-child>:nth-child(5){animation-delay:.32s}
+.hero>div:first-child>:nth-child(6){animation-delay:.4s}
+.hero>div:first-child>:nth-child(7){animation-delay:.46s}
+.photo{animation:settle 1.1s .2s cubic-bezier(.2,.7,.2,1) both}
+@media (prefers-reduced-motion:reduce){.hero>div:first-child>*,.photo{animation:none}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:24px}
+.stat{padding:22px 20px}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat b{display:block;font:500 34px/1.1 var(--serif);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.stat span{font-size:14.5px;line-height:1.5;color:var(--muted)}
+
+/* ZKP band: motto + book + interactive demo */
+.zk-band{margin-top:64px;padding:56px 40px 40px;border:1px solid var(--line);border-radius:28px;
+  background:radial-gradient(90% 70% at 50% 0%,var(--accent-soft),transparent 70%),var(--sunk)}
+.motto{margin:0 auto;max-width:760px;text-align:center}
+.motto blockquote{margin:0;font:400 clamp(21px,2.6vw,27px)/1.6 var(--serif);color:var(--ink-2);text-wrap:balance}
+.motto blockquote::before{content:"";display:block;width:36px;height:2px;margin:0 auto 24px;background:var(--accent);transition:width 1s .2s cubic-bezier(.2,.7,.2,1)}
+.motto.rv:not(.in) blockquote::before{width:0}
+.motto em{font-style:normal;font-weight:600;color:var(--accent);background:linear-gradient(currentColor,currentColor) 0 100%/100% 1.5px no-repeat;transition:background-size 1.2s .5s cubic-bezier(.2,.7,.2,1)}
+.motto.rv:not(.in) em{background-size:0 1.5px}
+.zk-show{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:44px}
+.show{display:flex;flex-direction:column;gap:8px;padding:22px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--ink);text-decoration:none}
+.show .vis{display:grid;place-items:center;height:132px;margin-bottom:8px;border-radius:14px;background:linear-gradient(135deg,var(--accent-soft),var(--bg) 75%)}
+.show p{font-size:16px;line-height:1.65;color:var(--ink-2);margin:0}
+.show .btn{align-self:flex-start;margin-top:auto}
+.show .demo-tag{margin-bottom:2px}
+.show .open{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600;color:var(--accent)}
+.show .open i{display:inline-block;font-style:normal;transition:transform .2s}
+.zk-show>.show.rv.in{transition:opacity .6s ease,transform .3s cubic-bezier(.2,.7,.2,1),border-color .2s,box-shadow .2s}
+.zk-show>.show.rv.in:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 18px 36px -24px rgba(40,30,20,.5)}
+a.show:hover{color:var(--ink)}
+a.show:hover .open i{transform:translateX(4px)}
+.show .demo-anim{width:250px;max-width:100%;height:auto}
+.status .live{display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--accent);vertical-align:1px;animation:live 2s infinite}
+@keyframes live{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}70%,100%{box-shadow:0 0 0 8px transparent}}
+/* book visual: open book whose right page runs a commit → challenge → response round */
+.bk{width:230px;height:auto;overflow:visible}
+.bk .pg{fill:var(--surface);stroke:var(--muted);stroke-width:1.2;stroke-linejoin:round}
+.bk .ln{stroke:var(--line);stroke-width:3;stroke-linecap:round}
+.bk .who{font:600 12px var(--mono);fill:var(--muted);text-anchor:middle}
+.bk .ar{fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.bk .a1{animation:bkA1 6s infinite}.bk .a2{animation:bkA2 6s infinite}.bk .a3{animation:bkA3 6s infinite}
+.bk .ok{transform-box:fill-box;transform-origin:center;animation:bkOk 6s infinite}
+.bk .ok circle{fill:var(--accent)}.bk .ok path{fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@keyframes bkA1{0%,4%{stroke-dashoffset:1}18%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bkA2{0%,22%{stroke-dashoffset:1}36%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bkA3{0%,40%{stroke-dashoffset:1}54%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bkOk{0%,58%{opacity:0;transform:scale(.4)}66%{opacity:1;transform:scale(1.15)}72%,90%{opacity:1;transform:scale(1)}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.bk .ar,.bk .ok,.status .live{animation:none;stroke-dashoffset:0}}
+
+/* sections */
+section{padding:88px 0 0}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:32px;padding-top:18px;border-top:1px solid var(--ink);position:relative}
+/* the rule above each section draws itself in from the left */
+.sec-head.rv{border-top-color:transparent}
+.sec-head.rv::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--ink);transform-origin:left;transition:transform 1.1s .1s cubic-bezier(.2,.7,.2,1)}
+.sec-head.rv:not(.in)::before{transform:scaleX(0)}
+.sec-num{font:500 14px var(--mono);color:var(--accent)}
+h2{font:500 34px/1.15 var(--serif);letter-spacing:-.015em;margin:0}
+.sec-note{margin-left:auto;font-size:14px;color:var(--muted)}
+h3{font:600 17.5px/1.45 var(--sans);margin:0}
+h4{font:500 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:36px 0 14px}
+p{margin:0 0 16px}
+
+/* about */
+.about{display:grid;grid-template-columns:1.3fr 1fr;gap:56px}
+.about p{font-size:17px;color:var(--ink-2)}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{display:grid;grid-template-columns:92px 1fr;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.timeline li:first-child{border-top:0;padding-top:0}
+.timeline time{font:500 13px/1.9 var(--mono);color:var(--muted)}
+.timeline .now time{color:var(--accent)}
+.timeline small{display:block;font-size:15px;color:var(--muted);line-height:1.5;margin-top:2px}
+
+/* values */
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.value{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+.value .k{font:500 13px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.value p{font-size:16px;color:var(--ink-2);margin:8px 0 0;line-height:1.65}
+
+/* news */
+.news{display:grid;grid-template-columns:1.3fr 1fr;gap:56px}
+.status{font:500 13px var(--mono);letter-spacing:.04em;color:var(--accent);margin-bottom:4px}
+.recent{list-style:none;margin:0;padding:0}
+.recent li{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2)}
+.recent li:first-child{border-top:0;padding-top:0}
+.recent time{font:500 13px/1.75 var(--mono);color:var(--muted)}
+
+/* publications */
+.pubs{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.pub{display:grid;grid-template-columns:150px 1fr auto;gap:24px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.venue{font:600 14px/1.3 var(--mono);color:var(--ink)}
+.venue .tier{margin-top:8px}
+.pub h3{font:500 20px/1.4 var(--serif);letter-spacing:-.005em}
+.authors{font-size:15px;color:var(--muted);margin-top:6px}
+.authors b{color:var(--ink);font-weight:600}
+.go{font-size:14px;color:var(--muted);text-decoration:none;white-space:nowrap;padding:4px 0}
+.go:hover{color:var(--accent)}
+.tier{display:inline-block;font:600 12px/1 var(--mono);letter-spacing:.03em;padding:5px 8px;border-radius:6px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tier.a{background:var(--accent);color:var(--bg)}
+.tier.t1{background:var(--accent-soft);color:var(--accent)}
+
+/* expandable lists */
+.more{margin-top:16px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.more summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600}
+.more summary::-webkit-details-marker{display:none}
+.more summary::after{content:"";margin-left:auto;width:8px;height:8px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .2s}
+.more[open] summary::after{transform:rotate(-135deg) translateY(-3px)}
+.more summary:hover{color:var(--accent)}
+.more summary .n{font:500 13px var(--mono);color:var(--muted);font-weight:400}
+.list{list-style:none;margin:0;padding:0 22px 8px}
+.list li{display:grid;grid-template-columns:1fr auto;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.list .t{font-size:16px;font-weight:600;line-height:1.5;text-decoration:none}
+.list .m{font-size:14.5px;color:var(--muted);margin-top:4px;line-height:1.55}
+.list .m b{color:var(--ink-2);font-weight:600}
+.list .r{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.list .yr{font:500 13px var(--mono);color:var(--muted)}
+.h4-note{text-transform:none;letter-spacing:0;font:400 13px var(--sans)}
+.list.feat{padding:0;counter-reset:f}
+.list.feat li{grid-template-columns:28px 1fr;gap:12px;counter-increment:f}
+.list.feat li::before{content:counter(f,decimal-leading-zero);font:500 13px/1.9 var(--mono);color:var(--accent)}
+.list.feat li:first-child{border-top:0;padding-top:4px}
+/* zkRule interactive demo animation */
+.demo-tag{display:block;font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.demo-anim{overflow:visible}
+.demo-anim *{transform-box:fill-box;transform-origin:center}
+.da-tiles rect{fill:var(--surface);stroke:var(--line);stroke-width:1.2;animation:daTiles 5s infinite}
+.da-tiles rect.hot{fill:var(--accent-soft);stroke:var(--accent)}
+.da-cipher{font:600 9px var(--mono);fill:var(--muted);animation:daCipher 5s infinite}
+.da-env rect{fill:#ead9ae;stroke:#b39457;stroke-width:1.2}
+.da-env path{fill:none;stroke:#b39457;stroke-width:1.2}
+.da-env{animation:daEnv 5s infinite}
+.da-ring{fill:none;stroke:#3d6f8f;stroke-width:2;stroke-dasharray:4 3;animation:daRing 5s infinite}
+.da-stamp rect{fill:none;stroke:#b4483f;stroke-width:2}
+.da-stamp text{font:700 9.5px var(--sans);fill:#b4483f;text-anchor:middle;dominant-baseline:central}
+.da-stamp{animation:daStamp 5s infinite}
+@keyframes daTiles{0%,18%{opacity:1}32%,92%{opacity:.25}100%{opacity:1}}
+@keyframes daCipher{0%,18%{opacity:0}32%,92%{opacity:1}100%{opacity:0}}
+@keyframes daEnv{0%,30%{opacity:0;transform:translateX(-24px)}46%,92%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes daRing{0%,50%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1)}72%,100%{opacity:0;transform:scale(1.3)}}
+@keyframes daStamp{0%,68%{opacity:0;transform:scale(1.7) rotate(-8deg)}76%,92%{opacity:1;transform:scale(1) rotate(-8deg)}100%{opacity:0;transform:scale(1) rotate(-8deg)}}
+@media (prefers-reduced-motion:reduce){.demo-anim *{animation:none!important}.da-tiles rect{opacity:.25}.da-ring{opacity:0}}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px}
+.tag{align-self:flex-start;font:500 13px/1 var(--sans);padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.tag.plain{background:var(--sunk);color:var(--muted)}
+.card p{font-size:16px;color:var(--ink-2);margin:0;line-height:1.65}
+.hl{font:600 15px var(--sans);color:var(--accent)}
+.card,.value,.honor{transition:border-color .2s,box-shadow .2s}
+.card:hover,.value:hover,.honor:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--line));box-shadow:0 8px 24px -16px rgba(0,0,0,.25)}
+
+/* honors */
+.honors{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.honor{display:grid;grid-template-columns:132px 1fr;gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.badge{font:500 26px/1.1 var(--serif);color:var(--accent);letter-spacing:-.01em}
+.badge small{display:block;font:500 13px/1.4 var(--sans);color:var(--muted);margin-top:4px;letter-spacing:0}
+.honor .by{font-size:15px;color:var(--muted);margin-top:4px;line-height:1.5}
+.honor time{font:500 13px var(--mono);color:var(--muted)}
+
+footer{margin-top:96px;padding:40px 0 56px;border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;font-size:15px;color:var(--muted)}
+
+/* back to top */
+.totop{position:fixed;right:20px;bottom:20px;z-index:20;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:18px;cursor:pointer;box-shadow:0 6px 20px -8px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
+.totop.show{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{color:var(--accent)}
+footer .big{font:500 24px/1.3 var(--serif);color:var(--ink);margin-bottom:6px}
+footer .invite{max-width:36em;margin:0 0 10px;color:var(--ink-2)}
+
+@media (max-width:900px){
+  .hero,.about,.news{grid-template-columns:1fr;gap:40px}
+  .hero{padding-top:44px}
+  .photo{max-width:320px;justify-self:start}
+  .values,.zk-show{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .wrap{padding:0 18px}
+  .nav{gap:10px;height:56px}
+  .brand{display:none}
+  .links{margin:0;flex:1;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .links a{padding:8px 11px;font-size:14.5px}
+  .hero{padding:36px 0 40px;gap:32px}
+  .photo{max-width:none}
+  .photo img{aspect-ratio:1/1;object-position:center 55%}
+  section{padding-top:64px}
+  .sec-head{margin-bottom:24px}
+  .chips li{font-size:13.5px}
+  .stat{padding:18px 14px}
+  .stat b{font-size:30px}
+  .values{margin-top:28px}
+  .zk-band{margin-top:44px;padding:36px 16px 16px;border-radius:22px}
+  .zk-show{margin-top:32px}
+  .show{padding:18px}
+  .news{gap:32px}
+  .pub h3{font-size:18.5px}
+  .card{padding:20px}
+  .totop{right:14px;bottom:14px}
+  .grid{grid-template-columns:1fr}
+  .pub{grid-template-columns:1fr;gap:6px}
+  .venue{display:flex;gap:10px;align-items:center}
+  .venue .tier{margin-top:0}
+  .pub .go{justify-self:start;margin-top:4px}
+  .sec-head{flex-wrap:wrap}
+  .sec-note{margin-left:0;width:100%}
+  h2{font-size:27px}
+  .lede{font-size:19px}
+  .timeline li{grid-template-columns:80px 1fr}
+  .honor{grid-template-columns:1fr;gap:8px}
+  .list{padding:0 16px 8px}
+  .more summary{padding:14px 16px}
+  .list li{grid-template-columns:1fr}
+  .list .r{flex-direction:row;align-items:center;text-align:left}
+}
+</style>
+</head>
+<body data-lang="en">
+
+<header class="top" id="top">
+  <div class="wrap nav">
+    <a class="brand" href="#">Zhi Lu</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#about"><span class="en">About</span><span class="zh">关于</span></a>
+      <a href="#news"><span class="en">News</span><span class="zh">动态</span></a>
+      <a href="#publications"><span class="en">Papers</span><span class="zh">论文</span></a>
+      <a href="#projects"><span class="en">Projects</span><span class="zh">项目</span></a>
+      <a href="#honors"><span class="en">Honors</span><span class="zh">荣誉</span></a>
+      <a href="#impact"><span class="en">Impact</span><span class="zh">学术成果</span></a>
+      <a href="#contact"><span class="en">Contact</span><span class="zh">联系</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button data-set-lang="en" aria-pressed="true">EN</button>
+      <button data-set-lang="zh" aria-pressed="false">中</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div>
+      <p class="eyebrow"><span class="en">Research Fellow · NUS Computing</span><span class="zh">新加坡国立大学 · 博士后研究员</span></p>
+      <h1>Zhi Lu</h1>
+      <p class="cn-name">路直 <span class="pron"><span class="en">he / him</span><span class="zh">男</span></span></p>
+      <p class="lede">
+        <span class="en">I build cryptographic tools that let people <strong>compute together without giving up their privacy</strong> — and that hold misbehaving parties accountable when trust breaks down.</span>
+        <span class="zh">我研究如何让多方<strong>在不泄露隐私的前提下协同计算</strong>，并在信任失效时，依然能让作恶者被追责。</span>
+      </p>
+      <ul class="chips">
+        <li><span class="en">Zero-knowledge proofs</span><span class="zh">零知识证明</span></li>
+        <li><span class="en">Secure aggregation</span><span class="zh">安全聚合</span></li>
+        <li><span class="en">Distributed key generation</span><span class="zh">分布式密钥生成</span></li>
+        <li><span class="en">Anonymous accountability</span><span class="zh">匿名可追责</span></li>
+      </ul>
+      <div class="cta">
+        <a class="btn primary" href="mailto:zhilu@nus.edu.sg">zhilu@nus.edu.sg</a>
+        <a class="btn" href="#publications"><span class="en">Selected papers ↓</span><span class="zh">代表论文 ↓</span></a>
+      </div>
+      <div class="profiles">
+        <a href="https://scholar.google.com/citations?user=S-lmKsYAAAAJ" target="_blank" rel="noreferrer">Google Scholar ↗</a>
+        <a href="https://orcid.org/0000-0002-5411-9854" target="_blank" rel="noreferrer">ORCID ↗</a>
+      </div>
+    </div>
+    <figure class="photo">
+      <div class="ph"><img src="couple.jpg" alt="Zhi Lu on a garden path" width="1000" height="1334"></div>    </figure>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>5</b><span class="en">CCF-A papers (NDSS ×2, CCS, ICCV, TIFS)</span><span class="zh">篇 CCF-A 论文（NDSS ×2、CCS、ICCV、TIFS）</span></div>
+    <div class="stat"><b>PC</b><span class="en">USENIX Security 2027</span><span class="zh">USENIX Security 2027 程序委员</span></div>
+    <div class="stat"><b>8</b><span class="en">national &amp; group standards</span><span class="zh">项国家 / 团体标准</span></div>
+    <div class="stat"><b>11</b><span class="en">invention patents</span><span class="zh">项发明专利</span></div>
+  </div>
+
+  <div class="zk-band">
+    <figure class="motto">
+      <blockquote>
+        <span class="zh">零知识证明让<em>“知者不言”</em>这句老子的哲思成为可构造的协议：不泄露任何秘密，却能令人确信你知道。</span>
+        <span class="en">Zero-knowledge proofs turn Laozi's <em>“those who know do not speak”</em> into a constructible protocol: reveal no secret, yet convince others that you know.</span>
+      </blockquote>
+    </figure>
+
+    <div class="zk-show">
+      <article class="show">
+        <div class="vis">
+          <svg class="bk" viewBox="0 0 220 110" aria-hidden="true">
+            <path class="pg" d="M110 20 Q78 8 18 13 L18 96 Q78 91 110 103 Z"/>
+            <path class="pg" d="M110 20 Q142 8 202 13 L202 96 Q142 91 110 103 Z"/>
+            <path class="ln" d="M32 32 H96 M32 44 H96 M32 56 H90 M32 68 H96 M32 80 H74"/>
+            <text class="who" x="128" y="36">P</text><text class="who" x="186" y="36">V</text>
+            <path class="ar a1" pathLength="1" d="M134 48 H178 M173 44 L178 48 L173 52"/>
+            <path class="ar a2" pathLength="1" d="M178 62 H134 M139 58 L134 62 L139 66"/>
+            <path class="ar a3" pathLength="1" d="M134 76 H178 M173 72 L178 76 L173 80"/>
+            <g class="ok"><circle cx="186" cy="88" r="8"/><path d="M182 88 L185 91 L190 85"/></g>
+          </svg>
+        </div>
+        <div class="status"><span class="live"></span><span class="en">WRITING</span><span class="zh">撰写中</span></div>
+        <h3><span class="en">A book on zero-knowledge proofs</span><span class="zh">零知识证明专著</span></h3>
+        <p><span class="en">A systematic treatment of ZKP — from foundations to constructions and applications. Start with the illustrated primer.</span><span class="zh">系统介绍零知识证明，从基础理论到构造与应用。可以先从图解入门讲义读起。</span></p>
+        <a class="btn primary" href="zkp/"><span class="en">An illustrated ZKP primer →</span><span class="zh">图解零知识证明：入门讲义 →</span></a>
+      </article>
+
+      <a class="show" href="zkaudit/">
+        <div class="vis">
+          <svg class="demo-anim" viewBox="0 0 150 64" aria-hidden="true">
+            <g class="da-tiles"><rect x="4" y="12" width="15" height="18" rx="3"/><rect class="hot" x="22" y="12" width="15" height="18" rx="3"/><rect class="hot" x="40" y="12" width="15" height="18" rx="3"/><rect x="58" y="12" width="15" height="18" rx="3"/></g>
+            <text class="da-cipher" x="4" y="46">9f3a·c1e0·77b2</text>
+            <g class="da-env"><rect x="84" y="14" width="24" height="17" rx="3"/><path d="M84 14 L96 24 L108 14"/></g>
+            <circle class="da-ring" cx="96" cy="22" r="17"/>
+            <g class="da-stamp"><rect x="114" y="12" width="32" height="20" rx="4"/><text x="130" y="23"><tspan class="en">HIT</tspan><tspan class="zh">命中</tspan></text></g>
+          </svg>
+        </div>
+        <div class="status"><span class="live"></span><span class="en">MY ONGOING WORK · INTERACTIVE DEMO</span><span class="zh">在研工作 · 互动演示</span></div>
+        <h3><span class="en">ZKAudit: moderate encrypted content without reading it</span><span class="zh">ZKAudit：不看内容，也能审核加密消息</span></h3>
+        <p><span class="en">Built on zkRule, my first-authored work under review. Send an encrypted message or image; the auditor decides from the ciphertext and a proof alone.</span><span class="zh">基于我第一作者的在投工作 zkRule。发送一条加密消息或一张图片，审核方仅凭密文和证明作出判断。</span></p>
+        <span class="open"><span class="en">Try it </span><span class="zh">打开演示 </span><i>→</i></span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <div class="sec-head"><span class="sec-num">01</span><h2><span class="en">About</span><span class="zh">关于我</span></h2></div>
+    <div class="about">
+      <div>
+        <p class="en">I'm a Research Fellow in the School of Computing at the National University of Singapore, working with <a href="https://www.comp.nus.edu.sg/cs/people/zhangjh/" target="_blank" rel="noreferrer">Prof. Jiaheng Zhang</a>. My work spans zero-knowledge proofs, secure aggregation, distributed key generation, anonymous credentials and anonymous accountability — the building blocks of trustworthy AI and data systems.</p>
+        <p class="zh">我是新加坡国立大学计算机学院的博士后研究员，合作导师为<a href="https://www.comp.nus.edu.sg/cs/people/zhangjh/" target="_blank" rel="noreferrer">张嘉恒教授</a>。研究方向包括零知识证明、安全聚合、分布式密钥生成、匿名凭证与匿名可追责机制 —— 这些都是可信人工智能与可信数据系统的基础。</p>
+        <p class="en">Before NUS, I completed a combined M.S.–Ph.D. program in Cyberspace Security at Huazhong University of Science and Technology under Prof. Songfeng Lu and Prof. Jianxin Zhu, and my B.S. in Computer Science at SUSTech under Prof. Xin Yao.</p>
+        <p class="zh">此前，我在华中科技大学网络空间安全专业硕博连读并获得博士学位，师从路松峰教授与朱建新教授；本科毕业于南方科技大学计算机科学与技术专业，师从姚新教授。</p>
+      </div>
+      <div>
+        <h3 style="margin-bottom:16px"><span class="en">Experience</span><span class="zh">经历</span></h3>
+        <ol class="timeline">
+          <li class="now"><time>2026 –</time><div><span class="en">Research Fellow</span><span class="zh">博士后研究员</span><small><span class="en">National University of Singapore</span><span class="zh">新加坡国立大学 · 计算机学院</span></small></div></li>
+          <li><time>2020 – 26</time><div><span class="en">M.S.–Ph.D. (combined), Cyberspace Security</span><span class="zh">硕博连读 · 网络空间安全</span><small><span class="en">Huazhong Univ. of Science &amp; Technology</span><span class="zh">华中科技大学</span></small></div></li>
+          <li><time>2016 – 20</time><div><span class="en">B.S., Computer Science</span><span class="zh">学士 · 计算机科学与技术</span><small><span class="en">Southern Univ. of Science &amp; Technology</span><span class="zh">南方科技大学</span></small></div></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="values">
+      <div class="value">
+        <div class="k"><span class="en">Leading</span><span class="zh">主持</span></div>
+        <h3><span class="en">Industry-facing research</span><span class="zh">面向产业的研究</span></h3>
+        <p><span class="en">Led projects with Huawei and Qi-Anxin, turning research questions from industry into working systems.</span><span class="zh">主持与华为、奇安信合作的项目，把产业界的真实问题做成可用的系统。</span></p>
+      </div>
+      <div class="value">
+        <div class="k"><span class="en">Mentoring</span><span class="zh">指导</span></div>
+        <h3><span class="en">Mentoring Ph.D. &amp; master's students</span><span class="zh">指导博士、硕士研究生</span></h3>
+        <p><span class="en">I mentor Ph.D. and master's students in their research; many of our papers are co-first-authored, and I've led student teams on three industry problems from DiDi and Topsec.</span><span class="zh">指导多名博士、硕士研究生开展研究，多篇论文与所指导的同学共同第一作者；带领学生团队完成滴滴、天融信出题的 3 项产业课题。</span></p>
+      </div>
+      <div class="value">
+        <div class="k"><span class="en">Serving</span><span class="zh">服务</span></div>
+        <h3><span class="en">Giving back to the community</span><span class="zh">回馈学术社区</span></h3>
+        <p><span class="en">Program Committee for USENIX Security 2027; reviewer for IEEE TIFS, TDSC, JSAC and WWW.</span><span class="zh">担任 USENIX Security 2027 程序委员，并为 IEEE TIFS、TDSC、JSAC、WWW 等审稿。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section id="news">
+    <div class="sec-head"><span class="sec-num">02</span><h2><span class="en">News</span><span class="zh">动态</span></h2></div>
+    <div class="news">
+      <div>
+        <h4 style="margin-top:0"><span class="en">Featured work under review</span><span class="zh">在投代表作</span> <span class="h4-note"><span class="en">· all first-authored, all built on ZKP</span><span class="zh">· 均为第一作者，均基于零知识证明</span></span></h4>
+        <ol class="list feat">
+          <li><div><span class="t">ProofOut: Did Your Data Really Stay Out of LLM Training?</span><div class="m"><span class="en">Proves that an LLM's opt-out really took effect — your data stayed out of training.</span><span class="zh">证明大模型的 Opt-Out 确实生效：你的数据真的没有被拿去训练。</span></div></div></li>
+          <li><div><span class="t">ZeroM: Verifying Memory-Off in LLMs with Zero-Knowledge Proofs</span><div class="m"><span class="en">Proves that an LLM's memory really is switched off.</span><span class="zh">证明大模型的记忆（Memory）功能确实已经关闭。</span></div></div></li>
+          <li><div><a class="t" href="https://eprint.iacr.org/2026/2706" target="_blank" rel="noreferrer">Anamorphic Proofs of Knowledge from Prover Randomness</a><div class="m"><span class="en">Brings anamorphic cryptography to ZKP: a hidden channel carried by the prover's randomness.</span><span class="zh">将 anamorphic 密码学引入零知识证明，借证明者的随机性传递隐蔽信息。</span></div></div></li>
+          <li><div><span class="t">VeilCall: Private Regex Enforcement for Web Agent Tool Calls</span><div class="m"><span class="en">Checks that an agent's encrypted tool-call inputs are legitimate, without seeing them.</span><span class="zh">对 Agent 工具调用的密文输入做合法性检查，全程不看明文。</span></div></div></li>
+          <li><div><span class="t">zkRule: Inspecting Encrypted Web Files without Seeing Them</span><div class="m"><span class="en">Audits data in encrypted file systems without decrypting it.</span><span class="zh">对加密文件系统中的数据进行合规审查，无需解密。</span></div></div></li>
+        </ol>
+      </div>
+      <div>
+        <h4 style="margin-top:0"><span class="en">Recently</span><span class="zh">近期</span></h4>
+        <ul class="recent">
+          <li><time>2026</time><span><span class="en">Joined the Program Committee of USENIX Security 2027.</span><span class="zh">担任 USENIX Security 2027 程序委员会委员。</span></span></li>
+          <li><time>2026</time><span><span class="en">A3DKG accepted to NDSS 2027.</span><span class="zh">A3DKG 被 NDSS 2027 录用。</span></span></li>
+          <li><time>2026</time><span><span class="en">Joined NUS School of Computing as a Research Fellow.</span><span class="zh">加入新加坡国立大学计算机学院任博士后研究员。</span></span></li>
+          <li><time>2025</time><span><span class="en">Selected for the CAST Young Talent Support Program (Ph.D. track, first cohort).</span><span class="zh">入选首届中国科协青年人才托举工程博士生专项计划。</span></span></li>
+        </ul>
+
+        <details class="more">
+          <summary><span class="en">All papers under review</span><span class="zh">其余在投论文</span> <span class="n">17</span></summary>
+          <ul class="list">
+            <li><div><span class="t">HeirShift: Private and Updatable Authorization for Digital Inheritance</span></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">Docket: Server Accountability for Input-Validated Secure Aggregation</span></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">Janus: Anamorphic Watermarking for Covert Forensics in Large Language Models</span></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">AUDITPIR: How Can a Third Party Audit a PIR Query It Is Not Allowed to See?</span></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">SzFL: Secure Zero-Knowledge Verification for Federated Learning</span><div class="m"><b>Zhi Lu</b>, Renfei Shen, Hewang Nie, Fang Liu, Songfeng Lu</div></div><div class="r"><span class="yr"><span class="en">First author</span><span class="zh">第一作者</span></span></div></li>
+            <li><div><span class="t">Real-World Anchored Watermarking with Lattice-Based Aggregation in Federated Learning</span></div><div class="r"><span class="yr"><span class="en">Co-first author</span><span class="zh">共同第一作者</span></span></div></li>
+            <li><div><span class="t">Signature-free Lattice-Based Asynchronous Distributed Key Generation without PKI Setup</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
+            <li><div><span class="t">PQADKG: Post-Quantum Asynchronous Distributed Key Generation</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
+            <li><div><span class="t">Asynchronous Distributed Key Generation with Flexible Threshold and Batched Key Derivation</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
+            <li><div><span class="t">A Novel Privacy-Preserving Support Vector Machine Inference Method without a Trusted Third Party</span></div><div class="r"><span class="yr"><span class="en">Second author</span><span class="zh">第二作者</span></span></div></li>
+            <li><div><span class="t">A Blockchain-Based Scalable Verification and Distributed Storage Architecture for Dynamic Data Sharing in Industrial Systems</span></div><div class="r"><span class="yr"><span class="en">Third author</span><span class="zh">第三作者</span></span></div></li>
+            <li><div><span class="t">Communication-Efficient Adaptive Federated Learning with Maximum Stability</span></div><div class="r"><span class="yr"><span class="en">Third author</span><span class="zh">第三作者</span></span></div></li>
+            <li><div><span class="t">PoRn: A Secure, Resilient, and Energy-Efficient Blockchain Consensus for Large-Scale Distributed and Industrial IoT Systems</span></div><div class="r"><span class="yr"><span class="en">Third author</span><span class="zh">第三作者</span></span></div></li>
+            <li><div><span class="t">QSVSimplePir: Verifying the Query Structure of Medical Private Information Retrieval</span></div><div class="r"><span class="yr"><span class="en">Third author</span><span class="zh">第三作者</span></span></div></li>
+            <li><div><span class="t">Privacy-Preserving Medical Insurance Claim Verification Scheme</span></div><div class="r"><span class="yr"><span class="en">Fourth author</span><span class="zh">第四作者</span></span></div></li>
+            <li><div><span class="t">Privacy-Preserving Federated Learning in the Gradient Lock</span></div><div class="r"><span class="yr"><span class="en">Fifth author</span><span class="zh">第五作者</span></span></div></li>
+            <li><div><span class="t">Coherent Semantic Watermarking: Model-Auditable Geometric Ownership Verification for Multimodal Large Language Models</span></div><div class="r"><span class="yr"><span class="en">Author</span><span class="zh">作者</span></span></div></li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Publications -->
+  <section id="publications">
+    <div class="sec-head"><span class="sec-num">03</span><h2><span class="en">Selected Papers</span><span class="zh">代表论文</span></h2><span class="sec-note"><span class="en">* equal contribution</span><span class="zh">* 共同第一作者</span></span></div>
+    <ol class="pubs">
+      <li class="pub">
+        <div class="venue">NDSS 2027<br><span class="tier a">CCF-A</span></div>
+        <div><h3>A3DKG: Anonymous and Accountable Asynchronous Distributed Key Generation</h3><div class="authors"><b>Zhi Lu</b>, Renfei Shen, Fang Liu, Songfeng Lu</div></div>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
+      </li>
+      <li class="pub">
+        <div class="venue">CCS 2025<br><span class="tier a">CCF-A</span></div>
+        <div><h3>LZKSA: Lattice-Based Special Zero-Knowledge Proofs for Secure Aggregation's Input Verification</h3><div class="authors"><b>Zhi Lu</b>, Songfeng Lu</div></div>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
+      </li>
+      <li class="pub">
+        <div class="venue">NDSS 2026<br><span class="tier a">CCF-A</span></div>
+        <div><h3>WhiteCloak: How to Hold Anonymous Malicious Clients Accountable in Secure Aggregation?</h3><div class="authors"><b>Zhi Lu</b>, Yongquan Cui, Songfeng Lu</div></div>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
+      </li>
+      <li class="pub">
+        <div class="venue">ICCV 2025<br><span class="tier a">CCF-A</span></div>
+        <div><h3>FLSeg: Enhancing Privacy and Robustness in Federated Learning under Heterogeneous Data via Model Segmentation</h3><div class="authors">Zichun Su*, <b>Zhi Lu*</b>, Yutong Wu, Renfei Shen, Songfeng Lu</div></div>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
+      </li>
+      <li class="pub">
+        <div class="venue">IEEE TIFS 2024<br><span class="tier a">CCF-A</span></div>
+        <div><h3>Split Aggregation: Lightweight Privacy-Preserving Federated Learning Resistant to Byzantine Attacks</h3><div class="authors"><b>Zhi Lu</b>, Songfeng Lu, Yongquan Cui, Xueming Tang, Junjun Wu</div></div>
+        <a class="go" data-s><span class="en">Paper</span><span class="zh">论文</span> ↗</a>
+      </li>
+      <li class="pub zh">
+        <div class="venue">计算机学报 2026<br><span class="tier t1">T1</span></div>
+        <div><h3>融合零信任与零知识证明的匿名身份认证</h3><div class="authors"><b>路直</b>，沈任飞，聂何望，骆婷，路松峰</div></div>
+        <a class="go" data-s="Anonymous Identity Authentication Integrating Zero Trust and Zero-Knowledge Proofs">论文 ↗</a>
+      </li>
+      <li class="pub zh">
+        <div class="venue">中国科学：信息科学 2026<br><span class="tier t1">T1</span></div>
+        <div><h3>HINT：胁迫下无需重投的隐藏意图投票系统</h3><div class="authors"><b>路直</b>，沈任飞，路松峰</div></div>
+        <a class="go" data-s="HINT: Hidden-Intent Voting without Revoting under Coercion">论文 ↗</a>
+      </li>
+    </ol>
+
+    <details class="more">
+      <summary><span class="en">All other publications</span><span class="zh">全部其他论文</span> <span class="n"><span class="en">23</span><span class="zh">21</span></span></summary>
+      <ul class="list">
+        <li class="en"><div><a class="t" data-s>Anonymous Identity Authentication Integrating Zero Trust and Zero-Knowledge Proofs</a><div class="m"><b>Zhi Lu</b>, Renfei Shen, Hewang Nie, Ting Luo, Songfeng Lu · Chinese Journal of Computers</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li class="en"><div><a class="t" data-s>HINT: Hidden-Intent Voting without Revoting under Coercion</a><div class="m"><b>Zhi Lu</b>, Renfei Shen, Songfeng Lu · SCIENCE CHINA Information Sciences</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Asynchronous Random Committee Election for Preprocessing in Asynchronous Distributed Key Generation</a><div class="m">Renfei Shen*, <b>Zhi Lu*</b>, Fang Liu, Songfeng Lu · IEEE TNSM</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Robust and Verifiable Privacy Federated Learning</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu, Xueming Tang, Junjun Wu · IEEE TAI</div></div><div class="r"><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>Lightweight Byzantine-Robust and Privacy-Preserving Federated Learning</a><div class="m"><b>Zhi Lu</b>, Songfeng Lu, Yongquan Cui, Junjun Wu, Hewang Nie, Jue Xiao, Zepu Yi · Euro-Par</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>α-SAV: Generalized Weighted Input Verification for Secure Aggregation in Federated Learning</a><div class="m"><b>Zhi Lu</b>, Yuhao Long, Qirui Zhou, Mengyuan Zou, Wenjie Cai, Songfeng Lu · ICME</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>RIDE: Robust and Decentralized Federated Learning with Input Validation</a><div class="m"><b>Zhi Lu</b>, Mengyuan Zou, Samir M. Umran, Yuhao Long, Songfeng Lu, Junjun Wu, Mu Wang · ICME</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>Adaptive Differential Privacy via Gradient Components in Medical Federated Learning</a><div class="m">Zechen Yu*, <b>Zhi Lu*</b>, Songfeng Lu, Yongquan Cui, Xueming Tang, Junjun Wu · BIBM</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>Split Learning Optimized For The Medical Field: Reducing Communication Overhead</a><div class="m">Shuai Guo*, <b>Zhi Lu*</b>, Songfeng Lu, Yongquan Cui, Xueming Tang, Junjun Wu · BIBM</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>Bio-OFL: Biomedical Privacy and Auditable One-shot Federated Learning</a><div class="m">Zhe Dong*, <b>Zhi Lu*</b>, Yuanqing Feng, Shuai Guo, Zilong Wang, Yutong Wu, Songfeng Lu · BIBM</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>VSDA: Privacy-Preserving Verifiable Secure Distributed Aggregation for Multi-Center Clinical and Genomic Data</a><div class="m">Zhe Dong*, <b>Zhi Lu*</b>, Renfei Shen, Hewang Nie, Jue Xiao, Junming Li, Songfeng Lu · BIBM</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>FLAT: An Efficient Federated Learning Scheme with Adaptive Topology and Secure Aggregation</a><div class="m">Yuanqing Feng, Tao Bai, <b>Zhi Lu</b>, Xueming Tang, Songfeng Lu · IEEE TAI</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Practical and Robust Privacy-Preserving K-means Clustering Protocols with GPU Acceleration</a><div class="m">Tao Bai, Yuanqing Feng, <b>Zhi Lu</b>, Xueming Tang, Songfeng Lu, Yongquan Cui · IEEE TETC</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Delete but Not Gone: Reactivation of Neural Network Watermarks</a><div class="m">Hewang Nie, Jue Xiao, <b>Zhi Lu</b>, Renfei Shen, Songfeng Lu · ACM TIST</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>WINK: A Semi-honest Secure Multi-party Computation Framework with Efficient Comparison Protocol</a><div class="m">Yuanqing Feng, Tao Bai, <b>Zhi Lu</b>, Junjun Wu, Xueming Tang, Songfeng Lu · SRDS</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>Watermarking for Model Ownership Verification: Invisible at Deployment, Activated by Updates</a><div class="m">Hewang Nie, Jue Xiao, <b>Zhi Lu</b>, Renfei Shen, Chunqiang Yu, Zhenjun Tang · ACM TOPS</div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>FAIR-MPC: Secure and Auditable SMPC for Anonymous Financial Collaboration</a><div class="m">Tao Bai, Yuanqing Feng, <b>Zhi Lu</b>, Songfeng Lu · ICDF2C</div></div><div class="r"><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>FedDiT: Federated Learning by Distillation Token Enhanced Vision Transformer</a><div class="m">Jue Xiao, Zepu Yi, Hewang Nie, <b>Zhi Lu</b>, Xueming Tang, Songfeng Lu, Zhiguo Huang, Runqing Zhang · ICASSP</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2025</span></div></li>
+        <li><div><a class="t" data-s>VeriChroma: Ownership Verification for Federated Models via RGB Filters</a><div class="m">Hewang Nie, Songfeng Lu, Mu Wang, Jue Xiao, <b>Zhi Lu</b>, Zepu Yi · Euro-Par</div></div><div class="r"><span class="tier">CCF-B</span><span class="yr">2024</span></div></li>
+        <li><div><a class="t" data-s>A PUF Based Audio Fingerprint Based for Device Authentication and Tamper Location</a><div class="m"><b>Zhi Lu</b>, Haochen Dou, Songfeng Lu, Xueming Tang, Junjun Wu, Samir Mohammed Umran · ICDF2C</div></div><div class="r"><span class="yr">2023</span></div></li>
+        <li><div><a class="t" data-s>Application Research of Vertical Federated Learning Technology in Banking Risk Control Model Strategy</a><div class="m">Yong Luo, <b>Zhi Lu</b>, Xiaofei Yin, Songfeng Lu, Yiting Weng · IEEE ISPA</div></div><div class="r"><span class="tier">CCF-C</span><span class="yr">2023</span></div></li>
+        <li><div><a class="t" data-s="A Survey on Asynchronous Distributed Key Generation Technology"><span class="en">A Survey on Asynchronous Distributed Key Generation Technology</span><span class="zh">异步分布式密钥生成技术综述</span></a><div class="m">Renfei Shen, Fang Liu, <b>Zhi Lu</b>, Songfeng Lu · <span class="en">Journal of Frontiers of Computer Science and Technology</span><span class="zh">计算机科学与探索</span></div></div><div class="r"><span class="yr">2026</span></div></li>
+        <li><div><a class="t" data-s>Secure and Privacy-preserving Data-sharing Framework based on Blockchain Technology for Al-Najaf/Iraq Oil Refinery</a><div class="m">Samir M. Umran, Songfeng Lu, Zaid Ameen Abduljabbar, <b>Zhi Lu</b>, Bingyan Feng, Lu Zheng · IEEE SmartWorld</div></div><div class="r"><span class="yr">2022</span></div></li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="sec-head"><span class="sec-num">04</span><h2><span class="en">Selected Projects</span><span class="zh">代表项目</span></h2><span class="sec-note"><span class="en">All applied for and led by me as the applicant</span><span class="zh">均由本人作为申报人申请并主持</span></span></div>
+    <div class="grid">
+      <article class="card">
+        <span class="tag"><span class="en">Applicant · PI</span><span class="zh">申报人 · 主持</span></span>
+        <h3><span class="en">CAST Young Talent Support Program — Ph.D. Track</span><span class="zh">中国科协青年人才托举工程 · 博士生专项</span></h3>
+        <div class="hl"><span class="en">First cohort · ~3,000 selected nationwide</span><span class="zh">首届 · 全国约 3,000 人入选</span></div>
+        <p><span class="en">Supported by the China Association for Science and Technology and the China Computer Federation.</span><span class="zh">由中国科学技术协会与中国计算机学会支持。</span></p>
+      </article>
+      <article class="card">
+        <span class="tag"><span class="en">Applicant · PI</span><span class="zh">申报人 · 主持</span></span>
+        <h3><span class="en">HUST Graduate Innovation Fund</span><span class="zh">华中科技大学研究生创新基金项目</span></h3>
+        <p><span class="en">University-funded research on security, privacy and trustworthy systems.</span><span class="zh">校级研究生创新基金，支持安全、隐私与可信系统方向研究。</span></p>
+      </article>
+      <article class="card">
+        <span class="tag"><span class="en">Applicant · PI · with Huawei</span><span class="zh">申报人 · 主持 · 与华为合作</span></span>
+        <h3><span class="en">Privacy-aware fuzzy vector matching</span><span class="zh">隐私保护的模糊向量匹配</span></h3>
+        <p><span class="en">Cybersecurity Student Innovation Funding Program, Phase III — matching data without exposing it.</span><span class="zh">网络安全学院学生创新资助计划第三期，在不暴露数据的前提下完成匹配。</span></p>
+      </article>
+      <article class="card">
+        <span class="tag"><span class="en">Applicant · PI · with Qi-Anxin</span><span class="zh">申报人 · 主持 · 与奇安信合作</span></span>
+        <h3><span class="en">Industrial-control protocol simulator</span><span class="zh">工业控制协议仿真器</span></h3>
+        <p><span class="en">Phase I of the program led by the Cyberspace Administration of China with the Cybersecurity Association of China.</span><span class="zh">中央网信办牵头、中国网络空间安全协会组织的创新资助计划第一期。</span></p>
+      </article>
+    </div>
+    <details class="more">
+      <summary><span class="en">More projects</span><span class="zh">更多项目</span> <span class="n">4</span></summary>
+      <ul class="list">
+        <li><div><span class="t"><span class="en">Key technologies for post-quantum secure distributed key infrastructure</span><span class="zh">面向后量子安全的分布式密钥基础设施关键技术研究</span></span><div class="m"><span class="en">Innovation Funding Program, Cyberspace Administration of China</span><span class="zh">中央网信办创新资助计划</span></div></div><div class="r"><span class="tier"><span class="en">Participant · advisor-led</span><span class="zh">参与 · 导师项目</span></span></div></li>
+        <li><div><span class="t"><span class="en">Identity and access management for AI agents in cybersecurity — topic issued by Topsec</span><span class="zh">面向网络安全领域 AI 智能体的身份和访问管理研究 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase IV</span><span class="zh">网络安全学院学生创新资助计划第四期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor · student team</span><span class="zh">指导 · 学生团队</span></span></div></li>
+        <li><div><span class="t"><span class="en">GPS positioning — topic issued by DiDi</span><span class="zh">GPS 定位 —— 滴滴出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase II</span><span class="zh">网络安全学院学生创新资助计划第二期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor · student team</span><span class="zh">指导 · 学生团队</span></span></div></li>
+        <li><div><span class="t"><span class="en">AI-assisted data classification &amp; grading — topic issued by Topsec</span><span class="zh">人工智能辅助数据自动分类分级 —— 天融信出题</span></span><div class="m"><span class="en">Cybersecurity Student Innovation Funding Program, Phase III</span><span class="zh">网络安全学院学生创新资助计划第三期</span></div></div><div class="r"><span class="tier"><span class="en">Mentor · student team</span><span class="zh">指导 · 学生团队</span></span></div></li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- Honors -->
+  <section id="honors">
+    <div class="sec-head"><span class="sec-num">05</span><h2><span class="en">Honors</span><span class="zh">代表荣誉</span></h2></div>
+    <ul class="honors">
+      <li class="honor">
+        <div class="badge">12<small><span class="en">awardees nationwide</span><span class="zh">全国仅 12 人获评</span></small></div>
+        <div><h3><span class="en">Outstanding Student, Cybersecurity Student Innovation Funding Program</span><span class="zh">网络安全学院学生创新资助计划 · 优秀学生</span></h3><div class="by"><span class="en">Led by the Cyberspace Administration of China · Cybersecurity Association of China</span><span class="zh">中央网信办牵头 · 中国网络空间安全协会</span> · <time>2025</time></div></div>
+      </li>
+      <li class="honor">
+        <div class="badge">~3,000<small><span class="en">first cohort, nationwide</span><span class="zh">首届 · 全国入选人数</span></small></div>
+        <div><h3><span class="en">CAST Young Talent Support Program — Ph.D. Track</span><span class="zh">中国科协青年人才托举工程 · 博士生专项计划</span></h3><div class="by"><span class="en">China Association for Science and Technology · CCF</span><span class="zh">中国科学技术协会 · 中国计算机学会</span> · <time>2025</time></div></div>
+      </li>
+      <li class="honor">
+        <div class="badge">×2<small><span class="en">2023 &amp; 2025</span><span class="zh">2023、2025 年</span></small></div>
+        <div><h3><span class="en">National Scholarship for Doctoral Students</span><span class="zh">博士研究生国家奖学金</span></h3><div class="by"><span class="en">Huazhong University of Science and Technology</span><span class="zh">华中科技大学</span></div></div>
+      </li>
+      <li class="honor">
+        <div class="badge">2026<small><span class="en">Ph.D. graduation</span><span class="zh">博士毕业</span></small></div>
+        <div><h3><span class="en">Outstanding Graduate &amp; Outstanding Doctoral Dissertation</span><span class="zh">优秀毕业生 · 优秀博士学位论文</span></h3><div class="by"><span class="en">Huazhong University of Science and Technology</span><span class="zh">华中科技大学</span></div></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Impact -->
+  <section id="impact">
+    <div class="sec-head"><span class="sec-num">06</span><h2><span class="en">Beyond Papers</span><span class="zh">学术成果</span></h2></div>
+    <div class="grid">
+      <article class="card">
+        <span class="tag"><span class="en">Standards</span><span class="zh">标准</span></span>
+        <h3><span class="en">8 national &amp; group standards</span><span class="zh">参与制定国家 / 团体标准 8 项</span></h3>
+        <p><span class="en">2 national standards published, 3 under review, plus 3 group standards — on digital twins, smart factories and trusted CNC systems.</span><span class="zh">已发布国家标准 2 项、审查中 3 项，团体标准 3 项，涉及数字孪生、智能工厂与数控系统可信防护。</span></p>
+      </article>
+      <article class="card">
+        <span class="tag"><span class="en">Patents</span><span class="zh">专利</span></span>
+        <h3><span class="en">11 invention patents, 2 granted</span><span class="zh">发明专利 11 项，已授权 2 项</span></h3>
+        <p><span class="en">On industrial-control security, cryptographic infrastructure for CNC systems, aggregation verification and biomedical privacy.</span><span class="zh">涵盖工业控制安全、数控系统密码基础设施、聚合验证与生物医学隐私。</span></p>
+      </article>
+    </div>
+
+    <details class="more">
+      <summary><span class="en">All standards</span><span class="zh">全部标准</span> <span class="n">8</span></summary>
+      <ul class="list">
+        <li><div><span class="t"><span class="en">Information technology — Digital twin — Part 1: General requirements</span><span class="zh">信息技术 数字孪生 第1部分：通用要求</span></span><div class="m">GB/T 43441.1-2023</div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Interconnection interface specification of CNC machine tools in smart factories</span><span class="zh">智能工厂数控机床互联接口规范</span></span><div class="m">GB/T 41970-2022</div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Trusted protection of machine-tool CNC systems, Part 1: Testing requirements</span><span class="zh">机床数控系统可信防护 第1部分：检测要求</span></span><div class="m"><span class="en">Under review</span><span class="zh">审查中</span></div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Trusted protection of machine-tool CNC systems, Part 2: Testing requirements</span><span class="zh">机床数控系统可信防护 第2部分：检测要求</span></span><div class="m"><span class="en">Under review</span><span class="zh">审查中</span></div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Trusted protection of machine-tool CNC systems, Part 3: Testing requirements</span><span class="zh">机床数控系统可信防护 第3部分：检测要求</span></span><div class="m"><span class="en">Under review</span><span class="zh">审查中</span></div></div><div class="r"><span class="tier t1"><span class="en">National</span><span class="zh">国家标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Security and trusted architecture specification for open CNC systems</span><span class="zh">开放式数控系统安全可信架构规范</span></span><div class="m">T/ZTCIA 006-2025</div></div><div class="r"><span class="tier"><span class="en">Group</span><span class="zh">团体标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">General security and trusted technical requirements for CNC-equipment interconnection</span><span class="zh">数控装备互联互通安全可信通用技术要求</span></span><div class="m">T/ZTCIA 007-2025</div></div><div class="r"><span class="tier"><span class="en">Group</span><span class="zh">团体标准</span></span></div></li>
+        <li><div><span class="t"><span class="en">Security and trusted testing and verification specification for open CNC systems</span><span class="zh">开放式数控系统安全可信测试验证规范</span></span><div class="m">T/ZTCIA 008-2025</div></div><div class="r"><span class="tier"><span class="en">Group</span><span class="zh">团体标准</span></span></div></li>
+      </ul>
+    </details>
+
+    <details class="more">
+      <summary><span class="en">All patents</span><span class="zh">全部专利</span> <span class="n">11</span></summary>
+      <ul class="list">
+        <li><div><span class="t"><span class="en">A data adapter and data adaptation method</span><span class="zh">一种数据适配器及数据适配方法</span></span><div class="m">CN113609047B</div></div><div class="r"><span class="tier t1"><span class="en">Granted</span><span class="zh">已授权</span></span></div></li>
+        <li><div><span class="t"><span class="en">Information extraction method, system, server, and storage medium</span><span class="zh">信息抽取方法、系统、服务器及存储介质</span></span><div class="m">CN111382571B</div></div><div class="r"><span class="tier t1"><span class="en">Granted</span><span class="zh">已授权</span></span></div></li>
+        <li><div><span class="t"><span class="en">A domestic-cryptography-based industrial-control data security protection system and method</span><span class="zh">一种基于国密算法的工业控制数据安全防护系统及方法</span></span><div class="m">CN118133298A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">A stream encryption machine for CNC systems and working method</span><span class="zh">一种面向数控系统的流加密机及其工作方法</span></span><div class="m">CN116684076A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Cryptographic infrastructure and control method for CNC systems based on domestic cryptographic algorithms</span><span class="zh">基于国密算法的数控系统密码基础设施及控制方法</span></span><div class="m">CN116318910A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Access-control-agent-based access control system for CNC systems and working process</span><span class="zh">基于访问控制代理的数控系统访问控制系统及工作流程</span></span><div class="m">CN115842648A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">A lightweight encryption method for industrial-control network transmission</span><span class="zh">一种面向工业控制网络传输的轻量级加密方法</span></span><div class="m">CN115801311A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Identity adapter and identity authentication system for CNC equipment based on identity adapters</span><span class="zh">身份适配器及基于身份适配器的数控设备身份认证系统</span></span><div class="m">CN115695042A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Aggregation verification method, apparatus, device, and storage medium for distributed data</span><span class="zh">分布式数据的聚合验证方法、装置、设备及存储介质</span></span><div class="m">CN120498696A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Intelligent recognition method, apparatus, device, and medium for electrical drawings</span><span class="zh">电气图纸智能识别方法、装置、设备及介质</span></span><div class="m">CN121505653A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+        <li><div><span class="t"><span class="en">Privacy-auditable one-shot federated learning method and apparatus for biomedical data</span><span class="zh">面向生物医学数据的隐私可审计一次性联邦学习方法及装置</span></span><div class="m">CN121814391A</div></div><div class="r"><span class="tier"><span class="en">Filed</span><span class="zh">申请</span></span></div></li>
+      </ul>
+    </details>
+
+    <details class="more">
+      <summary><span class="en">Academic service</span><span class="zh">学术服务</span></summary>
+      <ul class="list">
+        <li><div><span class="t"><span class="en">Program Committee</span><span class="zh">程序委员会委员</span></span><div class="m">USENIX Security 2027 · IEEE BIBM 2024–2026</div></div></li>
+        <li><div><span class="t"><span class="en">Workshop Co-Chair</span><span class="zh">研讨会联合主席</span></span><div class="m">IEEE BIBM Workshop — Smart Medicine and Privacy Protection Workshop: Challenges and Frontiers in Biomedical and Health Informatics</div></div></li>
+        <li><div><span class="t"><span class="en">Reviewer</span><span class="zh">审稿人</span></span><div class="m">IEEE TIFS, IEEE TDSC, IEEE JSAC, IEEE TAI, JDIM, WWW, IEEE BIBM, IEEE ICASSP, IEEE ICME</div></div></li>
+      </ul>
+    </details>
+  </section>
+
+  <footer id="contact">
+    <div>
+      <div class="big"><span class="en">Let's talk research.</span><span class="zh">欢迎交流与合作。</span></div>
+      <p class="invite"><span class="en">Students and researchers interested in zero-knowledge proofs or privacy computing are always welcome to reach out.</span><span class="zh">欢迎对零知识证明、隐私计算感兴趣的同学与研究者联系交流。</span></p>
+      <a href="mailto:zhilu@nus.edu.sg">zhilu@nus.edu.sg</a> · <a href="mailto:luzhi@ieee.org">luzhi@ieee.org</a> · <a href="https://scholar.google.com/citations?user=S-lmKsYAAAAJ" target="_blank" rel="noreferrer">Google Scholar</a> · <a href="https://orcid.org/0000-0002-5411-9854" target="_blank" rel="noreferrer">ORCID</a>
+    </div>
+    <div style="align-self:flex-end">© 2026 Zhi Lu · <span class="en">Singapore</span><span class="zh">新加坡</span></div>
+  </footer>
+</main>
+
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+  var body=document.body,btns=[].slice.call(document.querySelectorAll("[data-set-lang]"));
+  function setLang(l){body.dataset.lang=l;document.documentElement.lang=l==="zh"?"zh-CN":"en";
+    btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.setLang===l))});
+    try{localStorage.setItem("site-language",l)}catch(e){}}
+  btns.forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.setLang)})});
+  var saved=null;try{saved=localStorage.getItem("site-language")}catch(e){}
+  if(saved!=="en"&&saved!=="zh")saved=/^zh/i.test(navigator.language||"")?"zh":"en";
+  setLang(saved);
+
+  // Paper links: search Google Scholar by exact title
+  [].forEach.call(document.querySelectorAll("[data-s]"),function(a){
+    var q=a.getAttribute("data-s");
+    if(!q){var li=a.closest("li"),h=li&&li.querySelector("h3");q=(h&&a.classList.contains("go")?h:a).textContent.trim()}
+    a.href="https://scholar.google.com/scholar?q="+encodeURIComponent('"'+q+'"');
+    a.target="_blank";a.rel="noreferrer";
+  });
+
+  // Reveal blocks as they scroll into view, siblings slightly staggered
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Stats count up from 0 the first time they appear (final value is also set by timeout, in case frames are throttled)
+  function countUp(box){
+    if(reduce)return;
+    [].forEach.call(box.querySelectorAll(".stat b"),function(b){
+      var n=parseInt(b.textContent,10);if(!(n>1))return;
+      var t0=null;b.textContent="0";
+      function step(t){t0=t0||t;var p=Math.min((t-t0)/1200,1);b.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)}
+      requestAnimationFrame(step);setTimeout(function(){b.textContent=n},1500)})}
+  var pending=[].slice.call(document.querySelectorAll(".stats,.motto,.zk-show>.show,.sec-head,.about>div,.value,.news>div,.pub,.grid>.card,.honor,section>.more"));
+  pending.forEach(function(b){
+    var i=[].indexOf.call(b.parentNode.children,b);
+    b.style.transitionDelay=Math.min(i,4)*70+"ms";
+    b.classList.add("rv")});
+  function reveal(){
+    if(!pending.length)return;
+    var lim=innerHeight*.94;
+    pending=pending.filter(function(b){
+      var r=b.getBoundingClientRect();
+      if(r.top<lim||r.bottom<0){b.classList.add("in");if(b.classList.contains("stats")&&r.bottom>0)countUp(b);return false}
+      return true})}
+  addEventListener("scroll",reveal,{passive:true});
+  addEventListener("resize",reveal);
+  reveal();
+
+  var top=document.getElementById("top"),up=document.getElementById("totop");
+  addEventListener("scroll",function(){top.classList.toggle("scrolled",scrollY>8);up.classList.toggle("show",scrollY>innerHeight)},{passive:true});
+  up.addEventListener("click",function(){scrollTo({top:0,behavior:"smooth"})});
+
+  var links=[].slice.call(document.querySelectorAll(".links a"));
+  var map={};links.forEach(function(a){map[a.getAttribute("href").slice(1)]=a});
+  // Highlight the section whose top has passed 40% of the viewport (exactly one at a time)
+  var secs=Object.keys(map).map(function(id){return document.getElementById(id)}).filter(Boolean),cur=null;
+  function spy(){
+    var y=innerHeight*.4,hit=null;
+    secs.forEach(function(s){if(s.getBoundingClientRect().top<=y)hit=s});
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-2)hit=secs[secs.length-1];
+    var a=hit?map[hit.id]:null;if(a===cur)return;
+    links.forEach(function(l){l.classList.toggle("on",l===a)});cur=a;
+    // scroll only the nav strip; scrollIntoView would also drag the page back while the user scrolls
+    if(a){var c=a.parentNode;if(c.scrollWidth>c.clientWidth)c.scrollTo({left:a.offsetLeft-c.offsetLeft-(c.clientWidth-a.offsetWidth)/2,behavior:"smooth"})}}
+  addEventListener("scroll",spy,{passive:true});
+  spy();
+})();
+</script>
+</body>
+</html>

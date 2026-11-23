@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZKAudit · moderating encrypted content — Zhi Lu</title>
+<meta name="description" content="Alice sends Bob an end-to-end encrypted message or image. The auditor sees only the ciphertext and a zero-knowledge proof, and still decides whether the content matches a public rule. 审核方只凭密文和零知识证明判断内容是否违规。">
+<meta name="zkaudit-api" content="https://demo.lu-zhi.com">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b85c3c'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' font-weight='600' fill='%23faf9f5' text-anchor='middle'%3EZL%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&display=swap">
+<style>
+/* Tokens identical to lu-zhi.com/zkrule: terracotta = sender (Alice), steel blue = auditor, green = recipient (Bob). */
+:root{
+  --bg:#faf9f5;--surface:#ffffff;--sunk:#f3f0e8;--ink:#1f1e1c;--ink-2:#3a3732;--muted:#6f6a61;
+  --line:#e7e2d6;--line-2:#d3ccbc;
+  --p:#b85c3c;--p-soft:#f7e7de;--p-ink:#8f3f22;
+  --v:#3d6f8f;--v-soft:#e2edf4;--v-ink:#264e68;
+  --ok:#3f7d55;--ok-soft:#e3f0e6;--ok-ink:#2a5c3c;
+  --bad:#b4483f;--bad-soft:#f8e3e0;--bad-ink:#8c2f28;
+  --env:#ead9ae;--env-line:#b39457;
+  --serif-h:"Noto Serif SC","Songti SC","STSong","Source Han Serif SC",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#191816;--surface:#22211e;--sunk:#2a2925;--ink:#f1eee6;--ink-2:#d9d5cb;--muted:#a9a397;
+  --line:#34322d;--line-2:#4a463f;
+  --p:#e38c6b;--p-soft:#3a2a22;--p-ink:#f2b39b;
+  --v:#78a9c9;--v-soft:#22303a;--v-ink:#a9cde4;
+  --ok:#7cc093;--ok-soft:#21302a;--ok-ink:#a8dcb8;
+  --bad:#e5877e;--bad-soft:#3a2523;--bad-ink:#f2b0a9;
+  --env:#6b5a35;--env-line:#a8905a;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body[data-lang=zh]{line-height:1.85}
+body[data-lang=en]{--serif-h:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Noto Serif SC",serif}
+body[data-lang=en] .zh,body[data-lang=zh] .en{display:none!important}
+a{color:inherit;text-underline-offset:3px} a:hover{color:var(--p)}
+button,input{font:inherit;color:inherit}
+[hidden]{display:none!important}
+
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid var(--line)}
+.bar{max-width:1120px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:18px}
+.back{display:inline-flex;align-items:center;gap:8px;padding:8px 15px 8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap}
+.back:hover{border-color:var(--p)} .back svg{width:15px;height:15px}
+.brand{font:600 17px/1.2 var(--serif-h);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand i{font-style:normal;color:var(--muted);font-weight:500;margin-left:8px;font-size:14px}
+.lang{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:999px;padding:2px;flex:none}
+.lang button{border:0;background:none;color:var(--muted);font:600 12px var(--sans);padding:5px 10px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+
+.wrap{max-width:1120px;margin:0 auto;padding:40px 28px 80px}
+.kicker{font:600 13px/1 var(--sans);letter-spacing:.08em;color:var(--p);margin:0 0 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.chip{font:500 12.5px/1 var(--sans);letter-spacing:0;color:var(--muted);padding:5px 10px;border-radius:999px;background:var(--sunk)}
+h1{font:600 clamp(28px,4vw,40px)/1.3 var(--serif-h);margin:0 0 14px;max-width:24em}
+.lead{max-width:760px;color:var(--ink-2);font-size:17px;line-height:1.85;margin:0 0 28px}
+.lead b{color:var(--ink)}
+
+/* controls */
+.ctl{padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;margin:0 0 14px}
+.ctl-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 14px}
+.ctl-top .lbl{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 16px;cursor:pointer;font-size:13.5px}
+.seg button[aria-selected=true]{background:var(--ink);color:var(--bg)}
+.pics{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
+.pic{border:0;padding:0;background:var(--sunk);border-radius:14px;overflow:hidden;cursor:pointer;aspect-ratio:1;position:relative;outline:2px solid transparent;outline-offset:2px;transition:transform .2s,outline-color .2s}
+.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.pic:hover{transform:translateY(-2px)}
+.pic.on{outline-color:var(--p)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px}
+.txtin{width:100%;border:1px solid var(--line-2);border-radius:10px;padding:10px 12px;background:var(--bg);font-size:17px}
+.txtin:focus{outline:2px solid color-mix(in srgb,var(--p) 45%,transparent);border-color:var(--p)}
+.btn{border:0;border-radius:999px;padding:11px 24px;background:var(--p);color:#fff;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--p-ink)}
+.examples{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:12px 0 0;font-size:14px;color:var(--ink-2)}
+.ex{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 11px;font-size:13px;cursor:pointer}
+.ex:hover{border-color:var(--p);color:var(--p)}
+
+
+/* steps rail */
+.rail{display:flex;gap:6px;margin:0 0 18px;flex-wrap:wrap}
+.rail>span{flex:1 1 0;min-width:120px;padding:8px 10px;border-radius:10px;background:var(--sunk);font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center;transition:all .3s}
+.rail>span b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--line-2);font:600 11px var(--mono);flex:none}
+.rail>span.done{color:var(--ink-2)} .rail>span.done b{border-color:var(--p);color:var(--p)}
+.rail>span.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(40,30,20,.06),0 6px 18px -10px rgba(40,30,20,.3)}
+.rail>span.on b{background:var(--p);border-color:var(--p);color:#fff}
+
+/* scene */
+.scene{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 1px 2px rgba(40,30,20,.04),0 24px 48px -36px rgba(40,30,20,.4);margin:0 0 16px;
+  display:grid;grid-template-columns:minmax(0,1fr) 150px minmax(0,1fr);grid-template-rows:auto 48px auto;column-gap:0}
+.actor{border:1.2px solid var(--line-2);background:var(--sunk);border-radius:12px;padding:9px 14px 10px}
+.actor .nm{display:block;font:600 15px/1.3 var(--serif-h)}
+.actor .sub{display:block;font-size:11.5px;color:var(--muted);line-height:1.4}
+.actor.a{background:var(--p-soft);border-color:var(--p)}
+.actor.b{background:var(--ok-soft);border-color:var(--ok)}
+.actor.v{background:var(--v-soft);border-color:var(--v)}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.colA{grid-column:1;grid-row:1/4}
+.colV{grid-column:3;grid-row:1}
+.colB{grid-column:3;grid-row:3}
+.label{font-size:12.5px;color:var(--muted)}
+.content{min-height:120px;display:flex;align-items:flex-start}
+.colA .photo{width:260px;height:260px}
+.photo{width:184px;height:184px;border-radius:16px;object-fit:cover;display:block;border:1px solid var(--line);animation:fade .35s}
+.tiles{display:flex;flex-wrap:wrap;gap:4px;max-width:100%}
+.tiles span{min-width:22px;height:30px;padding:0 4px;border:1.2px solid var(--line-2);background:var(--surface);border-radius:4px;display:grid;place-items:center;font-weight:600;font-size:14px;transition:background .3s,border-color .3s,color .3s;animation:fade .3s backwards}
+.tiles span.sp{color:var(--muted);font-weight:400}
+.tiles span.hit{background:var(--bad-soft);border-color:var(--bad);color:var(--bad-ink)}
+.empty{width:184px;height:120px;border:1.2px dashed var(--line-2);border-radius:14px;display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center;padding:10px}
+.content .empty{width:100%;max-width:260px}
+
+/* middle: the envelope travels from Alice to the auditor */
+.lane{grid-column:2;grid-row:1;position:relative;align-self:start;height:120px;margin-top:6px}
+.lane::before{content:"";position:absolute;left:10px;right:10px;top:28px;border-top:1.4px solid var(--line-2)}
+.lane::after{content:"";position:absolute;right:8px;top:24px;border:4.5px solid transparent;border-left:7px solid var(--line-2)}
+.lane.on::before{border-top-color:var(--p);border-top-width:2px}
+.envl{position:absolute;left:0;top:10px;width:52px;height:36px;opacity:0;transition:left .8s cubic-bezier(.4,0,.2,1),opacity .3s;z-index:1}
+.envl.in{opacity:1}
+.envl.go{left:calc(100% - 52px)}
+.envl rect{fill:var(--env);stroke:var(--env-line);stroke-width:1.2}
+.envl path{fill:none;stroke:var(--env-line);stroke-width:1.2}
+.lane .cap-s{position:absolute;left:0;right:0;top:56px;text-align:center;font-size:11.5px;color:var(--muted);opacity:0;transition:opacity .3s}
+.lane .cap-s.in{opacity:1}
+.down{grid-column:3;grid-row:2;position:relative}
+.down::before{content:"";position:absolute;left:36px;top:6px;bottom:6px;border-left:1.4px solid var(--line-2)}
+.down::after{content:"";position:absolute;left:31.5px;bottom:2px;border:4.5px solid transparent;border-top:7px solid var(--line-2)}
+.down.ok::before{border-left:2px solid var(--ok)}
+.down.ok::after{border-top-color:var(--ok)}
+.down.no::before{border-left:2px dashed var(--bad)}
+
+/* auditor view */
+.sees{display:flex;gap:12px;align-items:center;min-height:62px}
+.sees svg{width:56px;height:40px;flex:none}
+.sees svg rect{fill:var(--env);stroke:var(--env-line);stroke-width:1.2}
+.sees svg path{fill:none;stroke:var(--env-line);stroke-width:1.2}
+.hex{font:11px/1.55 var(--mono);color:var(--muted);word-break:break-all;max-height:52px;overflow:hidden;animation:fade .3s}
+.sees canvas{width:44px;height:44px;border-radius:6px;image-rendering:pixelated;flex:none;animation:fade .3s}
+.rules{list-style:none;margin:0;padding:0;font-size:13.5px;color:var(--ink-2)}
+.rules li{display:flex;gap:8px;align-items:center;padding:2px 0;transition:color .25s}
+.rules li i{font-style:normal;width:14px;text-align:center;font-weight:700;color:var(--muted)}
+.rules li.hit{color:var(--bad-ink);font-weight:600}
+.rules li.hit i{color:var(--bad)}
+.rules li.pass i{color:var(--ok)}
+.check{display:flex;align-items:center;gap:14px;min-height:44px;flex-wrap:wrap}
+.check .t{font-size:13.5px;color:var(--ink-2)}
+.spin{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid var(--v);border-right-color:transparent;animation:rot .7s linear infinite;vertical-align:-2px;margin-right:6px}
+.stamp{font:700 16px/1 var(--serif-h);letter-spacing:.06em;padding:8px 14px;border:3px solid;border-radius:6px;transform:rotate(-4deg);animation:stamp .35s cubic-bezier(.2,.9,.3,1.3)}
+.stamp.ok{color:var(--ok);border-color:var(--ok)}
+.stamp.bad{color:var(--bad);border-color:var(--bad)}
+@keyframes stamp{from{opacity:0;transform:rotate(-4deg) scale(1.5)}to{opacity:1;transform:rotate(-4deg) scale(1)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* how it works: same visual language as the zkRule page */
+.how{margin:72px 0 0;padding-top:36px;border-top:1px solid var(--line)}
+.how h2{font:600 26px/1.3 var(--serif-h);margin:0 0 6px}
+.how-sub{color:var(--ink-2);margin:0 0 22px;max-width:46em}
+.stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px 18px}
+.stage.a{box-shadow:inset 4px 0 0 var(--p)}
+.stage.c{box-shadow:inset 4px 0 0 var(--line-2)}
+.stage.v{box-shadow:inset 4px 0 0 var(--v)}
+.stage svg{display:block;width:100%;height:auto;margin:2px 0 14px}
+.stage h3{font:600 16px/1.4 var(--serif-h);margin:0 0 4px;display:flex;gap:8px;align-items:center}
+.stage h3 b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--p);color:#fff;font:600 11px var(--mono)}
+.stage p{margin:0;font-size:14.5px;line-height:1.75;color:var(--ink-2)}
+.stage svg text{fill:var(--ink);font-family:var(--sans)}
+.stage .tl rect{fill:var(--surface);stroke:var(--line-2);stroke-width:1.2}
+.stage .tl rect.hot,.stage .cmp rect.hot{fill:var(--bad-soft);stroke:var(--bad)}
+.stage .tl text{font-weight:600;font-size:14px;text-anchor:middle;dominant-baseline:central}
+.stage .ev rect{fill:var(--env);stroke:var(--env-line);stroke-width:1.2}
+.stage .ev path{fill:none;stroke:var(--env-line);stroke-width:1.2}
+.stage .ar{fill:none;stroke:var(--muted);stroke-width:1.4}
+.stage .wr{fill:none;stroke:var(--line-2);stroke-width:1.2}
+.stage .wr.hotw{stroke:var(--bad);stroke-width:1.8}
+.stage .cmp rect{fill:var(--surface);stroke:var(--line-2);stroke-width:1.1}
+.stage .gate{fill:var(--bad-soft);stroke:var(--bad);stroke-width:1.3}
+.stage .gt{font:600 9px var(--mono);text-anchor:middle;dominant-baseline:central;fill:var(--bad-ink)}
+.stage .zk{fill:none;stroke:var(--line-2);stroke-width:1.2;stroke-dasharray:5 4}
+.stage .lb{font-size:10.5px;fill:var(--muted)}
+.stage .mo{font:600 11px var(--mono)}
+.stage .mo.c{text-anchor:middle;dominant-baseline:central}
+.stage .box{fill:var(--surface);stroke:var(--ink-2);stroke-width:1.2}
+.stage .box.okb{fill:var(--ok-soft);stroke:var(--ok)}
+.stage .aud{fill:var(--v-soft);stroke:var(--v);stroke-width:1.2}
+.stage .nm{font:600 14px var(--serif-h)}
+.stage .stp{fill:none;stroke:var(--bad);stroke-width:2.6}
+.stage .st{font:700 14px var(--serif-h);fill:var(--bad);text-anchor:middle;dominant-baseline:central;letter-spacing:.05em}
+.more{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2);text-decoration:none}
+.btn.ghost:hover{border-color:var(--p);color:var(--p);background:transparent}
+.cap{min-height:3.6em;margin:12px 4px 0;font-size:15.5px;line-height:1.8;color:var(--ink-2)}
+.cap b{color:var(--ink)}
+.real{margin:2px 4px 0;font-size:13px;color:var(--muted);min-height:1.5em}
+footer{max-width:1120px;margin:0 auto;padding:0 28px 48px;color:var(--muted);font-size:13px}
+footer p{margin:0 0 4px}
+.credits a{color:inherit}
+
+@media (max-width:860px){
+  .bar,.wrap,footer{padding-left:16px;padding-right:16px}
+  .brand i{display:none}
+  .pics{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .stages{grid-template-columns:minmax(0,1fr)}
+  .rail>span{min-width:0}
+  .scene{grid-template-columns:minmax(0,1fr);grid-template-rows:none;padding:20px}
+  .colA,.colV,.colB,.lane,.down{grid-column:1;grid-row:auto}
+  .lane{height:88px;margin:4px 0}
+  .lane::before{left:36px;right:auto;top:4px;bottom:4px;border-top:0;border-left:1.4px solid var(--line-2)}
+  .lane.on::before{border-left:2px solid var(--p)}
+  .lane::after{left:31.5px;right:auto;top:auto;bottom:0;border:4.5px solid transparent;border-top:7px solid var(--line-2)}
+  .envl{left:60px;top:0;transition:top .8s cubic-bezier(.4,0,.2,1),opacity .3s}
+  .envl.go{left:60px;top:48px}
+  .lane .cap-s{left:124px;top:30px;text-align:left}
+  .down{height:48px}
+  .photo,.colA .photo{width:180px;height:180px}
+}
+@media (max-width:420px){.row{grid-template-columns:minmax(0,1fr)}.btn{justify-self:start}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* live run */
+.notice{font-size:13px;line-height:1.7;color:var(--muted);margin:-2px 2px 18px;max-width:62em}
+.notice b{color:var(--ink-2);font-weight:600}
+.up{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);cursor:pointer;border:1px dashed var(--line-2);border-radius:999px;padding:5px 14px;margin:12px 0 0;background:transparent}
+.up:hover{border-color:var(--p);color:var(--p)}
+.up input{display:none}
+.up.on{border-style:solid;border-color:var(--p);color:var(--p)}
+.submit{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:16px 0 0;padding:14px 0 0;border-top:1px solid var(--line)}
+.submit .btn{padding:11px 30px}
+.submit .btn:disabled{cursor:not-allowed}
+.submit .why{flex:1 1 280px;font-size:13px;line-height:1.6;color:var(--muted)}
+.submit .why b{color:var(--ink-2);font-weight:600}
+.submit .state{display:block;color:var(--ink-2);font-weight:600}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 14px;margin:0;font-size:12.5px}
+.kv dt{color:var(--muted);white-space:nowrap}
+.kv dd{margin:0;font:11.5px/1.55 var(--mono);color:var(--ink-2);word-break:break-all}
+.kv dd.txt,.kv dd.good,.kv dd.bad{word-break:normal}
+.kv dd.txt{font:12.5px/1.55 var(--sans)}
+.kv dd.good{font:600 12.5px/1.55 var(--sans);color:var(--ok-ink)}
+.kv dd.bad{font:600 12.5px/1.55 var(--sans);color:var(--bad-ink)}
+.meta{font-size:12.5px;color:var(--muted);margin:0}
+.meta.good{color:var(--ok-ink);font-weight:600}
+.meta.bad{color:var(--bad-ink);font-weight:600}
+.times{margin:2px 4px 0;font-size:13px;color:var(--muted);min-height:1.5em}
+.times b{color:var(--ink-2);font-weight:600}
+.btn:disabled,.pic:disabled,.ex:disabled{opacity:.5;cursor:wait}
+@media (max-width:860px){.kv{grid-template-columns:minmax(0,1fr)}.kv dt{margin-top:4px}}
+</style>
+</head>
+<body data-lang="en">
+<header class="top"><div class="bar">
+  <a class="back" href="../"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3 5 8l5 5"/></svg><span class="en">Home</span><span class="zh">返回主页</span></a>
+  <span class="brand"><span class="en">ZKAudit<i>content moderation for encrypted messages</i></span><span class="zh">ZKAudit<i>加密消息的内容审核</i></span></span>
+  <div class="lang" role="group" aria-label="Language"><button type="button" data-set-lang="en" aria-pressed="true">EN</button><button type="button" data-set-lang="zh" aria-pressed="false">中</button></div>
+</div></header>
+
+<main class="wrap">
+  <p class="kicker"><span class="en">Live demo</span><span class="zh">在线演示</span><span class="chip"><span class="en">Alice → encrypt &amp; prove → Auditor → Bob</span><span class="zh">Alice → 加密并证明 → 审核方 → Bob</span></span></p>
+  <h1><span class="en">The auditor never sees the content. It still knows whether the content breaks a rule.</span><span class="zh">审核方看不到内容，却能确定内容是否违规。</span></h1>
+  <p class="lead"><span class="en">Alice sends Bob an <b>encrypted</b> image or message. The auditor receives only the <b>ciphertext</b> and a <b>zero-knowledge proof</b>, and from these alone decides whether the content matches a public rule. Each run below executes the real system: real encryption, a real proof, real verification and delivery.</span><span class="zh">Alice 给 Bob 发送一张<b>加密</b>的图片或一条消息。审核方只收到<b>密文</b>和一份<b>零知识证明</b>，仅凭这两样判断内容是否命中公开规则。下面每次运行执行的都是真实系统：真实的加密、证明、验证与送达。</span></p>
+
+  <div class="ctl">
+    <div class="ctl-top">
+      <div class="seg" role="tablist" aria-label="What Alice sends">
+        <button type="button" role="tab" data-mode="photo" aria-selected="true"><span class="en">Image</span><span class="zh">图片</span></button>
+        <button type="button" role="tab" data-mode="text" aria-selected="false"><span class="en">Message</span><span class="zh">文字</span></button>
+      </div>
+      <span class="lbl" id="hint"></span>
+    </div>
+    <div id="modePhoto">
+      <div class="pics" id="pics"></div>
+      <label class="up" id="upLbl"><input type="file" id="file" accept="image/jpeg,image/png"><span id="upTxt"><span class="en">Upload your own image (JPEG or PNG, up to 4 MB and 4 megapixels)</span><span class="zh">上传自己的图片（JPEG 或 PNG，最大 4 MB、400 万像素）</span></span></label>
+    </div>
+    <div id="modeText" hidden>
+      <form id="form">
+        <input id="inp" class="txtin" maxlength="280" autocomplete="off" aria-label="Alice's message to Bob">
+      </form>
+      <div class="examples"><span><span class="en">Examples:</span><span class="zh">示例：</span></span><span id="exs" class="examples" style="margin:0"></span></div>
+    </div>
+    <div class="submit">
+      <button type="button" class="btn" id="sendBtn"><span class="en">Submit</span><span class="zh">提交</span></button>
+      <p class="why" id="why"></p>
+    </div>
+  </div>
+  <p class="notice"><span class="en"><b>How this hosted demo runs.</b> Alice, the auditor and Bob run as separate, isolated processes on one server, started fresh for your request and deleted afterwards. Alice's encryption and proof are therefore computed on the server, so the server process acting as Alice sees what you submit; in a real deployment that step runs on Alice's own device. The auditor process receives only what the protocol sends it. Please do not submit anything sensitive.</span><span class="zh"><b>这个在线演示如何运行。</b>Alice、审核方和 Bob 是同一台服务器上相互隔离的独立进程，为你的请求新建，结束后删除。因此 Alice 的加密和证明是在服务器上计算的，扮演 Alice 的服务器进程能看到你提交的内容；在真实部署中，这一步在 Alice 自己的设备上完成。审核方进程只收到协议发给它的数据。请不要提交敏感内容。</span></p>
+
+  <div class="rail" id="rail">
+    <span><b>1</b><span class="en">Alice encrypts &amp; proves</span><span class="zh">Alice 加密并证明</span></span>
+    <span><b>2</b><span class="en">Auditor verifies</span><span class="zh">审核方验证</span></span>
+    <span><b>3</b><span class="en">Bob receives</span><span class="zh">Bob 接收</span></span>
+  </div>
+
+  <section class="scene" aria-live="polite">
+    <div class="col colA">
+      <div class="actor a"><span class="nm">Alice</span><span class="sub"><span class="en">sender · prover</span><span class="zh">发送方 · 证明者</span></span></div>
+      <div class="content" id="alice"></div>
+      <p class="meta" id="aliceMeta"></p>
+    </div>
+
+    <div class="lane" id="lane" aria-hidden="true">
+      <svg class="envl" id="envl" viewBox="0 0 52 36"><rect x="1" y="1" width="50" height="34" rx="4"/><path d="M1 1 L26 20 L51 1"/></svg>
+      <span class="cap-s" id="laneCap"><span class="en">ciphertext + proof</span><span class="zh">密文 + 证明</span></span>
+    </div>
+
+    <div class="col colV">
+      <div class="actor v"><span class="nm"><span class="en">Auditor</span><span class="zh">审核方</span></span><span class="sub"><span class="en">verifier · holds the rules, not the key</span><span class="zh">验证者 · 持有规则，没有密钥</span></span></div>
+      <div>
+        <div class="label" style="margin-bottom:6px"><span class="en">What it received and stored</span><span class="zh">它收到并存储的内容</span></div>
+        <dl class="kv" id="sees"><dt>—</dt><dd></dd></dl>
+      </div>
+      <ul class="rules" id="rules"></ul>
+      <div class="check" id="check"></div>
+    </div>
+
+    <div class="down" id="down" aria-hidden="true"></div>
+
+    <div class="col colB">
+      <div class="actor b"><span class="nm">Bob</span><span class="sub"><span class="en">recipient · holds the key</span><span class="zh">接收方 · 持有密钥</span></span></div>
+      <div class="content" id="bob"></div>
+      <p class="meta" id="bobMeta"></p>
+    </div>
+  </section>
+
+  <p class="cap" id="cap"></p>
+  <p class="times" id="times"></p>
+
+  <section class="how" id="how">
+    <h2><span class="en">How it works</span><span class="zh">工作原理</span></h2>
+    <p class="how-sub"><span class="en">Every message and image goes through the same three steps. The auditor never holds a decryption key.</span><span class="zh">每条消息、每张图片都经过同样的三步。审核方从不持有解密密钥。</span></p>
+    <div class="stages">
+      <div class="stage a">
+        <svg viewBox="0 0 260 120" aria-hidden="true">
+          <g class="tl"><rect x="34" y="12" width="26" height="30" rx="4"/><text x="47" y="27">L</text><rect x="64" y="12" width="26" height="30" rx="4"/><text x="77" y="27">u</text><rect x="94" y="12" width="26" height="30" rx="4"/><text x="107" y="27">n</text><rect x="124" y="12" width="26" height="30" rx="4"/><text x="137" y="27">c</text><rect x="154" y="12" width="26" height="30" rx="4"/><text x="167" y="27">h</text><rect x="184" y="12" width="26" height="30" rx="4"/><text x="197" y="27">…</text></g>
+          <path class="ar" d="M122 50 V70 M117 65 L122 71 L127 65"/>
+          <g class="ev"><rect x="96" y="78" width="52" height="34" rx="4"/><path d="M96 78 L122 97 L148 78"/></g>
+          <text class="mo" x="158" y="99">C</text>
+        </svg>
+        <h3><b>1</b><span class="en">Encrypt</span><span class="zh">加密</span></h3>
+        <p><span class="en">Alice's device encrypts the content, for an image the original at full resolution, with a fresh key that only Bob can recover. Only the ciphertext <i>C</i> leaves the device.</span><span class="zh">Alice 的设备用新生成的密钥加密内容（图片是原始分辨率的整张原图），只有 Bob 能取回这把密钥。离开设备的只有密文 <i>C</i>。</span></p>
+      </div>
+      <div class="stage c">
+        <svg viewBox="0 0 260 120" aria-hidden="true">
+          <rect class="zk" x="2" y="2" width="256" height="116" rx="10"/>
+          <text class="lb" x="14" y="19"><tspan class="en">ZK circuit · on Alice's device</tspan><tspan class="zh">零知识电路 · 在 Alice 的设备上</tspan></text>
+          <g class="tl sm"><rect x="14" y="28" width="20" height="22" rx="3"/><rect class="hot" x="38" y="28" width="20" height="22" rx="3"/><rect class="hot" x="62" y="28" width="20" height="22" rx="3"/><rect x="86" y="28" width="20" height="22" rx="3"/></g>
+          <path class="wr" d="M24 50 V62 M48 50 V62 M72 50 V62 M96 50 V62"/>
+          <path class="wr hotw" d="M48 50 V62 M72 50 V62"/>
+          <g class="cmp"><rect x="16" y="62" width="16" height="12" rx="2"/><rect class="hot" x="40" y="62" width="16" height="12" rx="2"/><rect class="hot" x="64" y="62" width="16" height="12" rx="2"/><rect x="88" y="62" width="16" height="12" rx="2"/></g>
+          <path class="wr" d="M24 74 Q24 86 52 90 M96 74 Q96 86 68 90 M48 74 V88 M72 74 V88"/>
+          <path class="gate" d="M44 88 Q60 84 76 88 Q74 104 60 110 Q46 104 44 88 Z"/>
+          <text class="gt" x="60" y="97">OR</text>
+          <path class="wr" d="M77 99 H128"/>
+          <rect class="box" x="128" y="88" width="66" height="22" rx="5"/><text class="mo c" x="161" y="100">hit = 1</text>
+          <rect class="box okb" x="128" y="32" width="120" height="22" rx="5"/><text class="mo c" x="188" y="44">Enc(m) = C ✓</text>
+          <text class="lb" x="128" y="72"><tspan class="en">rule result, bound to C</tspan><tspan class="zh">规则结果，与 C 绑定</tspan></text>
+        </svg>
+        <h3><b>2</b><span class="en">Prove</span><span class="zh">证明</span></h3>
+        <p><span class="en">Inside a zero-knowledge circuit, the device evaluates the public rule on the plaintext and proves that this plaintext is exactly what <i>C</i> encrypts. For images, the circuit runs a public image classifier on the decrypted image, so the check covers the whole image Bob will receive.</span><span class="zh">设备在零知识电路中对明文执行公开规则，并证明这段明文正是 <i>C</i> 加密的内容。对于图片，电路对解密出的图片运行公开的图像分类模型，所以检查覆盖 Bob 将收到的整张图片。</span></p>
+      </div>
+      <div class="stage v">
+        <svg viewBox="0 0 260 120" aria-hidden="true">
+          <rect class="aud" x="2" y="6" width="132" height="40" rx="8"/>
+          <text class="nm" x="14" y="24"><tspan class="en">Auditor</tspan><tspan class="zh">审核方</tspan></text>
+          <text class="lb" x="14" y="38"><tspan class="en">rules, no key</tspan><tspan class="zh">有规则，无密钥</tspan></text>
+          <g class="ev"><rect x="8" y="64" width="46" height="30" rx="4"/><path d="M8 64 L31 81 L54 64"/></g>
+          <rect class="box" x="62" y="64" width="52" height="30" rx="4"/><text class="mo c" x="88" y="80">π</text>
+          <text class="lb" x="10" y="110"><tspan class="en">ciphertext + proof</tspan><tspan class="zh">密文 + 证明</tspan></text>
+          <path class="ar" d="M122 79 H150 M145 74 L151 79 L145 84"/>
+          <g transform="rotate(-6 205 62)"><rect class="stp" x="160" y="46" width="90" height="32" rx="5"/><text class="st" x="205" y="63"><tspan class="en">BLOCKED</tspan><tspan class="zh">拦截</tspan></text></g>
+          <text class="lb" x="162" y="102"><tspan class="en">learns only hit = 1</tspan><tspan class="zh">只得知 hit = 1</tspan></text>
+        </svg>
+        <h3><b>3</b><span class="en">Verify</span><span class="zh">验证</span></h3>
+        <p><span class="en">The auditor checks the proof against <i>C</i> and the rules. It learns one bit: whether a rule matched. A false claim cannot pass verification, and matching content is not delivered.</span><span class="zh">审核方对照 <i>C</i> 和规则验证证明，只得到一位信息：是否命中规则。虚假的声明无法通过验证，命中规则的内容不会被送达。</span></p>
+      </div>
+    </div>
+    <div class="more">
+      <a class="btn ghost" id="techLink" href="../zkrule/#image"><span class="en">Technical details →</span><span class="zh">技术细节 →</span></a>
+      <span><span class="en">Step through the protocol on a live example: encryption, circuit evaluation, sealed wires and spot checks.</span><span class="zh">用一个实例逐步演示协议：加密、电路求值、封装线值与抽查。</span></span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p class="contact"><span class="en">The implementation is not public. For technical details, licensing or collaboration, please contact <a href="mailto:luzhizz@foxmail.com">luzhizz@foxmail.com</a>.</span><span class="zh">实现代码不公开。如需了解技术细节、授权或合作，请联系 <a href="mailto:luzhizz@foxmail.com">luzhizz@foxmail.com</a>。</span></p>
+  <p><span class="en">Zhi Lu · <a href="mailto:luzhizz@foxmail.com">luzhizz@foxmail.com</a> · Based on zkRule, first-authored work under review · <a href="../zkrule/">Technical details</a> · <a href="../zkp/">Illustrated ZKP primer</a></span><span class="zh">路直 · <a href="mailto:luzhizz@foxmail.com">luzhizz@foxmail.com</a> · 基于第一作者在投工作 zkRule · <a href="../zkrule/">技术细节</a> · <a href="../zkp/">图解零知识证明</a></span></p>
+  <p class="credits" id="credits"></p>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var $=function(id){return document.getElementById(id)};
+  function bi(en,zh){return '<span class="en">'+en+'</span><span class="zh">'+zh+'</span>'}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+  /* The live server. For local testing only, ?api= may point at localhost. */
+  var API=(document.querySelector('meta[name="zkaudit-api"]')||{}).content||"";
+  (function(){var q=new URLSearchParams(location.search).get("api");
+    if(q&&/^(localhost|127\.0\.0\.1)$/.test(location.hostname)&&/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(q))API=q})();
+
+  /* Public rules. The auditor only learns whether some rule matched; Alice's
+     side can show which pattern her own text matched (she has the plaintext). */
+  var RULES=[
+    {id:"key",t:bi("Passwords and access keys","密码与访问密钥"),
+     re:[/SECRET-[0-9]{4}/,/(?:TOKEN|KEY)=[A-Z0-9]{8}/,/password[ \t]*=[ \t]*[^ \t\r\n]{4,16}/,/BEGIN[ \t]+PRIVATE[ \t]+KEY/]},
+    {id:"doc",t:bi("Confidential documents","机密文件"),re:[/CONFIDENTIAL/,/(?:内部资料|机密文件)/]},
+    {id:"adm",t:bi("ID numbers and admin commands","证件号与管理指令"),re:[/^ADMIN:/,/ID:[0-9]{6}$/]},
+    {id:"dog",t:bi("Images classified as a dog (demo image rule)","被识别为狗的图片（演示用图片规则）")}
+  ];
+  function textRule(s){for(var i=0;i<3;i++)for(var j=0;j<RULES[i].re.length;j++){var m=RULES[i].re[j].exec(s);if(m)return {rule:RULES[i],span:[m.index,m.index+m[0].length]}}return null}
+
+  /* Recorded results of one real run (2026-11-23), shown only
+     before a live run or when the live server is unavailable, and always labelled. */
+  var PHOTOS=[
+    {f:"cat-tabby",dog:false,sec:8.08,by:"Tuqa Nabi",u:"brown-tabby-kitten-on-pink-textile-WHTLPrTPBk0",en:"Tabby kitten"},
+    {f:"dog-corgi",dog:true,sec:7.62,by:"Alvan Nee",u:"short-coated-brown-and-white-puppy-sitting-on-floor-brFsZ7qszSY",en:"Corgi puppy"},
+    {f:"hamster-snack",dog:false,sec:7.69,by:"Denis Bayer",u:"a-hamster-eating-a-piece-of-food-4KC4hUWCtJI",en:"Hamster with a strawberry"},
+    {f:"cat-white",dog:false,sec:7.42,by:"Amy Chen",u:"white-cat-on-white-pad-cKg8anMXy4s",en:"White kitten"},
+    {f:"dog-frenchie",dog:true,sec:11.09,by:"Karsten Winegeart",u:"adorable-french-bulldog-poses-against-a-yellow-background-t-NPdbczYFY",en:"French bulldog"},
+    {f:"hamster-white",dog:false,sec:10.84,by:"Zhaoli JIN",u:"a-white-hamster-standing-on-a-table-next-to-a-bowl-AvmB4zt0ly0",en:"White hamster"},
+    {f:"cat-tuxedo",dog:false,sec:10.64,by:"AcidFern",u:"a-black-and-white-cat-with-a-mustache-on-a-pink-background-mrmoM9BUebw",en:"Tuxedo cat"},
+    {f:"dog-puppy",dog:true,sec:11.27,by:"Sergey Semin",u:"black-and-white-short-coated-puppy-vMNr5gbeeTk",en:"Puppy"}
+  ];
+  var TEXTS=[
+    {s:"Lunch at 12? The menu looks good.",hit:false},
+    {s:"The wifi password = sunflower22",hit:true},
+    {s:"CONFIDENTIAL: launch moved to May",hit:true},
+    {s:"这份是内部资料，别外传。",hit:true}
+  ];
+
+  var alice=$("alice"),bob=$("bob"),sees=$("sees"),check=$("check"),cap=$("cap"),times=$("times"),lane=$("lane"),envl=$("envl"),laneCap=$("laneCap"),down=$("down"),inp=$("inp");
+  var railEls=[].slice.call(document.querySelectorAll("#rail>span"));
+  $("rules").innerHTML='<li class="label" style="padding-bottom:4px">'+bi("Public rules · content that is blocked","公开规则 · 以下内容将被拦截")+'</li>'+
+    RULES.map(function(r){return '<li data-r="'+r.id+'"><i>·</i><span>'+r.t+'</span></li>'}).join("");
+  var ruleEls=[].slice.call(document.querySelectorAll("#rules li[data-r]"));
+  $("pics").innerHTML=PHOTOS.map(function(p,i){return '<button type="button" class="pic" data-i="'+i+'" title="'+p.en+'"><img src="media/'+p.f+'.jpg" alt="'+p.en+'" width="800" height="800"></button>'}).join("");
+  $("exs").innerHTML=TEXTS.map(function(t,i){return '<button type="button" class="ex" data-i="'+i+'">'+esc(t.s)+'</button>'}).join("");
+  $("credits").innerHTML=bi("Images from Unsplash by ","图片来自 Unsplash，摄影：")+PHOTOS.map(function(p){return '<a href="https://unsplash.com/photos/'+p.u+'" target="_blank" rel="noreferrer">'+p.by+'</a>'}).join(", ")+".";
+
+  /* helpers */
+  var busy=false,timer=null;
+  /* The image and message demos keep separate results: switching tabs shows that tab's last run. */
+  var last={photo:null,text:null},DEF=null;
+  function show(e){reset();step(0);showAlice(e.it);if(e.r)render(e.it,e.r,e.live);else cap.innerHTML=e.cap||""}
+  function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+  function lock(on){busy=on;[].forEach.call(document.querySelectorAll(".pic,.ex,#file,[data-mode]"),function(b){b.disabled=on});updateSubmit()}
+  function step(n){railEls.forEach(function(s,i){s.className=i<n-1?"done":i===n-1?"on":""})}
+  function tiles(s){var cs=Array.from(s),out=[],max=60;
+    for(var i=0;i<cs.length&&i<max;i++){var c=cs[i],sp=c===" ";
+      out.push('<span class="'+(sp?"sp":"")+'" data-k="'+i+'">'+(sp?"␣":esc(c))+'</span>')}
+    if(cs.length>max)out.push('<span class="sp">…</span>');return '<div class="tiles">'+out.join("")+'</div>'}
+  function markHit(s,span){var pre=Array.from(s.slice(0,span[0])).length,len=Array.from(s.slice(span[0],span[1])).length;
+    [].forEach.call(alice.querySelectorAll(".tiles span[data-k]"),function(t){var k=+t.dataset.k;if(k>=pre&&k<pre+len)t.classList.add("hit")})}
+  function img(src,alt){return '<img class="photo" src="'+src+'" alt="'+esc(alt)+'">'}
+  function short(h,n){return h?h.slice(0,n||16)+"…":"—"}
+  function s2(x){return x==null?"—":x<0.1?Math.max(1,Math.round(x*1000))+" ms":(x<1?x.toFixed(2):x.toFixed(1))+" s"}
+  function kb(n){return n<2048?n+" B":n<1048576?(n/1024).toFixed(n<102400?1:0)+" KB":(n/1048576).toFixed(1)+" MB"}
+  function reset(){
+    lane.classList.remove("on");envl.classList.remove("in","go");laneCap.classList.remove("in");down.className="down";
+    ruleEls.forEach(function(li){li.className="";li.querySelector("i").textContent="·"});
+    sees.innerHTML="<dt>—</dt><dd></dd>";check.innerHTML="";bob.innerHTML="";$("bobMeta").innerHTML="";$("aliceMeta").innerHTML="";times.innerHTML="";
+  }
+  function showAlice(it){alice.innerHTML=it.kind==="image"?img(it.preview,it.alt||"image"):tiles(it.text)}
+
+  /* render a finished run (live or recorded) */
+  function render(it,r,live){
+    var blocked=r.state==="BLOCKED",released=r.state==="RELEASED";
+    step(2);lane.classList.add("on");envl.classList.add("in","go");laneCap.classList.add("in");
+    var a=r.auditor||{},st=a.statement||{},ps=a.plaintext_scan;
+    var rows=[];
+    if(live){
+      rows.push(["Ciphertext","密文",'<dd>'+kb(a.ciphertext_bytes)+" · "+esc(short(a.ciphertext_head,40))+'</dd>']);
+      rows.push(["Commitments","承诺",'<dd>'+esc(short(st.file_commitment,12))+" · "+esc(short(st.key_commitment,12))+'</dd>']);
+      rows.push(["Rules and model","规则与模型",'<dd>'+esc(short(st.detection_policy_hash,12))+" · "+esc(short(st.detector_hash,12))+'</dd>']);
+      rows.push(["Proved result","证明的结论",'<dd class="txt">'+(st.claimed_hit?bi("a rule matched (which one is not revealed)","命中了规则（不透露是哪一条）"):bi("no rule matched","未命中任何规则"))+'</dd>']);
+      if(ps)rows.push(["Plaintext","明文",ps.found?'<dd class="bad">'+bi("found","发现")+'</dd>':
+        '<dd class="good">'+bi("not present — searched all "+ps.files+" files, "+kb(ps.bytes)+" of the auditor’s data","不存在 —— 已检索审核方全部 "+ps.files+" 个文件、"+kb(ps.bytes)+" 数据")+'</dd>']);
+    }else{
+      rows.push(["Ciphertext","密文",'<dd>'+bi("recorded run","录制的运行")+'</dd>']);
+      rows.push(["Proved result","证明的结论",'<dd class="txt">'+(blocked?bi("a rule matched","命中了规则"):bi("no rule matched","未命中任何规则"))+'</dd>']);
+    }
+    sees.innerHTML=rows.map(function(x){return "<dt>"+bi(x[0],x[1])+"</dt>"+x[2]}).join("");
+    if(blocked){
+      if(it.kind==="image")ruleEls.forEach(function(li){if(li.dataset.r==="dog"){li.className="hit";li.querySelector("i").textContent="✕"}});
+      check.innerHTML='<span class="t">✓ '+bi("Proof verified","证明验证通过")+'</span><span class="stamp bad">'+bi("BLOCKED","拦截")+'</span>';
+      if(it.kind==="text"){var h=textRule(it.text);if(h){markHit(it.text,h.span);$("aliceMeta").innerHTML=bi("Alice’s side: matches “","Alice 一侧：命中“")+h.rule.t+bi("”","”")}}
+    }else if(released){
+      ruleEls.forEach(function(li){li.className="pass";li.querySelector("i").textContent="✓"});
+      check.innerHTML='<span class="t">✓ '+bi("Proof verified","证明验证通过")+'</span><span class="stamp ok">'+bi("ALLOWED","放行")+'</span>';
+    }else{
+      check.innerHTML='<span class="t">'+esc(r.state)+'</span>';
+    }
+    step(3);
+    if(released){
+      down.className="down ok";
+      var b=r.bob||{};
+      if(it.kind==="image")bob.innerHTML=img(live&&r._id&&b.width?API+"/api/run/"+r._id+"/bob.png":it.preview,"received image");
+      else bob.innerHTML=tiles(live?b.text:it.text);
+      $("bobMeta").className="meta good";
+      var dims=it.kind==="image"&&live&&b.width?b.width+" × "+b.height:"";
+      $("bobMeta").innerHTML=live?(b.identical?(dims?bi("Decrypted by Bob · the original, "+dims+", every pixel identical to what Alice sent","Bob 解密所得 · 原图 "+dims+"，每个像素都与 Alice 发送的一致"):bi("Decrypted by Bob · identical to what Alice sent","Bob 解密所得 · 与 Alice 发送的完全一致")):bi("Decrypted by Bob · differs","Bob 解密所得 · 不一致")):bi("Decrypted by Bob","Bob 解密所得");
+    }else{
+      down.className="down no";
+      bob.innerHTML='<div class="empty">'+bi("Not delivered","未送达")+'</div>';
+      $("bobMeta").className="meta";$("bobMeta").innerHTML=live&&r.bob&&!r.bob.received?bi("Bob’s inbox was checked: nothing arrived.","已检查 Bob 的收件箱：没有收到任何内容。"):"";
+    }
+    var al=r.alice||{};
+    if(live&&it.kind==="image"&&al.width)$("aliceMeta").innerHTML=bi("Original "+al.width+" × "+al.height+" · "+kb(al.original_bytes)+" of pixels, encrypted in full","原图 "+al.width+" × "+al.height+" · "+kb(al.original_bytes)+" 像素数据，整张加密");
+    cap.innerHTML=blocked?bi("<b>Blocked.</b> The proof shows that the "+(it.kind==="image"?"image":"message")+" matches a rule, so the auditor does not release it. It reached this verdict without seeing the content.",
+                              "<b>拦截。</b>证明表明这条"+(it.kind==="image"?"图片":"消息")+"命中规则，审核方因此不予放行。它在看不到内容的情况下作出了这个判断。")
+               :released?(it.kind==="image"?bi("<b>Delivered.</b> The proof shows that no rule matches, so the auditor releases the ciphertext and Bob decrypts the original image, identical to what Alice sent.",
+                                                 "<b>送达。</b>证明表明未命中任何规则，审核方放行密文，Bob 解密得到原图，与 Alice 发送的完全一致。")
+                                  :bi("<b>Delivered.</b> The proof shows that no rule matches, so the auditor releases the ciphertext and Bob decrypts it with his key.",
+                            "<b>送达。</b>证明表明未命中任何规则，审核方放行密文，Bob 用自己的密钥解密。")):"";
+    var t=r.timings;
+    if(live&&t){
+      times.innerHTML=bi("<b>Measured on the server</b> ("+(r.server&&r.server.cpus)+" vCPU) · open a new session "+s2(t.open_session_s)+" · encrypt and upload "+s2(t.encrypt_upload_s)+" · proof, generated by Alice and checked by the auditor together "+s2(t.proof_s)+" · verdict "+s2(t.verdict_s)+" · message total "+s2(t.message_total_s)+". The first message of a new session also proves the session itself. Proof generation uses our proprietary acceleration techniques.",
+                         "<b>服务器实测</b>（"+(r.server&&r.server.cpus)+" 个 vCPU）· 建立新会话 "+s2(t.open_session_s)+" · 加密并上传 "+s2(t.encrypt_upload_s)+" · 证明（Alice 生成、审核方同步验证）"+s2(t.proof_s)+" · 判定 "+s2(t.verdict_s)+" · 消息合计 "+s2(t.message_total_s)+"。新会话的第一条消息还要证明会话本身。证明生成采用我们自有的加速技术。");
+    }else if(!live){
+      times.innerHTML=it.note||"";
+    }
+  }
+
+  /* run on the live server; fall back to a recorded result for preset items */
+  async function run(it){
+    if(busy)return;lock(true);reset();step(1);showAlice(it);
+    var t0=Date.now(),queued=false;
+    var tick=function(){if(queued){cap.innerHTML=bi("<b>Waiting for the server.</b> Another visitor’s run is in progress … "+Math.round((Date.now()-t0)/1000)+" s","<b>等待服务器。</b>正在处理另一位访客的提交 …… "+Math.round((Date.now()-t0)/1000)+" 秒");return}
+      cap.innerHTML=bi("<b>Running on the server.</b> Alice encrypts the "+(it.kind==="image"?"image":"message")+" and proves it against the rules; the auditor verifies the proof as it is produced … "+Math.round((Date.now()-t0)/1000)+" s",
+                                         "<b>正在服务器上运行。</b>Alice 加密"+(it.kind==="image"?"图片":"消息")+"并针对规则生成证明，审核方同步验证 …… "+Math.round((Date.now()-t0)/1000)+" 秒")};
+    tick();timer=setInterval(tick,1000);
+    var res=null,why="";
+    try{
+      if(!API)throw {msg:bi("The live server is not configured on this page.","本页尚未配置在线服务器。")};
+      var fd=new FormData();fd.append("kind",it.kind);
+      if(it.kind==="text")fd.append("text",it.text);else fd.append("image",it.blob,it.name||"image.jpg");
+      var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},60000);
+      var resp=await fetch(API+"/api/run?async=1",{method:"POST",body:fd,signal:ctl.signal,mode:"cors",credentials:"omit"});
+      clearTimeout(to);
+      var body=await resp.json().catch(function(){return {}});
+      if(resp.status===429&&body.error==="rate"){coolFor(body.retry_after||GAP);throw {rate:true,msg:bi("One submission every 30 seconds. Please wait "+(body.retry_after||GAP)+" s and submit again.","每 30 秒只能提交一次，请等待 "+(body.retry_after||GAP)+" 秒后再提交。")}}
+      if(!resp.ok||!body.id)throw {msg:esc(body.message||("HTTP "+resp.status))};
+      /* The run continues on the server; poll until it finishes (up to 6 minutes). */
+      for(var k=0;;k++){
+        if(Date.now()-t0>360000)throw {msg:bi("The run took too long.","运行时间过长。")};
+        await wait(body.poll_ms||1000);
+        var pr=await fetch(API+"/api/run/"+body.id,{mode:"cors",credentials:"omit"}),pj=await pr.json().catch(function(){return {}});
+        if(!pr.ok)throw {msg:esc(pj.message||("HTTP "+pr.status))};
+        if(pj.status==="done"){res=pj.result;res._id=body.id;break}
+        if(pj.status==="failed")throw {msg:esc(pj.message||"failed")};
+        queued=pj.status==="queued";
+      }
+    }catch(e){why=e&&e.msg?e.msg:bi("The live server could not be reached.","无法连接在线服务器。");if(e&&e.rate)it.recorded=null}
+    clearInterval(timer);
+    var slot=it.kind==="image"?"photo":"text";
+    if(res){render(it,res,true);last[slot]={it:it,r:res,live:true}}
+    else if(it.recorded){
+      it.note=bi("Recorded result from an earlier real run, shown because ","此为早先一次真实运行的录制结果，原因：")+why;
+      render(it,it.recorded,false);last[slot]={it:it,r:it.recorded,live:false}
+    }else{
+      step(0);cap.innerHTML=bi("<b>Not run.</b> ","<b>未运行。</b>")+why;last[slot]={it:it,cap:cap.innerHTML}
+    }
+    lock(false);
+  }
+
+  /* Selecting only selects; nothing runs until Submit is pressed. */
+  var mode="photo",pick={preset:0,file:null};
+  function markPick(){
+    [].forEach.call(document.querySelectorAll(".pic"),function(b){b.classList.toggle("on",pick.preset!==null&&+b.dataset.i===pick.preset)});
+    $("upLbl").classList.toggle("on",!!pick.file);
+    $("upTxt").innerHTML=pick.file?bi("Selected: ","已选择：")+esc(pick.file.name):bi("Upload your own image (JPEG or PNG, up to 4 MB and 4 megapixels)","上传自己的图片（JPEG 或 PNG，最大 4 MB、400 万像素）");
+    updateSubmit()}
+  $("pics").addEventListener("click",function(e){var b=e.target.closest(".pic");if(b&&!busy){pick={preset:+b.dataset.i,file:null};markPick()}});
+  $("exs").addEventListener("click",function(e){var b=e.target.closest(".ex");if(b&&!busy){inp.value=b.textContent;updateSubmit();inp.focus()}});
+  $("form").addEventListener("submit",function(e){e.preventDefault()});
+  inp.addEventListener("input",updateSubmit);
+  $("file").addEventListener("change",function(){var f=this.files&&this.files[0];this.value="";if(!f||busy)return;
+    if(f.size>4*1024*1024||!/^image\/(jpeg|png)$/.test(f.type)){cap.innerHTML=bi("Please choose a JPEG or PNG image of at most 4 MB.","请选择不超过 4 MB 的 JPEG 或 PNG 图片。");return}
+    pick={preset:null,file:f};markPick()});
+
+  /* One submission every 30 seconds per visitor; the server enforces the same limit. */
+  var GAP=30,nextAt=0,cool=null;
+  function left(){return Math.max(0,Math.ceil((nextAt-Date.now())/1000))}
+  function ready(){return mode==="photo"?(pick.preset!==null||!!pick.file):!!inp.value.trim()}
+  function updateSubmit(){
+    var w=left(),st="";
+    if(busy)st=bi("Running…","运行中……");
+    else if(w>0)st=bi("Next submission available in "+w+" s","还需等待 "+w+" 秒才能再次提交");
+    else if(!ready())st=mode==="photo"?bi("Choose an image first.","请先选择一张图片。"):bi("Type a message or choose an example first.","请先输入消息或选择示例。");
+    $("sendBtn").disabled=busy||w>0||!ready();
+    $("why").innerHTML=(st?'<span class="state">'+st+'</span>':"")+bi(
+      "Choose an image or a message, then press <b>Submit</b>. Each submission runs the complete system on one shared server (about 6 s for a message, about 25 s for the sample photos, up to about 2 minutes for a 4-megapixel photo), so each visitor can submit <b>once every 30 seconds</b>.",
+      "选择一张图片或一条消息，然后点击<b>提交</b>。每次提交都会在一台共享服务器上运行完整系统（文字约 6 秒，示例照片约 25 秒，400 万像素的照片最长约 2 分钟），因此每位访客<b>每 30 秒只能提交一次</b>。")}
+  function coolFor(s){nextAt=Math.max(nextAt,Date.now()+s*1000);clearInterval(cool);
+    cool=setInterval(function(){updateSubmit();if(left()===0)clearInterval(cool)},500);updateSubmit()}
+  $("sendBtn").addEventListener("click",async function(){
+    if(busy||left()>0||!ready())return;
+    var it;
+    if(mode==="text"){var s=inp.value.trim(),t=TEXTS.filter(function(x){return x.s===s})[0];
+      it={kind:"text",text:s,recorded:t?{state:t.hit?"BLOCKED":"RELEASED"}:null}}
+    else if(pick.file){var f=pick.file;it={kind:"image",blob:f,name:f.name,preview:URL.createObjectURL(f),alt:"your image"}}
+    else{var p=PHOTOS[pick.preset],blob=await fetch("media/"+p.f+".jpg").then(function(r){return r.blob()});
+      it={kind:"image",blob:blob,name:p.f+".jpg",preview:"media/"+p.f+".jpg",alt:p.en,recorded:{state:p.dog?"BLOCKED":"RELEASED"}}}
+    coolFor(GAP);run(it)});
+
+  /* mode */
+  var tabs=[].slice.call(document.querySelectorAll("[data-mode]"));
+  function setMode(m){mode=m;tabs.forEach(function(t){t.setAttribute("aria-selected",String(t.dataset.mode===m))});
+    $("modePhoto").hidden=m!=="photo";$("modeText").hidden=m!=="text";
+    $("hint").innerHTML=m==="photo"?bi("Choose an image for Alice to send","选择一张图片由 Alice 发送"):bi("Type a message or choose an example","输入消息或选择示例");
+    ruleEls.forEach(function(li){li.hidden=(m==="photo")!==(li.dataset.r==="dog")});
+    if(DEF)show(last[m]||DEF[m]);
+    $("techLink").href="../zkrule/#"+(m==="photo"?"image":"message");
+    updateSubmit()}
+  tabs.forEach(function(t){t.addEventListener("click",function(){setMode(t.dataset.mode)})});
+  /* A wait left over from an earlier visit (another tab, a reload) is taken from the server. */
+  if(API)fetch(API+"/api/info",{mode:"cors",credentials:"omit"}).then(function(r){return r.json()}).then(function(j){if(j&&j.wait_s>0)coolFor(j.wait_s)}).catch(function(){});
+
+  /* language (shared key with the rest of the site) */
+  var lbtns=[].slice.call(document.querySelectorAll("[data-set-lang]"));
+  function setLang(l){document.body.dataset.lang=l;document.documentElement.lang=l==="zh"?"zh-CN":"en";
+    lbtns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.setLang===l))});
+    inp.placeholder=l==="zh"?"Alice 想对 Bob 说…":"Alice's message to Bob";
+    try{localStorage.setItem("site-language",l)}catch(e){}}
+  lbtns.forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.setLang)})});
+  var saved=null;try{saved=localStorage.getItem("site-language")}catch(e){}
+  if(saved!=="en"&&saved!=="zh")saved=/^zh/i.test(navigator.language||"")?"zh":"en";
+  setLang(saved);setMode("photo");
+
+  /* Before any live run: the recorded kitten run, labelled. Nothing runs on page load. */
+  var first={kind:"image",preview:"media/cat-tabby.jpg",alt:"Tabby kitten",note:bi("Recorded result from an earlier real run. Choose an image or a message and press Submit to run the system live.","这是早先一次真实运行的录制结果。选择一张图片或一条消息并点击“提交”，即可在线运行系统。")};
+  var firstText={kind:"text",text:TEXTS[0].s,note:bi("Recorded result from an earlier real run. Type a message or choose an example and press Submit to run the system live.","这是早先一次真实运行的录制结果。输入消息或选择示例并点击“提交”，即可在线运行系统。")};
+  DEF={photo:{it:first,r:{state:"RELEASED"},live:false},text:{it:firstText,r:{state:"RELEASED"},live:false}};
+  show(DEF.photo);
+  markPick();
+})();
+</script>
+</body>
+</html>
